@@ -13,7 +13,15 @@ class KeyGeneration extends GenerateKeyState with _$KeyGeneration {
 
 @blocState
 class Preparation extends GenerateKeyState with _$Preparation {
-  const factory Preparation() = _Preparation;
+  const factory Preparation({
+    required String publicKey,
+    required String privateKey,
+    required Uint8List symmetricKey,
+    FileReader? teacherPublicKeyFile,
+    @Default(false) bool selectingTeacherPublicKeyFile,
+    FileReader? fileToSend,
+    @Default(false) bool selectingFileToSend,
+  }) = _Preparation;
 }
 
 @blocState
@@ -39,6 +47,9 @@ class Decryption extends GenerateKeyState with _$Decryption {
 extension KeyGenerationExtension on KeyGeneration {
   bool get isValid =>
       publicKey != null && privateKey != null && symmetricKey != null;
-
   bool get canGenerateSymmetricKey => publicKey != null && privateKey != null;
+}
+
+extension PreparationExtension on Preparation {
+  bool get isValid => teacherPublicKeyFile != null && fileToSend != null;
 }

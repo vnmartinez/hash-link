@@ -22,3 +22,14 @@ class GenerateAESSymmetricKey extends GenerateKeyEvent
     with _$GenerateAESSymmetricKey {
   const factory GenerateAESSymmetricKey() = _GenerateAESSymmetricKey;
 }
+
+@blocEvent
+class SelectTeacherPublicKeyFile extends GenerateKeyEvent
+    with _$SelectTeacherPublicKeyFile {
+  const factory SelectTeacherPublicKeyFile() = _SelectTeacherPublicKeyFile;
+}
+
+@blocEvent
+class SelectFileToSend extends GenerateKeyEvent with _$SelectFileToSend {
+  const factory SelectFileToSend() = _SelectFileToSend;
+}
