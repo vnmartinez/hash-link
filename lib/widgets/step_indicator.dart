@@ -42,6 +42,10 @@ class _StepIndicatorState extends State<StepIndicator> {
           width: 1,
         ),
       ),
+      constraints: const BoxConstraints(
+        minWidth: 600,
+        maxWidth: 800,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,11 +79,13 @@ class _StepIndicatorState extends State<StepIndicator> {
             color: AppColors.primary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppRadius.pill),
           ),
-          child: Text(
-            '${widget.currentStep}/${widget.steps.length}',
-            style: AppTypography.bodySmall.copyWith(
-              color: AppColors.primary,
-              fontWeight: FontWeight.bold,
+          child: Expanded(
+            child: Text(
+              '${widget.currentStep}/${widget.steps.length}',
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -88,7 +94,7 @@ class _StepIndicatorState extends State<StepIndicator> {
   }
 
   Widget _buildStep(int index) {
-    final isCompleted = widget.currentStep > index + 1;
+    final isCompleted = widget.currentStep > index;
     final isCurrent = widget.currentStep == index + 1;
     final isLast = index == widget.steps.length - 1;
 
@@ -120,70 +126,15 @@ class _StepIndicatorState extends State<StepIndicator> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Flexible(
-              child: Text(
-                widget.steps[index],
-                style: AppTypography.bodyLarge.copyWith(
-                  color: _getTextColor(isCompleted, isCurrent),
-                  fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                ),
-                overflow: TextOverflow.visible,
-                softWrap: true,
+            Text(
+              widget.steps[index],
+              style: AppTypography.bodyLarge.copyWith(
+                color: _getTextColor(isCompleted, isCurrent),
+                fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
               ),
-            ),
-            if (isCompleted) ...[
-              const SizedBox(width: AppSpacing.sm),
-              Icon(
-                Icons.check_circle_outline,
-                color: AppColors.success,
-                size: 16,
-              ),
-            ],
+            )
           ],
-        ),
-        if (isCurrent) ...[
-          const SizedBox(height: AppSpacing.xs),
-          _buildProgressIndicator(),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.sm,
-            vertical: AppSpacing.xs,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 12,
-                height: 12,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.xs),
-              Text(
-                'Em andamento',
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColors.primary,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -255,7 +206,7 @@ class _StepIndicatorState extends State<StepIndicator> {
   }
 
   double _getStepOpacity(int index) {
-    if (widget.currentStep > index + 2) return 0.6;
+    if (widget.currentStep > index + 1) return 0.6;
     if (widget.currentStep < index) return 0.6;
     return 1.0;
   }
@@ -273,7 +224,7 @@ class _StepIndicatorState extends State<StepIndicator> {
   }
 
   Color _getLineEndColor(int index) {
-    final nextStepCompleted = widget.currentStep > index + 2;
+    final nextStepCompleted = widget.currentStep > index + 1;
     if (nextStepCompleted) return AppColors.success;
     return AppColors.grey300;
   }

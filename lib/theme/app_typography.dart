@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppTypography {
-  // Títulos
   static const h1 = TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.bold,
@@ -40,7 +39,6 @@ class AppTypography {
     fontWeight: FontWeight.normal,
   );
 
-  // Botões e elementos interativos
   static const button = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,

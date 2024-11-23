@@ -1,62 +1,36 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_typography.dart';
-import '../theme/app_spacing.dart';
-import '../theme/app_radius.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String? subtitle;
 
   const SectionTitle({
     super.key,
     required this.title,
-    required this.icon,
+    this.subtitle,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm,
-          vertical: AppSpacing.xs,
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.displayMedium,
         ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primary.withOpacity(0.12),
-              AppColors.primary.withOpacity(0.03),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-          border: Border.all(
-            color: AppColors.primary.withOpacity(0.15),
-            width: 0.8,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 18,
+        if (subtitle != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            subtitle!,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
-            const SizedBox(width: AppSpacing.xs),
-            Text(
-              title,
-              style: AppTypography.h3.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w500,
-                letterSpacing: -0.3,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      ],
     );
   }
 }

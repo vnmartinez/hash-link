@@ -9,6 +9,7 @@ import 'package:hash_link/views/generate_key/subviews/shipping_subview.dart';
 import 'package:hash_link/views/generate_key/subviews/signature_subview.dart';
 import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/widgets/step_indicator.dart';
+import 'package:hash_link/widgets/action_buttons.dart';
 
 class GenerateKeyView extends StatelessWidget {
   const GenerateKeyView({super.key});
@@ -79,7 +80,7 @@ class GenerateKeyView extends StatelessWidget {
           body: Row(
             children: [
               SizedBox(
-                width: 250,
+                width: 330,
                 child: StepIndicator(currentStep: configuration.step),
               ),
               Expanded(
@@ -93,39 +94,25 @@ class GenerateKeyView extends StatelessWidget {
                       const SizedBox(height: 48),
                       Expanded(child: configuration.widget),
                       const SizedBox(height: 48),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          if (configuration.hasPrevious)
-                            ElevatedButton(
-                              onPressed: () => context
-                                  .read<GenerateKeyBloc>()
-                                  .add(const PreviousStep()),
-                              child: const Text('Voltar'),
-                            )
-                          else
-                            Container(),
-                          if (configuration.hasNext)
-                            BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
-                              buildWhen: (previous, current) {
-                                return _subviewConfiguration(previous)
-                                        .canNext !=
-                                    _subviewConfiguration(current).canNext;
-                              },
-                              builder: (context, state) {
-                                final configuration =
-                                    _subviewConfiguration(state);
-                                return ElevatedButton(
-                                  onPressed: configuration.canNext
-                                      ? () => context
-                                          .read<GenerateKeyBloc>()
-                                          .add(const NextStep())
-                                      : null,
-                                  child: const Text('Próximo'),
-                                );
-                              },
-                            ),
-                        ],
+                      BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+                        buildWhen: (previous, current) {
+                          return _subviewConfiguration(previous).canNext !=
+                              _subviewConfiguration(current).canNext;
+                        },
+                        builder: (context, state) {
+                          final configuration = _subviewConfiguration(state);
+                          return ActionButtons(
+                            showBackButton: configuration.hasPrevious,
+                            showNextButton: configuration.hasNext,
+                            enableNextButton: configuration.canNext,
+                            onPressedBack: () => context
+                                .read<GenerateKeyBloc>()
+                                .add(const PreviousStep()),
+                            onPressedNext: () => context
+                                .read<GenerateKeyBloc>()
+                                .add(const NextStep()),
+                          );
+                        },
                       ),
                     ],
                   ),
