@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
 
 class KeyGenerationSubview extends StatelessWidget {
   const KeyGenerationSubview({super.key});
@@ -9,7 +11,8 @@ class KeyGenerationSubview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () =>
+              context.read<GenerateKeyBloc>().add(const GenerateRSAKeyPair()),
           icon: const Icon(Icons.key),
           label: const Text('Gerar par de chaves RSA'),
           style: ElevatedButton.styleFrom(

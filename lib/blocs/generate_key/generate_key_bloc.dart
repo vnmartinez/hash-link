@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/core/annotations.dart';
+import 'package:hash_link/helpers/rsa_key_helper.dart';
 
 part 'generate_key_event.dart';
 part 'generate_key_state.dart';
@@ -38,7 +41,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
     });
 
     on<GenerateRSAKeyPair>((event, emit) {
-      // TODO (Gabriel Pagotto): Implement this event
+      print(RSAKeyHelper.generateRSAKeyPair().publicKey);
     });
 
     on<GenerateAESSymmetricKey>((event, emit) {
