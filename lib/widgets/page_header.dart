@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 import '../theme/app_colors.dart';
 import '../theme/app_radius.dart';
@@ -17,11 +16,13 @@ class PageHeader extends StatelessWidget {
       ('Criptografado', Icons.lock),
       ('Confiável', Icons.verified_user),
     ],
+    this.logoPath,
   });
 
   final String title;
   final String subtitle;
   final List<(String, IconData)> features;
+  final String? logoPath;
 
   @override
   Widget build(BuildContext context) {
@@ -48,45 +49,66 @@ class PageHeader extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: AppTypography.h2.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTypography.h2.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs / 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(AppRadius.circular),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    subtitle,
+                    style:
+                        AppTypography.bodyMedium.copyWith(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.xs,
+                  alignment: WrapAlignment.start,
+                  children: features
+                      .map((feature) =>
+                          _buildFeatureItem(feature.$2, feature.$1))
+                      .toList(),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: AppSpacing.xs),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.sm,
-              vertical: AppSpacing.xs / 2,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(AppRadius.circular),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.2),
-                width: 1,
+          if (logoPath != null) ...[
+            const SizedBox(width: AppSpacing.md),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+              child: Image.asset(
+                logoPath!,
+                height: 120,
+                width: 240,
+                fit: BoxFit.contain,
               ),
             ),
-            child: Text(
-              subtitle,
-              style: AppTypography.bodyMedium.copyWith(color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.xs,
-            alignment: WrapAlignment.start,
-            children: features
-                .map((feature) => _buildFeatureItem(feature.$2, feature.$1))
-                .toList(),
-          ),
+          ],
         ],
       ),
     );

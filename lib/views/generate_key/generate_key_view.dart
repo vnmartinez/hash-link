@@ -92,7 +92,9 @@ class GenerateKeyView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const PageHeader(),
+                      const PageHeader(
+                        logoPath: 'assets/images/logo.png',
+                      ),
                       const SizedBox(height: 48),
                       Expanded(child: configuration.widget),
                       const SizedBox(height: 48),

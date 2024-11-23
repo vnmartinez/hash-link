@@ -33,3 +33,7 @@ class SelectTeacherPublicKeyFile extends GenerateKeyEvent
 class SelectFileToSend extends GenerateKeyEvent with _$SelectFileToSend {
   const factory SelectFileToSend() = _SelectFileToSend;
 }
+
+class ClearSelectedFile extends GenerateKeyEvent {
+  ClearSelectedFile();
+}
