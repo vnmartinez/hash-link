@@ -26,7 +26,7 @@ class GenerateKeyView extends StatelessWidget {
           widget: const KeyGenerationSubview(),
           hasPrevious: false,
           hasNext: true,
-          canNext: state is KeyGeneration && state.isValid,
+          canNext: state.isValid,
         ),
       Preparation() => (
           step: 2,
