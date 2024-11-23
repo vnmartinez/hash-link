@@ -4,7 +4,11 @@ sealed class GenerateKeyState {}
 
 @blocState
 class KeyGeneration extends GenerateKeyState with _$KeyGeneration {
-  const factory KeyGeneration() = _KeyGeneration;
+  const factory KeyGeneration({
+    String? publicKey,
+    String? privateKey,
+    Uint8List? symmetricKey,
+  }) = _KeyGeneration;
 }
 
 @blocState
@@ -30,4 +34,11 @@ class Shipping extends GenerateKeyState with _$Shipping {
 @blocState
 class Decryption extends GenerateKeyState with _$Decryption {
   const factory Decryption() = _Decryption;
+}
+
+extension KeyGenerationExtension on KeyGeneration {
+  bool get isValid =>
+      publicKey != null && privateKey != null && symmetricKey != null;
+
+  bool get canGenerateSymmetricKey => publicKey != null && privateKey != null;
 }

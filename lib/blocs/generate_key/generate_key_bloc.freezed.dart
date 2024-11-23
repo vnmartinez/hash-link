@@ -315,13 +315,25 @@ abstract class _GenerateAESSymmetricKey implements GenerateAESSymmetricKey {
 }
 
 /// @nodoc
-mixin _$KeyGeneration {}
+mixin _$KeyGeneration {
+  String? get publicKey => throw _privateConstructorUsedError;
+  String? get privateKey => throw _privateConstructorUsedError;
+  Uint8List? get symmetricKey => throw _privateConstructorUsedError;
+
+  /// Create a copy of KeyGeneration
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $KeyGenerationCopyWith<KeyGeneration> get copyWith =>
+      throw _privateConstructorUsedError;
+}
 
 /// @nodoc
 abstract class $KeyGenerationCopyWith<$Res> {
   factory $KeyGenerationCopyWith(
           KeyGeneration value, $Res Function(KeyGeneration) then) =
       _$KeyGenerationCopyWithImpl<$Res, KeyGeneration>;
+  @useResult
+  $Res call({String? publicKey, String? privateKey, Uint8List? symmetricKey});
 }
 
 /// @nodoc
@@ -336,13 +348,39 @@ class _$KeyGenerationCopyWithImpl<$Res, $Val extends KeyGeneration>
 
   /// Create a copy of KeyGeneration
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = freezed,
+    Object? privateKey = freezed,
+    Object? symmetricKey = freezed,
+  }) {
+    return _then(_value.copyWith(
+      publicKey: freezed == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      privateKey: freezed == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      symmetricKey: freezed == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$KeyGenerationImplCopyWith<$Res> {
+abstract class _$$KeyGenerationImplCopyWith<$Res>
+    implements $KeyGenerationCopyWith<$Res> {
   factory _$$KeyGenerationImplCopyWith(
           _$KeyGenerationImpl value, $Res Function(_$KeyGenerationImpl) then) =
       __$$KeyGenerationImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? publicKey, String? privateKey, Uint8List? symmetricKey});
 }
 
 /// @nodoc
@@ -355,6 +393,28 @@ class __$$KeyGenerationImplCopyWithImpl<$Res>
 
   /// Create a copy of KeyGeneration
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = freezed,
+    Object? privateKey = freezed,
+    Object? symmetricKey = freezed,
+  }) {
+    return _then(_$KeyGenerationImpl(
+      publicKey: freezed == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      privateKey: freezed == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      symmetricKey: freezed == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
+    ));
+  }
 }
 
 /// @nodoc
@@ -362,31 +422,76 @@ class __$$KeyGenerationImplCopyWithImpl<$Res>
 class _$KeyGenerationImpl
     with DiagnosticableTreeMixin
     implements _KeyGeneration {
-  const _$KeyGenerationImpl();
+  const _$KeyGenerationImpl(
+      {this.publicKey, this.privateKey, this.symmetricKey});
+
+  @override
+  final String? publicKey;
+  @override
+  final String? privateKey;
+  @override
+  final Uint8List? symmetricKey;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'KeyGeneration()';
+    return 'KeyGeneration(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'KeyGeneration'));
+    properties
+      ..add(DiagnosticsProperty('type', 'KeyGeneration'))
+      ..add(DiagnosticsProperty('publicKey', publicKey))
+      ..add(DiagnosticsProperty('privateKey', privateKey))
+      ..add(DiagnosticsProperty('symmetricKey', symmetricKey));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$KeyGenerationImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$KeyGenerationImpl &&
+            (identical(other.publicKey, publicKey) ||
+                other.publicKey == publicKey) &&
+            (identical(other.privateKey, privateKey) ||
+                other.privateKey == privateKey) &&
+            const DeepCollectionEquality()
+                .equals(other.symmetricKey, symmetricKey));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, publicKey, privateKey,
+      const DeepCollectionEquality().hash(symmetricKey));
+
+  /// Create a copy of KeyGeneration
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$KeyGenerationImplCopyWith<_$KeyGenerationImpl> get copyWith =>
+      __$$KeyGenerationImplCopyWithImpl<_$KeyGenerationImpl>(this, _$identity);
 }
 
 abstract class _KeyGeneration implements KeyGeneration {
-  const factory _KeyGeneration() = _$KeyGenerationImpl;
+  const factory _KeyGeneration(
+      {final String? publicKey,
+      final String? privateKey,
+      final Uint8List? symmetricKey}) = _$KeyGenerationImpl;
+
+  @override
+  String? get publicKey;
+  @override
+  String? get privateKey;
+  @override
+  Uint8List? get symmetricKey;
+
+  /// Create a copy of KeyGeneration
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$KeyGenerationImplCopyWith<_$KeyGenerationImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

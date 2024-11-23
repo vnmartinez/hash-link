@@ -18,6 +18,7 @@ class GenerateKeyView extends StatelessWidget {
     Widget widget,
     bool hasPrevious,
     bool hasNext,
+    bool canNext,
   }) _subviewConfiguration(GenerateKeyState state) {
     return switch (state) {
       KeyGeneration() => (
@@ -25,36 +26,42 @@ class GenerateKeyView extends StatelessWidget {
           widget: const KeyGenerationSubview(),
           hasPrevious: false,
           hasNext: true,
+          canNext: state is KeyGeneration && state.isValid,
         ),
       Preparation() => (
           step: 2,
           widget: const PreparationSubview(),
           hasPrevious: true,
           hasNext: true,
+          canNext: true,
         ),
       Signature() => (
           step: 3,
           widget: const SignatureSubview(),
           hasPrevious: true,
           hasNext: true,
+          canNext: true,
         ),
       Protection() => (
           step: 4,
           widget: const ProtectionSubview(),
           hasPrevious: true,
           hasNext: true,
+          canNext: true,
         ),
       Shipping() => (
           step: 5,
           widget: const ShippingSubview(),
           hasPrevious: true,
           hasNext: true,
+          canNext: true,
         ),
       Decryption() => (
           step: 6,
           widget: const DecryptionSubview(),
           hasPrevious: true,
           hasNext: false,
+          canNext: true,
         ),
     };
   }
@@ -99,11 +106,24 @@ class GenerateKeyView extends StatelessWidget {
                           else
                             Container(),
                           if (configuration.hasNext)
-                            ElevatedButton(
-                              onPressed: () => context
-                                  .read<GenerateKeyBloc>()
-                                  .add(const NextStep()),
-                              child: const Text('Próximo'),
+                            BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+                              buildWhen: (previous, current) {
+                                return _subviewConfiguration(previous)
+                                        .canNext !=
+                                    _subviewConfiguration(current).canNext;
+                              },
+                              builder: (context, state) {
+                                final configuration =
+                                    _subviewConfiguration(state);
+                                return ElevatedButton(
+                                  onPressed: configuration.canNext
+                                      ? () => context
+                                          .read<GenerateKeyBloc>()
+                                          .add(const NextStep())
+                                      : null,
+                                  child: const Text('Próximo'),
+                                );
+                              },
                             ),
                         ],
                       ),

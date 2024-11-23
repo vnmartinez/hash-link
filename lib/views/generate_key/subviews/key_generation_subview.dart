@@ -7,8 +7,7 @@ class KeyGenerationSubview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: [
         ElevatedButton.icon(
           onPressed: () =>
@@ -22,17 +21,49 @@ class KeyGenerationSubview extends StatelessWidget {
             ),
           ),
         ),
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            if (state is! KeyGeneration) return Container();
+            return Column(
+              children: [
+                if (state.publicKey != null) Text(state.publicKey!),
+                if (state.privateKey != null) Text(state.privateKey!),
+              ],
+            );
+          },
+        ),
         const SizedBox(height: 16),
-        ElevatedButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.lock),
-          label: const Text('Gerar chave simétrica AES'),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 16,
-            ),
-          ),
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            final canGenerate =
+                state is KeyGeneration && state.canGenerateSymmetricKey;
+            return ElevatedButton.icon(
+              onPressed: canGenerate
+                  ? () => context
+                      .read<GenerateKeyBloc>()
+                      .add(const GenerateAESSymmetricKey())
+                  : null,
+              icon: const Icon(Icons.lock),
+              label: const Text('Gerar chave simétrica AES'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
+              ),
+            );
+          },
+        ),
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            if (state is! KeyGeneration) return Container();
+            return Column(
+              children: [
+                if (state.symmetricKey != null)
+                  Text(state.symmetricKey!.join(' ')),
+              ],
+            );
+          },
         ),
       ],
     );
