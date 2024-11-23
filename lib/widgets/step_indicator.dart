@@ -79,13 +79,11 @@ class _StepIndicatorState extends State<StepIndicator> {
             color: AppColors.primary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppRadius.pill),
           ),
-          child: Expanded(
-            child: Text(
-              '${widget.currentStep}/${widget.steps.length}',
-              style: AppTypography.bodySmall.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
+          child: Text(
+            '${widget.currentStep}/${widget.steps.length}',
+            style: AppTypography.bodySmall.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

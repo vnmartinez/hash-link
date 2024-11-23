@@ -71,8 +71,10 @@ class GenerateKeyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
       buildWhen: (previous, current) {
-        return _subviewConfiguration(previous).step !=
-            _subviewConfiguration(current).step;
+        final prevConfig = _subviewConfiguration(previous);
+        final currentConfig = _subviewConfiguration(current);
+        return prevConfig.step != currentConfig.step ||
+            prevConfig.hasPrevious != currentConfig.hasPrevious;
       },
       builder: (context, state) {
         final configuration = _subviewConfiguration(state);
@@ -96,21 +98,24 @@ class GenerateKeyView extends StatelessWidget {
                       const SizedBox(height: 48),
                       BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
                         buildWhen: (previous, current) {
-                          return _subviewConfiguration(previous).canNext !=
-                              _subviewConfiguration(current).canNext;
+                          final prevConfig = _subviewConfiguration(previous);
+                          final currentConfig = _subviewConfiguration(current);
+                          return prevConfig.canNext != currentConfig.canNext ||
+                              prevConfig.hasPrevious !=
+                                  currentConfig.hasPrevious;
                         },
                         builder: (context, state) {
                           final configuration = _subviewConfiguration(state);
                           return ActionButtons(
-                            showBackButton: configuration.hasPrevious,
-                            showNextButton: configuration.hasNext,
-                            enableNextButton: configuration.canNext,
                             onPressedBack: () => context
                                 .read<GenerateKeyBloc>()
                                 .add(const PreviousStep()),
                             onPressedNext: () => context
                                 .read<GenerateKeyBloc>()
                                 .add(const NextStep()),
+                            showBackButton: configuration.hasPrevious,
+                            showNextButton: configuration.hasNext,
+                            enableNextButton: configuration.canNext,
                           );
                         },
                       ),
