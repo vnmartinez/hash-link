@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>TSMSuppressIMKClient</key>
+	<true/>
+	<key>InputMethodConnectionSupported</key>
+	<true/>
 </dict>
 </plist>
