@@ -89,15 +89,14 @@ class _PreparacaoState extends State<Preparacao> {
                         child: const Text('Voltar'),
                       ),
                       ElevatedButton(
-                        onPressed: arquivoEnvio != null && chavePublica != null
-                            ? () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Assinatura()),
-                                );
-                              }
-                            : null,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Assinatura(),
+                            ),
+                          );
+                        },
                         child: const Text('Próximo'),
                       ),
                     ],

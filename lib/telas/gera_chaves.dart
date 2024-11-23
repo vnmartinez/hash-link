@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/step_indicator.dart';
 import '../widgets/page_header.dart';
+import '../telas/preparacao.dart';
 
 class GeraChaves extends StatefulWidget {
   const GeraChaves({super.key});
@@ -54,7 +55,14 @@ class _GeraChavesState extends State<GeraChaves> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Preparacao(),
+                          ),
+                        );
+                      },
                       child: const Text('Próximo'),
                     ),
                   ),

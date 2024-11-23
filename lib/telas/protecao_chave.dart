@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/step_indicator.dart';
 import '../widgets/page_header.dart';
-import 'protecao_chave.dart';
+import '../telas/envio.dart';
 
-class Assinatura extends StatelessWidget {
-  const Assinatura({super.key});
+class ProtecaoChave extends StatelessWidget {
+  const ProtecaoChave({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class Assinatura extends StatelessWidget {
         children: [
           SizedBox(
             width: 250,
-            child: StepIndicator(currentStep: 3),
+            child: StepIndicator(currentStep: 4),
           ),
           Expanded(
             child: Padding(
@@ -24,7 +24,7 @@ class Assinatura extends StatelessWidget {
                   const PageHeader(),
                   const SizedBox(height: 48),
                   const Text(
-                    'Processo de Assinatura e Cifragem',
+                    'Proteção da chave simétrica',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -32,11 +32,37 @@ class Assinatura extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Nesta etapa, o arquivo será assinado digitalmente e depois cifrado para garantir autenticidade e confiabilidade.',
+                    'Nesta etapa, a chave simétrica AES é protegida usando a chave pública do professor, garantindo que apenas ele possa recupera-la posteriormente.',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
                     ),
+                  ),
+                  const SizedBox(height: 32),
+                  Center(
+                    child: ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.shield),
+                      label: const Text('Proteger chave simétrica'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildStepItem(Icons.key, 'Chave AES', true),
+                      _buildArrow(),
+                      _buildStepItem(Icons.public,
+                          'Chave pública RSA do professor', false),
+                      _buildArrow(),
+                      _buildStepItem(Icons.lock, 'Chave AES protegida', false),
+                    ],
                   ),
                   const SizedBox(height: 32),
                   Container(
@@ -57,7 +83,7 @@ class Assinatura extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          'O processo ocorre em duas etapas:',
+                          'Como Funciona?',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -70,32 +96,23 @@ class Assinatura extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '• Criação da assinatura digital usando sua chave privada RSA',
+                                '• A chave AES é cifrada com a chave pública RSA do professor',
                                 style: TextStyle(fontSize: 14),
                               ),
                               SizedBox(height: 8),
                               Text(
-                                '• Cifragem do arquivo usando a chave simétrica AES',
+                                '• Apenas o professor, com sua chave privada, poderá descriptografá-la',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                '• Este processo garante o compartilhamento seguro da chave',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.play_arrow),
-                      label: const Text('Iniciar Processo'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                      ),
                     ),
                   ),
                   const Spacer(),
@@ -111,7 +128,7 @@ class Assinatura extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProtecaoChave(),
+                              builder: (context) => const Envio(),
                             ),
                           );
                         },
@@ -124,6 +141,46 @@ class Assinatura extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStepItem(IconData icon, String label, bool isActive) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isActive ? Colors.blue.withOpacity(0.1) : Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isActive ? Colors.blue : Colors.grey,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            color: isActive ? Colors.blue : Colors.grey,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive ? Colors.blue : Colors.grey,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildArrow() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Icon(
+        Icons.arrow_forward,
+        color: Colors.grey,
       ),
     );
   }

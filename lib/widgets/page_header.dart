@@ -6,10 +6,11 @@ class PageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         Text(
           'Sistema de comunicação segura',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -18,6 +19,7 @@ class PageHeader extends StatelessWidget {
         SizedBox(height: 8),
         Text(
           'Assinatura digital e criptografia',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 18,
             color: Colors.grey,
