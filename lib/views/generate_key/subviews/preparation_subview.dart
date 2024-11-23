@@ -1,42 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:crypto/crypto.dart' as crypto;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import 'package:hash_link/helpers/file_reader_helper.dart';
 
-class PreparationSubview extends StatefulWidget {
+class PreparationSubview extends StatelessWidget {
   const PreparationSubview({super.key});
-
-  @override
-  State<PreparationSubview> createState() => _PreparationSubviewState();
-}
-
-class _PreparationSubviewState extends State<PreparationSubview> {
-  File? chavePublica;
-  File? arquivoEnvio;
-  String? hashArquivo;
-
-  Future<void> selecionarChavePublica() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      setState(() {
-        chavePublica = File(result.files.single.path!);
-      });
-    }
-  }
-
-  Future<void> selecionarArquivo() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      final file = File(result.files.single.path!);
-      final bytes = await file.readAsBytes();
-      final hashFinal = crypto.sha256.convert(bytes).toString();
-
-      setState(() {
-        arquivoEnvio = file;
-        hashArquivo = hashFinal;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +16,55 @@ class _PreparationSubviewState extends State<PreparationSubview> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 24),
-        _buildSecao(
-          'Importar chave pública do professor',
-          chavePublica?.path.split('/').last ?? 'Nenhum arquivo selecionado',
-          selecionarChavePublica,
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            final file =
+                state is Preparation ? state.teacherPublicKeyFile : null;
+            final selecting =
+                state is Preparation && state.selectingTeacherPublicKeyFile;
+
+            return _buildSecao(
+              'Importar chave pública do professor',
+              file?.name ?? 'Nenhum arquivo selecionado',
+              selecting
+                  ? null
+                  : () => context
+                      .read<GenerateKeyBloc>()
+                      .add(const SelectTeacherPublicKeyFile()),
+            );
+          },
         ),
         const SizedBox(height: 24),
-        _buildSecao(
-          'Selecionar arquivo para envio',
-          arquivoEnvio?.path.split('/').last ?? 'Nenhum arquivo selecionado',
-          selecionarArquivo,
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            final file = state is Preparation ? state.fileToSend : null;
+            final selecting = state is Preparation && state.selectingFileToSend;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSecao(
+                  'Selecionar arquivo para envio',
+                  file?.name ?? 'Nenhum arquivo selecionado',
+                  selecting
+                      ? null
+                      : () => context
+                          .read<GenerateKeyBloc>()
+                          .add(const SelectFileToSend()),
+                ),
+                if (file != null) ...[
+                  const SizedBox(height: 24),
+                  _buildInformacoesArquivo(file),
+                ],
+              ],
+            );
+          },
         ),
-        if (arquivoEnvio != null) ...[
-          const SizedBox(height: 24),
-          _buildInformacoesArquivo(),
-        ],
       ],
     );
   }
 
   Widget _buildSecao(
-      String titulo, String nomeArquivo, VoidCallback onPressedEscolher) {
+      String titulo, String nomeArquivo, VoidCallback? onPressedEscolher) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -97,22 +93,19 @@ class _PreparationSubviewState extends State<PreparationSubview> {
     );
   }
 
-  Widget _buildInformacoesArquivo() {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Informações do arquivo',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(height: 8),
-          Text('Nome: ${arquivoEnvio!.path.split('/').last}'),
-          Text(
-              'Tamanho: ${(arquivoEnvio!.lengthSync() / 1024).toStringAsFixed(2)} KB'),
-          Text('Hash SHA-256: $hashArquivo'),
-        ],
-      ),
+  Widget _buildInformacoesArquivo(FileReader file) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Informações do arquivo',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 8),
+        Text('Nome: ${file.name}'),
+        Text('Tamanho: ${file.size}'),
+        Text('Hash SHA-256: ${file.hash}'),
+      ],
     );
   }
 }

@@ -1,7 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/core/annotations.dart';
 import 'package:hash_link/helpers/aes_key_helper.dart';
+import 'package:hash_link/helpers/file_reader_helper.dart';
 import 'package:hash_link/helpers/rsa_key_helper.dart';
 
 part 'generate_key_event.dart';
@@ -10,14 +12,23 @@ part 'generate_key_state.dart';
 part 'generate_key_bloc.freezed.dart';
 
 class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
+  final FilePicker _filePicker;
+
   final _states = <GenerateKeyState>[];
 
-  GenerateKeyBloc() : super(const KeyGeneration()) {
+  GenerateKeyBloc({required FilePicker filePicker})
+      : _filePicker = filePicker,
+        super(const KeyGeneration()) {
     on<NextStep>((event, emit) {
+      final state = this.state;
       _states.add(state);
 
-      if (state is KeyGeneration) {
-        emit(const Preparation());
+      if (state is KeyGeneration && state.isValid) {
+        emit(Preparation(
+          publicKey: state.publicKey!,
+          privateKey: state.privateKey!,
+          symmetricKey: state.symmetricKey!,
+        ));
         return;
       } else if (state is Preparation) {
         emit(const Signature());
@@ -58,6 +69,37 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
           final aesKey = AESKeyHelper.generateAESKey();
           emit(state.copyWith(symmetricKey: aesKey));
         }
+      }
+    });
+
+    on<SelectTeacherPublicKeyFile>((event, emit) async {
+      var state = this.state;
+      if (state is Preparation) {
+        state = state.copyWith(selectingTeacherPublicKeyFile: true);
+        emit(state);
+
+        final pickeFiles = await _filePicker.pickFiles(allowCompression: false);
+        state = state.copyWith(selectingTeacherPublicKeyFile: false);
+        emit(state);
+        if (pickeFiles == null) return;
+
+        final file = FileReader.fromPlatformFile(pickeFiles.files.single);
+        emit(state.copyWith(teacherPublicKeyFile: file));
+      }
+    });
+
+    on<SelectFileToSend>((event, emit) async {
+      var state = this.state;
+      if (state is Preparation) {
+        state = state.copyWith(selectingFileToSend: true);
+        emit(state);
+        final pickeFiles = await _filePicker.pickFiles(allowCompression: false);
+        state = state.copyWith(selectingFileToSend: false);
+        emit(state);
+        if (pickeFiles == null) return;
+
+        final file = FileReader.fromPlatformFile(pickeFiles.files.single);
+        emit(state.copyWith(fileToSend: file));
       }
     });
   }
