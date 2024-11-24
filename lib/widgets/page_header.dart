@@ -12,19 +12,48 @@ class PageHeader extends StatelessWidget {
     this.title = 'Segurança de Sistemas',
     this.subtitle = 'Criptografia e Assinatura Digital',
     this.features = const [
-      ('Chaves RSA', Icons.key),
-      ('Chave AES', Icons.enhanced_encryption),
-      ('Assinatura Digital', Icons.verified_user),
-      ('Hash', Icons.fingerprint),
-      ('Cifragem', Icons.lock),
-      ('Verificação', Icons.security),
+      (
+        'Chaves RSA',
+        Icons.key,
+        'Sistema de criptografia assimétrica usando par de chaves pública e privada'
+      ),
+      (
+        'Chave AES',
+        Icons.enhanced_encryption,
+        'Algoritmo de criptografia simétrica para dados sensíveis'
+      ),
+      (
+        'Assinatura Digital',
+        Icons.verified_user,
+        'Mecanismo que garante autenticidade e integridade dos documentos'
+      ),
+      (
+        'Hash',
+        Icons.fingerprint,
+        'Função que gera uma impressão digital única dos dados'
+      ),
+      (
+        'Cifragem',
+        Icons.lock,
+        'Processo de transformar dados em formato ilegível'
+      ),
+      (
+        'Verificação',
+        Icons.security,
+        'Validação da autenticidade e integridade dos dados'
+      ),
+      (
+        'Criptografia',
+        Icons.privacy_tip,
+        'Técnicas para proteger a confidencialidade das informações'
+      ),
     ],
     this.logoPath,
   });
 
   final String title;
   final String subtitle;
-  final List<(String, IconData)> features;
+  final List<(String, IconData, String)> features;
   final String? logoPath;
 
   @override
@@ -94,7 +123,7 @@ class PageHeader extends StatelessWidget {
                   alignment: WrapAlignment.start,
                   children: features
                       .map((feature) =>
-                          _buildFeatureItem(feature.$2, feature.$1))
+                          _buildFeatureItem(feature.$2, feature.$1, feature.$3))
                       .toList(),
                 ),
               ],
@@ -117,33 +146,36 @@ class PageHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureItem(IconData icon, String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.xs,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
+  Widget _buildFeatureItem(IconData icon, String text, [String? tooltip]) {
+    return Tooltip(
+      message: tooltip ?? text,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.xs,
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white, size: 20),
-          const SizedBox(width: AppSpacing.xs),
-          Text(
-            text,
-            style: AppTypography.bodyMedium.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 1,
           ),
-        ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: AppSpacing.xs),
+            Text(
+              text,
+              style: AppTypography.bodyMedium.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
