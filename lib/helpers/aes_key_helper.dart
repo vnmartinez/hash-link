@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:pointycastle/export.dart' as pc;
 
@@ -7,29 +6,24 @@ class AESKeyHelper {
     final secureRandom = pc.FortunaRandom();
 
     final seedSource = Uint8List.fromList(
-        List.generate(32, (_) => DateTime.now().microsecond % 256));
+      List.generate(32, (_) => DateTime.now().microsecond % 256),
+    );
     secureRandom.seed(pc.KeyParameter(seedSource));
 
     return secureRandom.nextBytes(32);
   }
 
-  static String keyToBase64(Uint8List key) {
-    return base64.encode(key);
-  }
-
-  static Uint8List base64ToKey(String base64Key) {
-    return Uint8List.fromList(base64.decode(base64Key));
-  }
-
   static Uint8List encryptWithAES(Uint8List data, Uint8List aesKey) {
     final iv = Uint8List(16);
-    final secureRandom = pc.FortunaRandom();
-    secureRandom.seed(
-        pc.KeyParameter(Uint8List.fromList(List.generate(32, (i) => i + 1))));
-    secureRandom.nextBytes(iv.length);
 
+    pc.FortunaRandom()
+      ..seed(
+          pc.KeyParameter(Uint8List.fromList(List.generate(32, (i) => i + 1))))
+      ..nextBytes(16);
+
+    final parameters = pc.ParametersWithIV(pc.KeyParameter(aesKey), iv);
     final cipher = pc.PaddedBlockCipher('AES/CBC/PKCS7')
-      ..init(true, pc.ParametersWithIV(pc.KeyParameter(aesKey), iv));
+      ..init(true, pc.PaddedBlockCipherParameters(parameters, null));
 
     final encryptedData = cipher.process(data);
 

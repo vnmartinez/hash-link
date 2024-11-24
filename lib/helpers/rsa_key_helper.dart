@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:crypto/crypto.dart' as crypto;
 
 import 'package:pointycastle/asn1/asn1_parser.dart' as asn1_parser;
 import 'package:pointycastle/asn1/primitives/asn1_integer.dart' as asn1_integer;
@@ -8,10 +9,11 @@ import 'package:pointycastle/asn1/primitives/asn1_sequence.dart'
 import 'package:pointycastle/export.dart' as pc;
 
 class RSAKeyHelper {
-  static ({
-    String publicKey,
-    String privateKey,
-  }) generateRSAKeyPair() {
+  static Future<
+      ({
+        String publicKey,
+        String privateKey,
+      })> generateRSAKeyPair() async {
     final keyParams =
         pc.RSAKeyGeneratorParameters(BigInt.from(65537), 2048, 12);
 
@@ -99,8 +101,6 @@ ${base64.encode(_encodePrivateKey(privateKey))}
         .replaceAll('\n', '')
         .replaceAll('\r', '');
 
-    
-
     final keyBytes = base64.decode(rows);
 
     final asn1Parser = asn1_parser.ASN1Parser(keyBytes);
@@ -125,5 +125,17 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     final q = (topLevelSeq.elements![4] as asn1_integer.ASN1Integer).integer;
 
     return pc.RSAPrivateKey(modulus!, privateExponent!, p!, q!);
+  }
+
+  static Uint8List signWithPrivateKey(
+      Uint8List data, pc.RSAPrivateKey privateKey) {
+    final sha256Digest = crypto.sha256.convert(data);
+    final signer = pc.Signer('SHA-256/RSA')
+      ..init(true, pc.PrivateKeyParameter<pc.RSAPrivateKey>(privateKey));
+
+    final signature =
+        signer.generateSignature(Uint8List.fromList(sha256Digest.bytes))
+            as pc.RSASignature;
+    return signature.bytes;
   }
 }

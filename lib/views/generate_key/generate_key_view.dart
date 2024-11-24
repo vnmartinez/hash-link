@@ -41,7 +41,7 @@ class GenerateKeyView extends StatelessWidget {
           widget: const SignatureSubview(),
           hasPrevious: true,
           hasNext: true,
-          canNext: true,
+          canNext: state.isValid,
         ),
       Protection() => (
           step: 4,

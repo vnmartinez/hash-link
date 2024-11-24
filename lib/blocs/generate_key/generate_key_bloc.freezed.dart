@@ -1053,6 +1053,8 @@ mixin _$Signature {
   String get symmetricKey => throw _privateConstructorUsedError;
   FileReader get fileToSend => throw _privateConstructorUsedError;
   FileReader get teacherPublicKeyFile => throw _privateConstructorUsedError;
+  String? get fileSignature => throw _privateConstructorUsedError;
+  String? get fileEncryption => throw _privateConstructorUsedError;
 
   /// Create a copy of Signature
   /// with the given fields replaced by the non-null parameter values.
@@ -1071,7 +1073,9 @@ abstract class $SignatureCopyWith<$Res> {
       String privateKey,
       String symmetricKey,
       FileReader fileToSend,
-      FileReader teacherPublicKeyFile});
+      FileReader teacherPublicKeyFile,
+      String? fileSignature,
+      String? fileEncryption});
 
   $FileReaderCopyWith<$Res> get fileToSend;
   $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
@@ -1097,6 +1101,8 @@ class _$SignatureCopyWithImpl<$Res, $Val extends Signature>
     Object? symmetricKey = null,
     Object? fileToSend = null,
     Object? teacherPublicKeyFile = null,
+    Object? fileSignature = freezed,
+    Object? fileEncryption = freezed,
   }) {
     return _then(_value.copyWith(
       publicKey: null == publicKey
@@ -1119,6 +1125,14 @@ class _$SignatureCopyWithImpl<$Res, $Val extends Signature>
           ? _value.teacherPublicKeyFile
           : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
               as FileReader,
+      fileSignature: freezed == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileEncryption: freezed == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -1156,7 +1170,9 @@ abstract class _$$SignatureImplCopyWith<$Res>
       String privateKey,
       String symmetricKey,
       FileReader fileToSend,
-      FileReader teacherPublicKeyFile});
+      FileReader teacherPublicKeyFile,
+      String? fileSignature,
+      String? fileEncryption});
 
   @override
   $FileReaderCopyWith<$Res> get fileToSend;
@@ -1182,6 +1198,8 @@ class __$$SignatureImplCopyWithImpl<$Res>
     Object? symmetricKey = null,
     Object? fileToSend = null,
     Object? teacherPublicKeyFile = null,
+    Object? fileSignature = freezed,
+    Object? fileEncryption = freezed,
   }) {
     return _then(_$SignatureImpl(
       publicKey: null == publicKey
@@ -1204,6 +1222,14 @@ class __$$SignatureImplCopyWithImpl<$Res>
           ? _value.teacherPublicKeyFile
           : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
               as FileReader,
+      fileSignature: freezed == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileEncryption: freezed == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1216,7 +1242,9 @@ class _$SignatureImpl with DiagnosticableTreeMixin implements _Signature {
       required this.privateKey,
       required this.symmetricKey,
       required this.fileToSend,
-      required this.teacherPublicKeyFile});
+      required this.teacherPublicKeyFile,
+      this.fileSignature,
+      this.fileEncryption});
 
   @override
   final String publicKey;
@@ -1228,10 +1256,14 @@ class _$SignatureImpl with DiagnosticableTreeMixin implements _Signature {
   final FileReader fileToSend;
   @override
   final FileReader teacherPublicKeyFile;
+  @override
+  final String? fileSignature;
+  @override
+  final String? fileEncryption;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Signature(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile)';
+    return 'Signature(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileSignature: $fileSignature, fileEncryption: $fileEncryption)';
   }
 
   @override
@@ -1243,7 +1275,9 @@ class _$SignatureImpl with DiagnosticableTreeMixin implements _Signature {
       ..add(DiagnosticsProperty('privateKey', privateKey))
       ..add(DiagnosticsProperty('symmetricKey', symmetricKey))
       ..add(DiagnosticsProperty('fileToSend', fileToSend))
-      ..add(DiagnosticsProperty('teacherPublicKeyFile', teacherPublicKeyFile));
+      ..add(DiagnosticsProperty('teacherPublicKeyFile', teacherPublicKeyFile))
+      ..add(DiagnosticsProperty('fileSignature', fileSignature))
+      ..add(DiagnosticsProperty('fileEncryption', fileEncryption));
   }
 
   @override
@@ -1260,12 +1294,23 @@ class _$SignatureImpl with DiagnosticableTreeMixin implements _Signature {
             (identical(other.fileToSend, fileToSend) ||
                 other.fileToSend == fileToSend) &&
             (identical(other.teacherPublicKeyFile, teacherPublicKeyFile) ||
-                other.teacherPublicKeyFile == teacherPublicKeyFile));
+                other.teacherPublicKeyFile == teacherPublicKeyFile) &&
+            (identical(other.fileSignature, fileSignature) ||
+                other.fileSignature == fileSignature) &&
+            (identical(other.fileEncryption, fileEncryption) ||
+                other.fileEncryption == fileEncryption));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, publicKey, privateKey,
-      symmetricKey, fileToSend, teacherPublicKeyFile);
+  int get hashCode => Object.hash(
+      runtimeType,
+      publicKey,
+      privateKey,
+      symmetricKey,
+      fileToSend,
+      teacherPublicKeyFile,
+      fileSignature,
+      fileEncryption);
 
   /// Create a copy of Signature
   /// with the given fields replaced by the non-null parameter values.
@@ -1282,7 +1327,9 @@ abstract class _Signature implements Signature {
       required final String privateKey,
       required final String symmetricKey,
       required final FileReader fileToSend,
-      required final FileReader teacherPublicKeyFile}) = _$SignatureImpl;
+      required final FileReader teacherPublicKeyFile,
+      final String? fileSignature,
+      final String? fileEncryption}) = _$SignatureImpl;
 
   @override
   String get publicKey;
@@ -1294,6 +1341,10 @@ abstract class _Signature implements Signature {
   FileReader get fileToSend;
   @override
   FileReader get teacherPublicKeyFile;
+  @override
+  String? get fileSignature;
+  @override
+  String? get fileEncryption;
 
   /// Create a copy of Signature
   /// with the given fields replaced by the non-null parameter values.

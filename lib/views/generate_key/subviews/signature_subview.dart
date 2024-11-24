@@ -8,8 +8,7 @@ class SignatureSubview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: [
         const Text(
           'Processo de Assinatura e Cifragem',
@@ -86,6 +85,35 @@ class SignatureSubview extends StatelessWidget {
               ),
             ),
           ),
+        ),
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            if (state is! Signature) return Container();
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (state.fileSignature != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Assinatura'),
+                        Text(state.fileSignature!),
+                      ],
+                    ),
+                  ),
+                const SizedBox(width: 30),
+                if (state.fileSignature != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Cifragem'),
+                        Text(state.fileEncryption!),
+                      ],
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ],
     );
