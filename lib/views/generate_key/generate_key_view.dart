@@ -10,6 +10,7 @@ import 'package:hash_link/views/generate_key/subviews/signature_subview.dart';
 import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/widgets/step_indicator.dart';
 import 'package:hash_link/widgets/action_buttons.dart';
+import '../../theme/app_spacing.dart';
 
 class GenerateKeyView extends StatelessWidget {
   const GenerateKeyView({super.key});
@@ -86,43 +87,71 @@ class GenerateKeyView extends StatelessWidget {
                 child: StepIndicator(currentStep: configuration.step),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const PageHeader(
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppSpacing.lg,
+                        right: AppSpacing.lg,
+                        left: AppSpacing.lg,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 185),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(child: configuration.widget),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 24.0),
+                                  child: BlocBuilder<GenerateKeyBloc,
+                                      GenerateKeyState>(
+                                    buildWhen: (previous, current) {
+                                      final prevConfig =
+                                          _subviewConfiguration(previous);
+                                      final currentConfig =
+                                          _subviewConfiguration(current);
+                                      return prevConfig.canNext !=
+                                              currentConfig.canNext ||
+                                          prevConfig.hasPrevious !=
+                                              currentConfig.hasPrevious;
+                                    },
+                                    builder: (context, state) {
+                                      final configuration =
+                                          _subviewConfiguration(state);
+                                      return ActionButtons(
+                                        onPressedBack: () => context
+                                            .read<GenerateKeyBloc>()
+                                            .add(const PreviousStep()),
+                                        onPressedNext: () => context
+                                            .read<GenerateKeyBloc>()
+                                            .add(const NextStep()),
+                                        showBackButton:
+                                            configuration.hasPrevious,
+                                        showNextButton: configuration.hasNext,
+                                        enableNextButton: configuration.canNext,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Positioned(
+                      top: AppSpacing.lg,
+                      left: AppSpacing.lg,
+                      right: AppSpacing.lg,
+                      child: PageHeader(
                         logoPath: 'assets/images/logo.png',
                       ),
-                      const SizedBox(height: 48),
-                      Expanded(child: configuration.widget),
-                      const SizedBox(height: 48),
-                      BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
-                        buildWhen: (previous, current) {
-                          final prevConfig = _subviewConfiguration(previous);
-                          final currentConfig = _subviewConfiguration(current);
-                          return prevConfig.canNext != currentConfig.canNext ||
-                              prevConfig.hasPrevious !=
-                                  currentConfig.hasPrevious;
-                        },
-                        builder: (context, state) {
-                          final configuration = _subviewConfiguration(state);
-                          return ActionButtons(
-                            onPressedBack: () => context
-                                .read<GenerateKeyBloc>()
-                                .add(const PreviousStep()),
-                            onPressedNext: () => context
-                                .read<GenerateKeyBloc>()
-                                .add(const NextStep()),
-                            showBackButton: configuration.hasPrevious,
-                            showNextButton: configuration.hasNext,
-                            enableNextButton: configuration.canNext,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

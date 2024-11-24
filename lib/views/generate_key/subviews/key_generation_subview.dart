@@ -158,8 +158,11 @@ class KeyGenerationSubview extends StatelessWidget {
         final isMediumScreen = constraints.maxWidth < 900;
 
         return ListView(
-          padding:
-              EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+          padding: EdgeInsets.only(
+            left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+          ),
           children: [
             SectionTitle(
               title: 'Geração de Chaves',
