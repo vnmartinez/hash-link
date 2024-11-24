@@ -9,12 +9,15 @@ import '../theme/app_typography.dart';
 class PageHeader extends StatelessWidget {
   const PageHeader({
     super.key,
-    this.title = 'Sistema de comunicação segura',
-    this.subtitle = 'Assinatura digital e criptografia',
+    this.title = 'Segurança de Sistemas',
+    this.subtitle = 'Criptografia e Assinatura Digital',
     this.features = const [
-      ('Seguro', Icons.security),
-      ('Criptografado', Icons.lock),
-      ('Confiável', Icons.verified_user),
+      ('Chaves RSA', Icons.key),
+      ('Chave AES', Icons.enhanced_encryption),
+      ('Assinatura Digital', Icons.verified_user),
+      ('Hash', Icons.fingerprint),
+      ('Cifragem', Icons.lock),
+      ('Verificação', Icons.security),
     ],
     this.logoPath,
   });

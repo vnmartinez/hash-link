@@ -7,8 +7,136 @@ import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
 import 'package:hash_link/helpers/key_download_helper.dart';
 import '../../../widgets/custom_toast.dart';
+import '../../../widgets/educational_widgets.dart';
 
 class KeyGenerationSubview extends StatelessWidget {
+  static const Map<String, Map<String, dynamic>> rsaDetailedInfo = {
+    'O que é?': {
+      'content': '''
+      RSA é um dos algoritmos de criptografia assimétrica mais utilizados no mundo. 
+      Criado em 1977 por Ron Rivest, Adi Shamir e Leonard Adleman.
+      ''',
+      'icon': Icons.info_outline,
+      'examples': [
+        'Como enviar uma carta secreta para alguém',
+        'Como assinar digitalmente um documento',
+      ],
+    },
+    'Como funciona?': {
+      'content': '''
+      • Utiliza dois números primos muito grandes para gerar as chaves
+      • A chave pública é usada para cifrar mensagens
+      • A chave privada é usada para decifrar mensagens
+      • A segurança se baseia na dificuldade de fatorar números grandes
+      ''',
+      'icon': Icons.settings,
+      'animation': 'assets/animations/rsa_process.gif',
+      'steps': [
+        'Geração das chaves',
+        'Cifragem com chave pública',
+        'Decifragem com chave privada',
+      ],
+    },
+    'Analogia': {
+      'content': '''
+      Imagine um cadeado que pode ser fechado por qualquer pessoa (chave pública),
+      mas só pode ser aberto pelo dono da chave (chave privada).
+      ''',
+      'icon': Icons.lightbulb_outline,
+    },
+    'Curiosidades': {
+      'content': '''
+      • É usado por grandes empresas como Google, Amazon e bancos
+      • O recorde de quebra do RSA é de 829 bits (2020)
+      • Quanto maior a chave, mais seguro, mas mais lento
+      • É usado em certificados digitais HTTPS
+      ''',
+      'icon': Icons.psychology,
+    },
+    'Aplicações Práticas': {
+      'content': '''
+      • Assinatura digital de documentos
+      • Proteção de e-mails (PGP)
+      • Autenticação em sistemas
+      • Certificados SSL/TLS
+      ''',
+      'icon': Icons.work,
+    },
+    'Limitações': {
+      'content': '''
+      • Processo de cifragem lento para grandes volumes
+      • Requer gerenciamento seguro das chaves
+      • Vulnerável a ataques quânticos no futuro
+      • Tamanho das chaves cresce com o tempo
+      ''',
+      'icon': Icons.warning_amber,
+    },
+  };
+
+  static const Map<String, Map<String, dynamic>> aesDetailedInfo = {
+    'O que é?': {
+      'content': '''
+      AES (Advanced Encryption Standard) é o padrão global para criptografia simétrica.
+      Também conhecido como Rijndael, foi selecionado pelo NIST em 2001.
+      ''',
+      'icon': Icons.info_outline,
+    },
+    'Como funciona?': {
+      'content': '''
+      • Usa a mesma chave para cifrar e decifrar
+      • Opera em blocos de dados de tamanho fixo
+      • Aplica múltiplas rodadas de transformações
+      • Suporta chaves de 128, 192 ou 256 bits
+      ''',
+      'icon': Icons.settings,
+    },
+    'Quando usar?': {
+      'content': '''
+      • Cifragem de grandes volumes de dados
+      • Proteção de arquivos e comunicações
+      • Sistemas que exigem alto desempenho
+      • Comunicações em tempo real
+      ''',
+      'icon': Icons.schedule,
+    },
+    'Cuidados importantes': {
+      'content': '''
+      • Proteja a distribuição da chave
+      • Use um modo de operação seguro (GCM, CBC)
+      • Nunca reutilize combinações de chave/IV
+      • Implemente rotação periódica de chaves
+      ''',
+      'icon': Icons.warning,
+    },
+    'Curiosidades': {
+      'content': '''
+      • Foi escolhido após 5 anos de testes e análises
+      • É resistente a ataques quânticos conhecidos
+      • Usado pela NSA para documentos top-secret
+      • Processa dados 6x mais rápido que o DES
+      ''',
+      'icon': Icons.psychology,
+    },
+    'Comparação com outros': {
+      'content': '''
+      • Mais seguro que DES e 3DES
+      • Mais rápido que Blowfish
+      • Menor consumo de memória que RC6
+      • Mais fácil de implementar que Twofish
+      ''',
+      'icon': Icons.compare_arrows,
+    },
+    'Aplicações Práticas': {
+      'content': '''
+      • Criptografia de discos rígidos
+      • Proteção de redes Wi-Fi (WPA2/3)
+      • VPNs e túneis seguros
+      • Armazenamento em nuvem
+      ''',
+      'icon': Icons.work,
+    },
+  };
+
   const KeyGenerationSubview({super.key});
 
   void _copyToClipboard(BuildContext context, String text) {
@@ -173,6 +301,19 @@ class KeyGenerationSubview extends StatelessWidget {
                 );
               },
             ),
+            const EnhancedEducationalSection(
+              title: 'Aprenda sobre RSA',
+              sections: rsaDetailedInfo,
+              icon: Icons.school,
+              initiallyExpanded: false,
+            ),
+            const SecurityTips(
+              tips: [
+                'Mantenha sua chave privada em local seguro',
+                'Compartilhe apenas a chave pública',
+                'Use chaves de no mínimo 2048 bits',
+              ],
+            ),
           ],
         ),
       ),
@@ -271,6 +412,20 @@ class KeyGenerationSubview extends StatelessWidget {
                   ],
                 );
               },
+            ),
+            const EnhancedEducationalSection(
+              title: 'Aprenda sobre AES',
+              sections: aesDetailedInfo,
+              icon: Icons.school,
+              initiallyExpanded: false,
+            ),
+            const SecurityTips(
+              tips: [
+                'Proteja a distribuição da chave',
+                'Use um modo de operação seguro (GCM, CBC)',
+                'Nunca reutilize combinações de chave/IV',
+                'Implemente rotação periódica de chaves',
+              ],
             ),
           ],
         ),
