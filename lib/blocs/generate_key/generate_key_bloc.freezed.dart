@@ -1463,6 +1463,7 @@ mixin _$Protection {
   String get fileDigest => throw _privateConstructorUsedError;
   String get fileSignature => throw _privateConstructorUsedError;
   String get fileEncryption => throw _privateConstructorUsedError;
+  String? get symmetricKeyEncryption => throw _privateConstructorUsedError;
 
   /// Create a copy of Protection
   /// with the given fields replaced by the non-null parameter values.
@@ -1485,7 +1486,8 @@ abstract class $ProtectionCopyWith<$Res> {
       FileReader teacherPublicKeyFile,
       String fileDigest,
       String fileSignature,
-      String fileEncryption});
+      String fileEncryption,
+      String? symmetricKeyEncryption});
 
   $FileReaderCopyWith<$Res> get fileToSend;
   $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
@@ -1514,6 +1516,7 @@ class _$ProtectionCopyWithImpl<$Res, $Val extends Protection>
     Object? fileDigest = null,
     Object? fileSignature = null,
     Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = freezed,
   }) {
     return _then(_value.copyWith(
       publicKey: null == publicKey
@@ -1548,6 +1551,10 @@ class _$ProtectionCopyWithImpl<$Res, $Val extends Protection>
           ? _value.fileEncryption
           : fileEncryption // ignore: cast_nullable_to_non_nullable
               as String,
+      symmetricKeyEncryption: freezed == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -1588,7 +1595,8 @@ abstract class _$$ProtectionImplCopyWith<$Res>
       FileReader teacherPublicKeyFile,
       String fileDigest,
       String fileSignature,
-      String fileEncryption});
+      String fileEncryption,
+      String? symmetricKeyEncryption});
 
   @override
   $FileReaderCopyWith<$Res> get fileToSend;
@@ -1617,6 +1625,7 @@ class __$$ProtectionImplCopyWithImpl<$Res>
     Object? fileDigest = null,
     Object? fileSignature = null,
     Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = freezed,
   }) {
     return _then(_$ProtectionImpl(
       publicKey: null == publicKey
@@ -1651,6 +1660,10 @@ class __$$ProtectionImplCopyWithImpl<$Res>
           ? _value.fileEncryption
           : fileEncryption // ignore: cast_nullable_to_non_nullable
               as String,
+      symmetricKeyEncryption: freezed == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1666,7 +1679,8 @@ class _$ProtectionImpl with DiagnosticableTreeMixin implements _Protection {
       required this.teacherPublicKeyFile,
       required this.fileDigest,
       required this.fileSignature,
-      required this.fileEncryption});
+      required this.fileEncryption,
+      this.symmetricKeyEncryption});
 
   @override
   final String publicKey;
@@ -1684,10 +1698,12 @@ class _$ProtectionImpl with DiagnosticableTreeMixin implements _Protection {
   final String fileSignature;
   @override
   final String fileEncryption;
+  @override
+  final String? symmetricKeyEncryption;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Protection(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption)';
+    return 'Protection(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption)';
   }
 
   @override
@@ -1702,7 +1718,9 @@ class _$ProtectionImpl with DiagnosticableTreeMixin implements _Protection {
       ..add(DiagnosticsProperty('teacherPublicKeyFile', teacherPublicKeyFile))
       ..add(DiagnosticsProperty('fileDigest', fileDigest))
       ..add(DiagnosticsProperty('fileSignature', fileSignature))
-      ..add(DiagnosticsProperty('fileEncryption', fileEncryption));
+      ..add(DiagnosticsProperty('fileEncryption', fileEncryption))
+      ..add(DiagnosticsProperty(
+          'symmetricKeyEncryption', symmetricKeyEncryption));
   }
 
   @override
@@ -1725,7 +1743,9 @@ class _$ProtectionImpl with DiagnosticableTreeMixin implements _Protection {
             (identical(other.fileSignature, fileSignature) ||
                 other.fileSignature == fileSignature) &&
             (identical(other.fileEncryption, fileEncryption) ||
-                other.fileEncryption == fileEncryption));
+                other.fileEncryption == fileEncryption) &&
+            (identical(other.symmetricKeyEncryption, symmetricKeyEncryption) ||
+                other.symmetricKeyEncryption == symmetricKeyEncryption));
   }
 
   @override
@@ -1738,7 +1758,8 @@ class _$ProtectionImpl with DiagnosticableTreeMixin implements _Protection {
       teacherPublicKeyFile,
       fileDigest,
       fileSignature,
-      fileEncryption);
+      fileEncryption,
+      symmetricKeyEncryption);
 
   /// Create a copy of Protection
   /// with the given fields replaced by the non-null parameter values.
@@ -1758,7 +1779,8 @@ abstract class _Protection implements Protection {
       required final FileReader teacherPublicKeyFile,
       required final String fileDigest,
       required final String fileSignature,
-      required final String fileEncryption}) = _$ProtectionImpl;
+      required final String fileEncryption,
+      final String? symmetricKeyEncryption}) = _$ProtectionImpl;
 
   @override
   String get publicKey;
@@ -1776,6 +1798,8 @@ abstract class _Protection implements Protection {
   String get fileSignature;
   @override
   String get fileEncryption;
+  @override
+  String? get symmetricKeyEncryption;
 
   /// Create a copy of Protection
   /// with the given fields replaced by the non-null parameter values.

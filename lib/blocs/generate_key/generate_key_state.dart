@@ -49,6 +49,7 @@ class Protection extends GenerateKeyState with _$Protection {
     required String fileDigest,
     required String fileSignature,
     required String fileEncryption,
+    String? symmetricKeyEncryption,
   }) = _Protection;
 }
 
@@ -75,4 +76,8 @@ extension PreparationExtension on Preparation {
 extension SignatureExtension on Signature {
   bool get isValid =>
       fileDigest != null && fileSignature != null && fileEncryption != null;
+}
+
+extension ProtectionExtension on Protection {
+  bool get isValid => symmetricKeyEncryption != null;
 }

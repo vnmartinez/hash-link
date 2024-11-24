@@ -126,16 +126,6 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     return pc.RSAPrivateKey(modulus!, privateExponent!, p!, q!);
   }
 
-  static Uint8List signWithPublicKey(
-      Uint8List data, pc.RSAPublicKey privateKey) {
-    final signer = pc.Signer('SHA-256/RSA')
-      ..init(true, pc.PublicKeyParameter<pc.RSAPublicKey>(privateKey));
-
-    final signature =
-        signer.generateSignature(Uint8List.fromList(data)) as pc.RSASignature;
-    return signature.bytes;
-  }
-
   static Uint8List signWithPrivateKey(
       Uint8List data, pc.RSAPrivateKey privateKey) {
     final signer = pc.Signer('SHA-256/RSA')
@@ -144,5 +134,12 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     final signature =
         signer.generateSignature(Uint8List.fromList(data)) as pc.RSASignature;
     return signature.bytes;
+  }
+
+  static Uint8List encryptAESKeyWithPublicKey(
+      Uint8List aesKey, pc.RSAPublicKey publicKey) {
+    final rsaEngine = pc.RSAEngine()
+      ..init(true, pc.PublicKeyParameter<pc.RSAPublicKey>(publicKey));
+    return rsaEngine.process(aesKey);
   }
 }

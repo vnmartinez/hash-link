@@ -125,7 +125,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
     });
 
     on<SignAndEncryptFile>((event, emit) {
-      var state = this.state;
+      final state = this.state;
       if (state is Signature) {
         final fileBytes = Uint8List.fromList(state.fileToSend.bytes);
 
@@ -138,8 +138,26 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
             fileBytes, base64.decode(state.symmetricKey));
 
         emit(state.copyWith(
+          fileDigest: base64.encode(fileDigest),
           fileSignature: base64.encode(fileSignature),
           fileEncryption: base64.encode(signatureEncryption),
+        ));
+      }
+    });
+
+    on<ProtectAES>((event, emit) {
+      final state = this.state;
+      if (state is Protection) {
+        final aes = base64.decode(state.symmetricKey);
+        final externalPublicKeyPem =
+            utf8.decode(state.teacherPublicKeyFile.bytes);
+        final externalPublicKey =
+            RSAKeyHelper.parsePublicKeyFromPem(externalPublicKeyPem);
+        final aesEncryption =
+            RSAKeyHelper.encryptAESKeyWithPublicKey(aes, externalPublicKey);
+
+        emit(state.copyWith(
+          symmetricKeyEncryption: base64.encode(aesEncryption),
         ));
       }
     });

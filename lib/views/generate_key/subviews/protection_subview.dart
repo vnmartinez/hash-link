@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
 
 class ProtectionSubview extends StatelessWidget {
   const ProtectionSubview({super.key});
@@ -26,7 +28,8 @@ class ProtectionSubview extends StatelessWidget {
         const SizedBox(height: 32),
         Center(
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () =>
+                context.read<GenerateKeyBloc>().add(const ProtectAES()),
             icon: const Icon(Icons.shield),
             label: const Text('Proteger chave simétrica'),
             style: ElevatedButton.styleFrom(
@@ -49,6 +52,18 @@ class ProtectionSubview extends StatelessWidget {
             _buildStepItem(Icons.lock, 'Chave AES protegida', false),
           ],
         ),
+        const SizedBox(height: 32),
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(builder: (context, state) { 
+          if (state is! Protection) return Container();
+          return Column(
+            children: [
+              if (state.symmetricKeyEncryption != null) ...[
+                const Text('Chave simétrica cifrada'),
+                Text(state.symmetricKeyEncryption!),
+              ]
+            ],
+          );
+        }),
         const SizedBox(height: 32),
         Container(
           padding: const EdgeInsets.all(24),
