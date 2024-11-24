@@ -32,6 +32,7 @@ class Signature extends GenerateKeyState with _$Signature {
     required String symmetricKey,
     required FileReader fileToSend,
     required FileReader teacherPublicKeyFile,
+    String? fileDigest,
     String? fileSignature,
     String? fileEncryption,
   }) = _Signature;
@@ -45,6 +46,7 @@ class Protection extends GenerateKeyState with _$Protection {
     required String symmetricKey,
     required FileReader fileToSend,
     required FileReader teacherPublicKeyFile,
+    required String fileDigest,
     required String fileSignature,
     required String fileEncryption,
   }) = _Protection;
@@ -71,7 +73,6 @@ extension PreparationExtension on Preparation {
 }
 
 extension SignatureExtension on Signature {
-  bool get isValid => fileSignature != null && fileEncryption != null;
-  bool get hasRequiredKeys =>
-      publicKey.isNotEmpty && privateKey.isNotEmpty && symmetricKey.isNotEmpty;
+  bool get isValid =>
+      fileDigest != null && fileSignature != null && fileEncryption != null;
 }

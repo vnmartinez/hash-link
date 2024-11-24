@@ -363,22 +363,34 @@ class SignatureSubview extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  hasSignature
-                      ? Icons.check_circle
-                      : canProceed
-                          ? Icons.enhanced_encryption
-                          : Icons.lock,
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Text(
-                  hasSignature ? 'Documento Assinado' : 'Assinar documento',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: hasSignature || canProceed
-                        ? Colors.white
-                        : AppColors.grey500,
+                if (state.fileDigest != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Digest'),
+                        Text(state.fileDigest!),
+                      ],
+                    ),
+                  ),
+                const SizedBox(width: 30),
+                if (state.fileSignature != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Assinatura'),
+                        Text(state.fileSignature!),
+                      ],
+                    ),
+                  ),
+                const SizedBox(width: 30),
+                if (state.fileSignature != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Cifragem'),
+                        Text(state.fileEncryption!),
+                      ],
+                    ),
                   ),
                 ),
               ],
