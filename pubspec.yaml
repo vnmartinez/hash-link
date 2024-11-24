@@ -21,8 +21,6 @@ dependencies:
   file_selector: ^1.0.3
   path: ^1.9.0
   window_manager: ^0.4.3
-  preview_file: ^0.0.1
-  flutter_highlight: ^0.7.0
   archive: ^3.6.1
 
 dev_dependencies:
