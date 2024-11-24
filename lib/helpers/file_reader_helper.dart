@@ -14,9 +14,10 @@ class FileReader with _$FileReader {
   }) = _FileReader;
 
   factory FileReader.fromPlatformFile(PlatformFile file) {
-    final bytes = file.bytes ?? <int>[];    
+    final bytes = file.bytes ?? <int>[];
     final hash = crypto.sha256.convert(bytes).toString();
-    return FileReader(name: file.name, length: file.size, bytes: bytes, hash: hash);
+    return FileReader(
+        name: file.name, length: file.size, bytes: bytes, hash: hash);
   }
 }
 

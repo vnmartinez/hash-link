@@ -16,12 +16,14 @@ class CustomToast extends StatelessWidget {
       {ToastType type = ToastType.info}) {
     _removeCurrentToast();
 
+    final overlay = Overlay.of(context);
+
     late OverlayEntry overlayEntry;
 
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        bottom: MediaQuery.of(context).padding.bottom + 50,
-        width: MediaQuery.of(context).size.width,
+        top: MediaQuery.of(context).padding.top + 190,
+        right: 16,
         child: Center(
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
@@ -30,12 +32,14 @@ class CustomToast extends StatelessWidget {
             onEnd: () {
               Future.delayed(const Duration(seconds: 2), () {
                 if (overlayEntry.mounted) {
-                  _animateOut(overlayEntry);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _animateOut(context, overlayEntry);
+                  });
                 }
               });
             },
             builder: (context, value, child) => Transform.translate(
-              offset: Offset(0, 20 * (1 - value)),
+              offset: Offset(0, -20 * (1 - value)),
               child: Opacity(
                 opacity: value,
                 child: Material(
@@ -96,7 +100,7 @@ class CustomToast extends StatelessWidget {
       ),
     );
 
-    Overlay.of(context).insert(overlayEntry);
+    overlay.insert(overlayEntry);
     _currentToast = overlayEntry;
   }
 
@@ -151,39 +155,50 @@ class CustomToast extends StatelessWidget {
   static OverlayEntry? _currentToast;
 
   static void _removeCurrentToast() {
-    _currentToast?.remove();
+    if (_currentToast?.mounted == true) {
+      _currentToast?.remove();
+    }
     _currentToast = null;
   }
 
-  static void _animateOut(OverlayEntry overlayEntry) {
+  static void _animateOut(BuildContext context, OverlayEntry overlayEntry) {
     if (!overlayEntry.mounted) return;
 
-    final context = overlayEntry.mounted;
+    try {
+      final navigatorState = Navigator.of(context, rootNavigator: true);
+      final overlay = navigatorState.overlay;
+      if (overlay == null) {
+        overlayEntry.remove();
+        return;
+      }
 
-    if (!context) {
+      late OverlayEntry animatedOverlay;
+      animatedOverlay = OverlayEntry(
+        builder: (builderContext) => TweenAnimationBuilder<double>(
+          tween: Tween(begin: 1.0, end: 0.0),
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+          onEnd: () {
+            if (animatedOverlay.mounted) {
+              animatedOverlay.remove();
+            }
+          },
+          builder: (_, value, child) {
+            return Opacity(
+              opacity: value,
+              child: overlayEntry.builder(builderContext),
+            );
+          },
+        ),
+      );
+
       overlayEntry.remove();
-      return;
+      overlay.insert(animatedOverlay);
+    } catch (e) {
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
     }
-
-    OverlayEntry animatedOverlay = OverlayEntry(
-      builder: (builderContext) => TweenAnimationBuilder<double>(
-        tween: Tween(begin: 1.0, end: 0.0),
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeIn,
-        onEnd: () {
-          overlayEntry.remove();
-        },
-        builder: (_, value, child) {
-          return Opacity(
-            opacity: value,
-            child: overlayEntry.builder(builderContext),
-          );
-        },
-      ),
-    );
-
-    overlayEntry.remove();
-    Overlay.of(context as BuildContext).insert(animatedOverlay);
   }
 }
 

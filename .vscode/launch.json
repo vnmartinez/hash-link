@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "hash_link (macOS)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["-d", "macos"]
+        },
+        {
             "name": "hash_link",
             "request": "launch",
             "type": "dart"

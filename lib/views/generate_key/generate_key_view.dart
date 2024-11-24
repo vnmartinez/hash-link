@@ -11,9 +11,15 @@ import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/widgets/step_indicator.dart';
 import 'package:hash_link/widgets/action_buttons.dart';
 import '../../theme/app_spacing.dart';
+import '../../widgets/custom_toast.dart';
 
 class GenerateKeyView extends StatelessWidget {
   const GenerateKeyView({super.key});
+
+  static void showToast(BuildContext context, String message,
+      {ToastType type = ToastType.info}) {
+    CustomToast.show(context, message, type: type);
+  }
 
   ({
     int step,

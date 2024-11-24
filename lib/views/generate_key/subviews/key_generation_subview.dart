@@ -8,6 +8,7 @@ import '../../../theme/app_spacing.dart';
 import 'package:hash_link/helpers/key_download_helper.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
+import '../generate_key_view.dart';
 
 class KeyGenerationSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> rsaDetailedInfo = {
@@ -141,7 +142,7 @@ class KeyGenerationSubview extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    CustomToast.show(
+    GenerateKeyView.showToast(
       context,
       'Copiado para a área de transferência',
       type: ToastType.success,
@@ -251,9 +252,16 @@ class KeyGenerationSubview extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () => context
-                          .read<GenerateKeyBloc>()
-                          .add(const GenerateRSAKeyPair()),
+                      onPressed: () {
+                        context
+                            .read<GenerateKeyBloc>()
+                            .add(const GenerateRSAKeyPair());
+                        GenerateKeyView.showToast(
+                          context,
+                          'Par de chaves RSA gerado com sucesso!',
+                          type: ToastType.success,
+                        );
+                      },
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -380,9 +388,16 @@ class KeyGenerationSubview extends StatelessWidget {
                         ),
                       ),
                       onPressed: canGenerate
-                          ? () => context
-                              .read<GenerateKeyBloc>()
-                              .add(const GenerateAESSymmetricKey())
+                          ? () {
+                              context
+                                  .read<GenerateKeyBloc>()
+                                  .add(const GenerateAESSymmetricKey());
+                              GenerateKeyView.showToast(
+                                context,
+                                'Chave AES gerada com sucesso!',
+                                type: ToastType.success,
+                              );
+                            }
                           : null,
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -466,9 +481,7 @@ class _KeyCardState extends State<_KeyCard> {
 
     return Card(
       elevation: 1,
-      color: widget.isPrivate
-          ? AppColors.grey100.withOpacity(0.7)
-          : AppColors.grey100,
+      color: AppColors.grey100,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(isSmallScreen ? 6 : 8),
       ),

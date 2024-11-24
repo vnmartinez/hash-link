@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
 
+import '../../../helpers/file_reader_helper.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
 import '../../../widgets/section_title.dart';
+import '../../../widgets/file_preview_dialog.dart';
+import '../generate_key_view.dart';
 
 class SignatureSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> signatureDetailedInfo = {
@@ -25,18 +28,19 @@ class SignatureSubview extends StatelessWidget {
     },
     'Como funciona?': {
       'content': '''
-      • Gera um hash único do documento original
-      • Cifra o hash com a chave privada RSA
-      • Anexa a assinatura ao documento
-      • Permite verificação com a chave pública
-      • Protege o conteúdo com cifragem AES
+      • Calcula um hash único (como uma impressão digital) do documento
+      • Criptografa esse hash usando sua chave privada RSA (criando a assinatura)
+      • Criptografa o documento usando uma chave AES (para confidencialidade)
+      • Combina o documento cifrado com a assinatura
+      • Permite que outros verifiquem a autenticidade usando sua chave pública
+      • Garante que o documento não foi alterado após a assinatura
       ''',
       'icon': Icons.settings,
       'steps': [
-        'Geração do hash do documento',
-        'Assinatura com chave privada',
-        'Cifragem com AES',
-        'Verificação da assinatura',
+        'Geração do hash SHA-256',
+        'Assinatura com RSA',
+        'Cifragem com AES-256',
+        'Verificação da integridade',
       ],
     },
     'Analogia': {
@@ -45,16 +49,6 @@ class SignatureSubview extends StatelessWidget {
       O selo garante quem enviou e o envelope protege o conteúdo.
       ''',
       'icon': Icons.lightbulb_outline,
-    },
-    'Benefícios': {
-      'content': '''
-      • Garante autenticidade do autor
-      • Detecta alterações no documento
-      • Possui validade jurídica
-      • Protege a confidencialidade
-      • Facilita processos digitais
-      ''',
-      'icon': Icons.check_circle_outline,
     },
     'Aplicações Práticas': {
       'content': '''
@@ -68,11 +62,9 @@ class SignatureSubview extends StatelessWidget {
     },
     'Cuidados Importantes': {
       'content': '''
-      • Proteja sua chave privada
+      • Proteja sempre a chave privada
       • Verifique certificados digitais
       • Mantenha backups seguros
-      • Use algoritmos atualizados
-      • Siga normas técnicas
       ''',
       'icon': Icons.warning_amber,
     },
@@ -88,8 +80,11 @@ class SignatureSubview extends StatelessWidget {
         final theme = Theme.of(context);
 
         return ListView(
-          padding:
-              EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+          padding: EdgeInsets.only(
+            left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+          ),
           children: [
             SectionTitle(
               title: 'Assinatura e Cifragem',
@@ -152,7 +147,7 @@ class SignatureSubview extends StatelessWidget {
 
         return Container(
           padding:
-              EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+              EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
           decoration: BoxDecoration(
             color: AppColors.grey100,
             borderRadius: BorderRadius.circular(8),
@@ -178,14 +173,9 @@ class SignatureSubview extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.sm),
               if (hasFile)
-                Text(
-                  state.fileToSend.name,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey700,
-                  ),
-                )
+                _buildFilePreview(state.fileToSend.name, theme)
               else
                 Text(
                   'Nenhum arquivo selecionado',
@@ -194,30 +184,31 @@ class SignatureSubview extends StatelessWidget {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-              const SizedBox(height: AppSpacing.md),
-              Center(
-                child: ElevatedButton.icon(
-                  onPressed: () => context
-                      .read<GenerateKeyBloc>()
-                      .add(const SelectFileToSend()),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.grey200,
-                    foregroundColor: AppColors.grey900,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                      vertical: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+              const SizedBox(height: AppSpacing.sm),
+              if (!hasFile)
+                Center(
+                  child: ElevatedButton.icon(
+                    onPressed: () => context
+                        .read<GenerateKeyBloc>()
+                        .add(const SelectFileToSend()),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.grey200,
+                      foregroundColor: AppColors.grey900,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    icon: const Icon(Icons.file_upload),
+                    label: const Text(
+                      'Selecionar arquivo',
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                  ),
-                  icon: const Icon(Icons.file_upload),
-                  label: Text(
-                    hasFile ? 'Trocar arquivo' : 'Selecionar arquivo',
-                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-              ),
             ],
           ),
         );
@@ -225,11 +216,85 @@ class SignatureSubview extends StatelessWidget {
     );
   }
 
+  Widget _buildFilePreview(String fileName, ThemeData theme) {
+    return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+      builder: (context, state) {
+        if (state is! Signature) return const SizedBox.shrink();
+
+        return Row(
+          children: [
+            Expanded(
+              child: Text(
+                fileName,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.grey700,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () => _showFilePreview(context, state.fileToSend),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xs,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.visibility_outlined,
+                          size: 18,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text(
+                          'Pré-visualizar arquivo.',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showFilePreview(BuildContext context, FileReader file) {
+    FilePreviewDialog.show(
+      context,
+      files: [
+        FilePreviewItem(
+          fileName: file.name,
+          fileSize: file.size,
+          fileBytes: file.bytes,
+        ),
+      ],
+      initialIndex: 0,
+    );
+  }
+
   Widget _buildProcessSteps(ThemeData theme, bool isSmallScreen) {
     return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
       builder: (context, state) {
         final hasFile = state is Signature;
-        final hasKeys = state is Signature && state.hasRequiredKeys;
+        final hasKeys = state is Signature;
 
         return Container(
           padding:
@@ -325,77 +390,85 @@ class SignatureSubview extends StatelessWidget {
   Widget _buildActionButton(BuildContext context) {
     return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
       builder: (context, state) {
-        final canProceed = state is Signature && state.hasRequiredKeys;
+        final canProceed = state is Signature;
         final hasSignature = state is Signature && state.fileSignature != null;
 
-        return Center(
-          child: ElevatedButton(
-            onPressed: hasSignature
-                ? null
-                : canProceed
-                    ? () {
-                        context
-                            .read<GenerateKeyBloc>()
-                            .add(const SignAndEncryptFile());
-                        CustomToast.show(
-                          context,
-                          'Documento assinado com sucesso!',
-                          type: ToastType.success,
-                        );
-                      }
-                    : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: hasSignature
-                  ? AppColors.success
-                  : canProceed
-                      ? AppColors.primary
-                      : AppColors.grey300,
-              foregroundColor:
-                  hasSignature || canProceed ? Colors.white : AppColors.grey500,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.xl,
-                vertical: AppSpacing.lg,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (state.fileDigest != null)
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const Text('Digest'),
-                        Text(state.fileDigest!),
-                      ],
+        if (hasSignature) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            GenerateKeyView.showToast(
+              context,
+              'Arquivo assinado e cifrado com sucesso!',
+              type: ToastType.success,
+            );
+          });
+        }
+
+        return Column(
+          children: [
+            Center(
+              child: SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  onPressed: hasSignature
+                      ? null
+                      : canProceed
+                          ? () => context
+                              .read<GenerateKeyBloc>()
+                              .add(const SignAndEncryptFile())
+                          : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: hasSignature
+                        ? AppColors.success.withOpacity(0.7)
+                        : canProceed
+                            ? AppColors.primary
+                            : AppColors.grey300,
+                    foregroundColor: hasSignature || canProceed
+                        ? Colors.white
+                        : AppColors.grey500,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl,
+                      vertical: AppSpacing.lg,
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    disabledBackgroundColor: hasSignature
+                        ? AppColors.success.withOpacity(0.7)
+                        : AppColors.grey300,
+                    disabledForegroundColor:
+                        hasSignature ? Colors.white : AppColors.grey500,
                   ),
-                const SizedBox(width: 30),
-                if (state.fileSignature != null)
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const Text('Assinatura'),
-                        Text(state.fileSignature!),
-                      ],
-                    ),
-                  ),
-                const SizedBox(width: 30),
-                if (state.fileSignature != null)
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const Text('Cifragem'),
-                        Text(state.fileEncryption!),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(hasSignature
+                          ? Icons.check_circle
+                          : Icons.enhanced_encryption),
+                      const SizedBox(width: AppSpacing.md),
+                      Text(
+                        hasSignature
+                            ? 'Assinado com sucesso'
+                            : 'Assinar e Cifrar Documento',
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+            if (state is Signature && state.fileDigest != null)
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.xl),
+                child: _ProcessStatusCard(
+                  title: 'Hash do Arquivo',
+                  content: state.fileDigest!,
+                  icon: Icons.fingerprint,
+                  backgroundColor: AppColors.grey100,
+                  borderColor: AppColors.grey300,
+                  onCopy: () => _copyToClipboard(context, state.fileDigest!),
+                ),
+              ),
+          ],
         );
       },
     );
@@ -441,7 +514,7 @@ class SignatureSubview extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    CustomToast.show(
+    GenerateKeyView.showToast(
       context,
       'Copiado para a área de transferência',
       type: ToastType.success,
