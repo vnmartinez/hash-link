@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,7 +82,7 @@ class PreparationSubview extends StatelessWidget {
                         width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
                     Expanded(
                       child: Text(
-                        'Chave Pública do Professor',
+                        'Chave Pública do Destinatário',
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColors.grey900,
@@ -95,7 +94,7 @@ class PreparationSubview extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'Importe a chave pública fornecida pelo professor',
+                  'Importe a chave pública fornecida pelo destinatário',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.grey700,
                   ),
