@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:pointycastle/asn1/asn1_parser.dart' as asn1_parser;
 import 'package:pointycastle/asn1/primitives/asn1_integer.dart' as asn1_integer;
 import 'package:pointycastle/asn1/primitives/asn1_sequence.dart'
     as asn1_sequence;
 import 'package:pointycastle/export.dart' as pc;
 
 class RSAKeyHelper {
-  static ({
-    String publicKey,
-    String privateKey,
-  }) generateRSAKeyPair() {
+  static Future<
+      ({
+        String publicKey,
+        String privateKey,
+      })> generateRSAKeyPair() async {
     final keyParams =
         pc.RSAKeyGeneratorParameters(BigInt.from(65537), 2048, 12);
 
@@ -66,5 +68,78 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     asn1Seq.add(asn1_integer.ASN1Integer(privateKey.q!));
     asn1Seq.add(asn1_integer.ASN1Integer(privateKey.privateExponent!));
     return asn1Seq.encode();
+  }
+
+  static pc.RSAPublicKey parsePublicKeyFromPem(String pemString) {
+    final rows = pemString
+        .replaceAll('-----BEGIN RSA PUBLIC KEY-----', '')
+        .replaceAll('-----END RSA PUBLIC KEY-----', '')
+        .replaceAll('\n', '')
+        .replaceAll('\r', '');
+    final keyBytes = base64.decode(rows);
+
+    final asn1Parser = asn1_parser.ASN1Parser(keyBytes);
+    final topLevelSeq = asn1Parser.nextObject() as asn1_sequence.ASN1Sequence;
+
+    if (topLevelSeq.elements == null || topLevelSeq.elements!.length < 2) {
+      throw ArgumentError('Chave RSA pública inválida ou malformada.');
+    }
+
+    final modulus =
+        (topLevelSeq.elements![0] as asn1_integer.ASN1Integer).integer;
+    final exponent =
+        (topLevelSeq.elements![1] as asn1_integer.ASN1Integer).integer;
+
+    return pc.RSAPublicKey(modulus!, exponent!);
+  }
+
+  static pc.RSAPrivateKey parsePrivateKeyFromPem(String pemString) {
+    final rows = pemString
+        .replaceAll('-----BEGIN RSA PRIVATE KEY-----', '')
+        .replaceAll('-----END RSA PRIVATE KEY-----', '')
+        .replaceAll('\n', '')
+        .replaceAll('\r', '');
+
+    final keyBytes = base64.decode(rows);
+
+    final asn1Parser = asn1_parser.ASN1Parser(keyBytes);
+    final topLevelSeq = asn1Parser.nextObject() as asn1_sequence.ASN1Sequence;
+
+    if (topLevelSeq.elements == null || topLevelSeq.elements!.length < 6) {
+      throw ArgumentError('Chave RSA privada inválida ou malformada.');
+    }
+
+    final version =
+        (topLevelSeq.elements![0] as asn1_integer.ASN1Integer).integer;
+    if (version != BigInt.zero) {
+      throw ArgumentError('Versão incompatível para chave privada RSA.');
+    }
+
+    final modulus =
+        (topLevelSeq.elements![1] as asn1_integer.ASN1Integer).integer;
+
+    final privateExponent =
+        (topLevelSeq.elements![2] as asn1_integer.ASN1Integer).integer;
+    final p = (topLevelSeq.elements![3] as asn1_integer.ASN1Integer).integer;
+    final q = (topLevelSeq.elements![4] as asn1_integer.ASN1Integer).integer;
+
+    return pc.RSAPrivateKey(modulus!, privateExponent!, p!, q!);
+  }
+
+  static Uint8List signWithPrivateKey(
+      Uint8List data, pc.RSAPrivateKey privateKey) {
+    final signer = pc.Signer('SHA-256/RSA')
+      ..init(true, pc.PrivateKeyParameter<pc.RSAPrivateKey>(privateKey));
+
+    final signature =
+        signer.generateSignature(Uint8List.fromList(data)) as pc.RSASignature;
+    return signature.bytes;
+  }
+
+  static Uint8List encryptAESKeyWithPublicKey(
+      Uint8List aesKey, pc.RSAPublicKey publicKey) {
+    final rsaEngine = pc.RSAEngine()
+      ..init(true, pc.PublicKeyParameter<pc.RSAPublicKey>(publicKey));
+    return rsaEngine.process(aesKey);
   }
 }

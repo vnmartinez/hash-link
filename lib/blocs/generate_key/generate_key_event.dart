@@ -22,3 +22,33 @@ class GenerateAESSymmetricKey extends GenerateKeyEvent
     with _$GenerateAESSymmetricKey {
   const factory GenerateAESSymmetricKey() = _GenerateAESSymmetricKey;
 }
+
+@blocEvent
+class SelectTeacherPublicKeyFile extends GenerateKeyEvent
+    with _$SelectTeacherPublicKeyFile {
+  const factory SelectTeacherPublicKeyFile() = _SelectTeacherPublicKeyFile;
+}
+
+@blocEvent
+class SelectFileToSend extends GenerateKeyEvent with _$SelectFileToSend {
+  const factory SelectFileToSend() = _SelectFileToSend;
+}
+
+class ClearSelectedFile extends GenerateKeyEvent {
+  ClearSelectedFile();
+}
+
+@blocEvent
+class SignAndEncryptFile extends GenerateKeyEvent with _$SignAndEncryptFile {
+  const factory SignAndEncryptFile() = _SignAndEncryptFile;
+}
+
+@blocEvent
+class ProtectAES extends GenerateKeyEvent with _$ProtectAES {
+  const factory ProtectAES() = _ProtectAES;
+}
+
+@blocEvent
+class SendPackage extends GenerateKeyEvent with _$SendPackage {
+  const factory SendPackage() = _SendPackage;
+}

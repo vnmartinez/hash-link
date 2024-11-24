@@ -1,180 +1,257 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import '../../../theme/app_colors.dart';
+import '../../../theme/app_spacing.dart';
+import '../../../widgets/educational_widgets.dart';
+import '../../../widgets/section_title.dart';
 
 class ShippingSubview extends StatelessWidget {
+  static const Map<String, Map<String, dynamic>> shippingDetailedInfo = {
+    'O que é?': {
+      'content': '''
+      O empacotamento e envio é o processo final onde todos os elementos 
+      processados são combinados em um único pacote seguro para transmissão.
+      ''',
+      'icon': Icons.inventory_2,
+    },
+    'Como funciona?': {
+      'content': '''
+      • O arquivo cifrado com a chave AES é preparado
+      • A assinatura digital do arquivo original é anexada
+      • A chave simétrica protegida é incluída
+      • Todos os elementos são combinados em um único pacote
+      • O pacote é enviado de forma segura ao destinatário
+      • Este processo garante:
+         - Confidencialidade dos dados
+         - Autenticidade do remetente
+         - Integridade do conteúdo
+      ''',
+      'icon': Icons.settings,
+      'steps': [
+        'Preparação dos componentes',
+        'Combinação em pacote',
+        'Envio seguro',
+        'Recebimento pelo destinatário'
+      ],
+    },
+  };
+
   const ShippingSubview({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Expanded(
-          flex: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmallScreen = constraints.maxWidth < 600;
+        final theme = Theme.of(context);
+
+        return ListView(
+          padding: EdgeInsets.only(
+            left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+          ),
+          children: [
+            SectionTitle(
+              title: 'Empacotamento e Envio',
+              subtitle:
+                  'Combine e envie os elementos processados de forma segura',
+              titleStyle: theme.textTheme.headlineSmall?.copyWith(
+                fontSize: isSmallScreen ? 20 : 24,
+              ),
+              subtitleStyle: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: isSmallScreen ? 14 : 16,
+              ),
+            ),
+            SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(
+                    isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+                child: Column(
+                  children: [
+                    _buildPackageComponents(theme, isSmallScreen),
+                    const SizedBox(height: AppSpacing.lg),
+                    Center(
+                      child: SizedBox(
+                        width: 300,
+                        child: BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+                          builder: (context, state) {
+                            return ElevatedButton(
+                              onPressed: () => context
+                                  .read<GenerateKeyBloc>()
+                                  .add(const SendPackage()),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.xl,
+                                  vertical: AppSpacing.lg,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.save),
+                                  SizedBox(width: AppSpacing.md),
+                                  Text(
+                                    'Salvar Pacote',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Card(
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.swap_horiz,
+                                    color: AppColors.primary),
+                                const SizedBox(width: AppSpacing.sm),
+                                Text(
+                                  'Fluxo de Transmissão',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: AppSpacing.xl),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildParticipante(
+                                  Icons.person,
+                                  'Aluno',
+                                  'Remetente',
+                                  true,
+                                ),
+                                _buildArrow('Envio'),
+                                _buildParticipante(
+                                  Icons.person_outline,
+                                  'Professor',
+                                  'Destinatário',
+                                  false,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    const EnhancedEducationalSection(
+                      title: 'Sobre o Envio',
+                      sections: shippingDetailedInfo,
+                      icon: Icons.school,
+                      initiallyExpanded: false,
+                    ),
+                    const SecurityTips(
+                      tips: [
+                        'Verifique todos os componentes antes do envio',
+                        'Confirme o destinatário correto',
+                        'Mantenha uma cópia de segurança do pacote',
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildPackageComponents(ThemeData theme, bool isSmallScreen) {
+    return Container(
+      padding: EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.grey100,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.grey300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
+              const Icon(
+                Icons.inventory_2,
+                color: AppColors.grey700,
+                size: 20,
+              ),
+              const SizedBox(width: AppSpacing.sm),
               Text(
-                'Empacotamento e envio',
-                style: TextStyle(
-                  fontSize: 20,
+                'Componentes do Pacote',
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Nesta etapa, todos os elementos processados são combinados em um único pacote seguro para envio. O pacote contém o arquivo cifrado, a assinatura digital e a chave simétrica protegida.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
+                  color: AppColors.grey900,
                 ),
               ),
             ],
           ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Componentes do pacote:',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '• Arquivo cifrado com chave simétrica',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          '• Assinatura digital do arquivo original',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          '• Chave simétrica cifrada com RSA',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: AppSpacing.md),
+          _buildComponentItem(
+            icon: Icons.lock,
+            text: 'Arquivo cifrado com chave simétrica',
+            theme: theme,
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Center(
-            child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.send),
-              label: const Text('Enviar Pacote'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 16,
-                ),
-              ),
-            ),
+          const SizedBox(height: AppSpacing.sm),
+          _buildComponentItem(
+            icon: Icons.fingerprint,
+            text: 'Assinatura digital do arquivo original',
+            theme: theme,
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildParticipante(
-                Icons.person,
-                'Aluno',
-                'Remetente',
-                true,
-              ),
-              _buildArrow(),
-              _buildParticipante(
-                Icons.person_outline,
-                'Professor',
-                'Destinatário',
-                false,
-              ),
-            ],
+          const SizedBox(height: AppSpacing.sm),
+          _buildComponentItem(
+            icon: Icons.key,
+            text: 'Chave simétrica cifrada com RSA',
+            theme: theme,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComponentItem({
+    required IconData icon,
+    required String text,
+    required ThemeData theme,
+  }) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 20,
+          color: AppColors.grey700,
         ),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
-          flex: 3,
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'O pacote é enviado de forma segura, garantindo:',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '• Confidencialidade (através da cifragem)',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          '• Autenticidade (através de assinatura digital)',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          '• Integridade (através do hash)',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.grey700,
             ),
           ),
         ),
@@ -183,15 +260,20 @@ class ShippingSubview extends StatelessWidget {
   }
 
   Widget _buildParticipante(
-      IconData icon, String titulo, String subtitulo, bool isActive) {
+    IconData icon,
+    String titulo,
+    String subtitulo,
+    bool isActive,
+  ) {
     return Container(
       width: 120,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isActive ? Colors.blue.withOpacity(0.1) : Colors.grey[100],
+        color:
+            isActive ? AppColors.primary.withOpacity(0.1) : AppColors.grey100,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: isActive ? Colors.blue : Colors.grey,
+          color: isActive ? AppColors.primary : AppColors.grey300,
           width: 1,
         ),
       ),
@@ -200,23 +282,23 @@ class ShippingSubview extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: isActive ? Colors.blue : Colors.grey,
+            color: isActive ? AppColors.primary : AppColors.grey500,
             size: 24,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             titulo,
             style: TextStyle(
-              color: isActive ? Colors.blue : Colors.grey,
+              color: isActive ? AppColors.primary : AppColors.grey500,
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
           Text(
             subtitulo,
-            style: TextStyle(
-              color: isActive ? Colors.blue : Colors.grey,
+            style: const TextStyle(
+              color: AppColors.grey500,
               fontSize: 10,
             ),
           ),
@@ -225,13 +307,25 @@ class ShippingSubview extends StatelessWidget {
     );
   }
 
-  Widget _buildArrow() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Icon(
-        Icons.arrow_forward,
-        color: Colors.grey,
-        size: 20,
+  Widget _buildArrow(String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.arrow_forward,
+            color: AppColors.grey500,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.grey500,
+              fontSize: 10,
+            ),
+          ),
+        ],
       ),
     );
   }
