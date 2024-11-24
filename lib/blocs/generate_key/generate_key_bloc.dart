@@ -25,35 +25,16 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
       _states.add(state);
 
       if (state is KeyGeneration && state.isValid) {
-        emit(Preparation(
-          publicKey: state.publicKey!,
-          privateKey: state.privateKey!,
-          symmetricKey: state.symmetricKey!,
-        ));
+        emit(Preparation.fromValidKeyGeneration(state));
         return;
       } else if (state is Preparation && state.isValid) {
-        emit(Signature(
-          publicKey: state.publicKey,
-          privateKey: state.privateKey,
-          symmetricKey: state.symmetricKey,
-          fileToSend: state.fileToSend!,
-          teacherPublicKeyFile: state.teacherPublicKeyFile!,
-        ));
+        emit(Signature.fromValidPreparation(state));
         return;
       } else if (state is Signature && state.isValid) {
-        emit(Protection(
-          publicKey: state.publicKey,
-          privateKey: state.privateKey,
-          symmetricKey: state.symmetricKey,
-          fileToSend: state.fileToSend,
-          teacherPublicKeyFile: state.teacherPublicKeyFile,
-          fileDigest: state.fileDigest!,
-          fileSignature: state.fileSignature!,
-          fileEncryption: state.fileEncryption!,
-        ));
+        emit(Protection.fromValidSignature(state));
         return;
-      } else if (state is Protection) {
-        emit(const Shipping());
+      } else if (state is Protection && state.isValid) {
+        emit(Shipping.fromValidProtection(state));
         return;
       } else if (state is Shipping) {
         emit(const Decryption());
@@ -158,6 +139,11 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
           symmetricKeyEncryption: base64.encode(aesEncryption),
         ));
       }
+    });
+
+    on<SendPackage>((event, emit) {
+      final state = this.state;
+      if (state is Shipping) {}
     });
   }
 }

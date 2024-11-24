@@ -47,3 +47,8 @@ class SignAndEncryptFile extends GenerateKeyEvent with _$SignAndEncryptFile {
 class ProtectAES extends GenerateKeyEvent with _$ProtectAES {
   const factory ProtectAES() = _ProtectAES;
 }
+
+@blocEvent
+class SendPackage extends GenerateKeyEvent with _$SendPackage {
+  const factory SendPackage() = _SendPackage;
+}

@@ -22,6 +22,14 @@ class Preparation extends GenerateKeyState with _$Preparation {
     FileReader? fileToSend,
     @Default(false) bool selectingFileToSend,
   }) = _Preparation;
+
+  factory Preparation.fromValidKeyGeneration(KeyGeneration state) {
+    return Preparation(
+      publicKey: state.publicKey!,
+      privateKey: state.privateKey!,
+      symmetricKey: state.symmetricKey!,
+    );
+  }
 }
 
 @blocState
@@ -36,6 +44,16 @@ class Signature extends GenerateKeyState with _$Signature {
     String? fileSignature,
     String? fileEncryption,
   }) = _Signature;
+
+  factory Signature.fromValidPreparation(Preparation state) {
+    return Signature(
+      publicKey: state.publicKey,
+      privateKey: state.privateKey,
+      symmetricKey: state.symmetricKey,
+      fileToSend: state.fileToSend!,
+      teacherPublicKeyFile: state.teacherPublicKeyFile!,
+    );
+  }
 }
 
 @blocState
@@ -51,11 +69,48 @@ class Protection extends GenerateKeyState with _$Protection {
     required String fileEncryption,
     String? symmetricKeyEncryption,
   }) = _Protection;
+
+  factory Protection.fromValidSignature(Signature state) {
+    return Protection(
+      publicKey: state.publicKey,
+      privateKey: state.privateKey,
+      symmetricKey: state.symmetricKey,
+      fileToSend: state.fileToSend,
+      teacherPublicKeyFile: state.teacherPublicKeyFile,
+      fileDigest: state.fileDigest!,
+      fileSignature: state.fileSignature!,
+      fileEncryption: state.fileEncryption!,
+    );
+  }
 }
 
 @blocState
 class Shipping extends GenerateKeyState with _$Shipping {
-  const factory Shipping() = _Shipping;
+  const factory Shipping({
+    required String publicKey,
+    required String privateKey,
+    required String symmetricKey,
+    required FileReader fileToSend,
+    required FileReader teacherPublicKeyFile,
+    required String fileDigest,
+    required String fileSignature,
+    required String fileEncryption,
+    required String symmetricKeyEncryption,
+  }) = _Shipping;
+
+  factory Shipping.fromValidProtection(Protection state) {
+    return Shipping(
+      publicKey: state.publicKey,
+      privateKey: state.privateKey,
+      symmetricKey: state.symmetricKey,
+      fileToSend: state.fileToSend,
+      teacherPublicKeyFile: state.teacherPublicKeyFile,
+      fileDigest: state.fileDigest,
+      fileSignature: state.fileSignature,
+      fileEncryption: state.fileEncryption,
+      symmetricKeyEncryption: state.symmetricKeyEncryption!,
+    );
+  }
 }
 
 @blocState

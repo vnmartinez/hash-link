@@ -621,6 +621,79 @@ abstract class _ProtectAES implements ProtectAES {
 }
 
 /// @nodoc
+mixin _$SendPackage {}
+
+/// @nodoc
+abstract class $SendPackageCopyWith<$Res> {
+  factory $SendPackageCopyWith(
+          SendPackage value, $Res Function(SendPackage) then) =
+      _$SendPackageCopyWithImpl<$Res, SendPackage>;
+}
+
+/// @nodoc
+class _$SendPackageCopyWithImpl<$Res, $Val extends SendPackage>
+    implements $SendPackageCopyWith<$Res> {
+  _$SendPackageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SendPackage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$SendPackageImplCopyWith<$Res> {
+  factory _$$SendPackageImplCopyWith(
+          _$SendPackageImpl value, $Res Function(_$SendPackageImpl) then) =
+      __$$SendPackageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SendPackageImplCopyWithImpl<$Res>
+    extends _$SendPackageCopyWithImpl<$Res, _$SendPackageImpl>
+    implements _$$SendPackageImplCopyWith<$Res> {
+  __$$SendPackageImplCopyWithImpl(
+      _$SendPackageImpl _value, $Res Function(_$SendPackageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SendPackage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SendPackageImpl with DiagnosticableTreeMixin implements _SendPackage {
+  const _$SendPackageImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'SendPackage()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'SendPackage'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SendPackageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _SendPackage implements SendPackage {
+  const factory _SendPackage() = _$SendPackageImpl;
+}
+
+/// @nodoc
 mixin _$KeyGeneration {
   String? get publicKey => throw _privateConstructorUsedError;
   String? get privateKey => throw _privateConstructorUsedError;
@@ -1810,12 +1883,42 @@ abstract class _Protection implements Protection {
 }
 
 /// @nodoc
-mixin _$Shipping {}
+mixin _$Shipping {
+  String get publicKey => throw _privateConstructorUsedError;
+  String get privateKey => throw _privateConstructorUsedError;
+  String get symmetricKey => throw _privateConstructorUsedError;
+  FileReader get fileToSend => throw _privateConstructorUsedError;
+  FileReader get teacherPublicKeyFile => throw _privateConstructorUsedError;
+  String get fileDigest => throw _privateConstructorUsedError;
+  String get fileSignature => throw _privateConstructorUsedError;
+  String get fileEncryption => throw _privateConstructorUsedError;
+  String get symmetricKeyEncryption => throw _privateConstructorUsedError;
+
+  /// Create a copy of Shipping
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ShippingCopyWith<Shipping> get copyWith =>
+      throw _privateConstructorUsedError;
+}
 
 /// @nodoc
 abstract class $ShippingCopyWith<$Res> {
   factory $ShippingCopyWith(Shipping value, $Res Function(Shipping) then) =
       _$ShippingCopyWithImpl<$Res, Shipping>;
+  @useResult
+  $Res call(
+      {String publicKey,
+      String privateKey,
+      String symmetricKey,
+      FileReader fileToSend,
+      FileReader teacherPublicKeyFile,
+      String fileDigest,
+      String fileSignature,
+      String fileEncryption,
+      String symmetricKeyEncryption});
+
+  $FileReaderCopyWith<$Res> get fileToSend;
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
 }
 
 /// @nodoc
@@ -1830,13 +1933,103 @@ class _$ShippingCopyWithImpl<$Res, $Val extends Shipping>
 
   /// Create a copy of Shipping
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = null,
+    Object? privateKey = null,
+    Object? symmetricKey = null,
+    Object? fileToSend = null,
+    Object? teacherPublicKeyFile = null,
+    Object? fileDigest = null,
+    Object? fileSignature = null,
+    Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = null,
+  }) {
+    return _then(_value.copyWith(
+      publicKey: null == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKey: null == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileToSend: null == fileToSend
+          ? _value.fileToSend
+          : fileToSend // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      teacherPublicKeyFile: null == teacherPublicKeyFile
+          ? _value.teacherPublicKeyFile
+          : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      fileDigest: null == fileDigest
+          ? _value.fileDigest
+          : fileDigest // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSignature: null == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileEncryption: null == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKeyEncryption: null == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+
+  /// Create a copy of Shipping
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileReaderCopyWith<$Res> get fileToSend {
+    return $FileReaderCopyWith<$Res>(_value.fileToSend, (value) {
+      return _then(_value.copyWith(fileToSend: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Shipping
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile {
+    return $FileReaderCopyWith<$Res>(_value.teacherPublicKeyFile, (value) {
+      return _then(_value.copyWith(teacherPublicKeyFile: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$ShippingImplCopyWith<$Res> {
+abstract class _$$ShippingImplCopyWith<$Res>
+    implements $ShippingCopyWith<$Res> {
   factory _$$ShippingImplCopyWith(
           _$ShippingImpl value, $Res Function(_$ShippingImpl) then) =
       __$$ShippingImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String publicKey,
+      String privateKey,
+      String symmetricKey,
+      FileReader fileToSend,
+      FileReader teacherPublicKeyFile,
+      String fileDigest,
+      String fileSignature,
+      String fileEncryption,
+      String symmetricKeyEncryption});
+
+  @override
+  $FileReaderCopyWith<$Res> get fileToSend;
+  @override
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
 }
 
 /// @nodoc
@@ -1849,36 +2042,199 @@ class __$$ShippingImplCopyWithImpl<$Res>
 
   /// Create a copy of Shipping
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = null,
+    Object? privateKey = null,
+    Object? symmetricKey = null,
+    Object? fileToSend = null,
+    Object? teacherPublicKeyFile = null,
+    Object? fileDigest = null,
+    Object? fileSignature = null,
+    Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = null,
+  }) {
+    return _then(_$ShippingImpl(
+      publicKey: null == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKey: null == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileToSend: null == fileToSend
+          ? _value.fileToSend
+          : fileToSend // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      teacherPublicKeyFile: null == teacherPublicKeyFile
+          ? _value.teacherPublicKeyFile
+          : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      fileDigest: null == fileDigest
+          ? _value.fileDigest
+          : fileDigest // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSignature: null == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileEncryption: null == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKeyEncryption: null == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
-  const _$ShippingImpl();
+  const _$ShippingImpl(
+      {required this.publicKey,
+      required this.privateKey,
+      required this.symmetricKey,
+      required this.fileToSend,
+      required this.teacherPublicKeyFile,
+      required this.fileDigest,
+      required this.fileSignature,
+      required this.fileEncryption,
+      required this.symmetricKeyEncryption});
+
+  @override
+  final String publicKey;
+  @override
+  final String privateKey;
+  @override
+  final String symmetricKey;
+  @override
+  final FileReader fileToSend;
+  @override
+  final FileReader teacherPublicKeyFile;
+  @override
+  final String fileDigest;
+  @override
+  final String fileSignature;
+  @override
+  final String fileEncryption;
+  @override
+  final String symmetricKeyEncryption;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Shipping()';
+    return 'Shipping(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'Shipping'));
+    properties
+      ..add(DiagnosticsProperty('type', 'Shipping'))
+      ..add(DiagnosticsProperty('publicKey', publicKey))
+      ..add(DiagnosticsProperty('privateKey', privateKey))
+      ..add(DiagnosticsProperty('symmetricKey', symmetricKey))
+      ..add(DiagnosticsProperty('fileToSend', fileToSend))
+      ..add(DiagnosticsProperty('teacherPublicKeyFile', teacherPublicKeyFile))
+      ..add(DiagnosticsProperty('fileDigest', fileDigest))
+      ..add(DiagnosticsProperty('fileSignature', fileSignature))
+      ..add(DiagnosticsProperty('fileEncryption', fileEncryption))
+      ..add(DiagnosticsProperty(
+          'symmetricKeyEncryption', symmetricKeyEncryption));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ShippingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ShippingImpl &&
+            (identical(other.publicKey, publicKey) ||
+                other.publicKey == publicKey) &&
+            (identical(other.privateKey, privateKey) ||
+                other.privateKey == privateKey) &&
+            (identical(other.symmetricKey, symmetricKey) ||
+                other.symmetricKey == symmetricKey) &&
+            (identical(other.fileToSend, fileToSend) ||
+                other.fileToSend == fileToSend) &&
+            (identical(other.teacherPublicKeyFile, teacherPublicKeyFile) ||
+                other.teacherPublicKeyFile == teacherPublicKeyFile) &&
+            (identical(other.fileDigest, fileDigest) ||
+                other.fileDigest == fileDigest) &&
+            (identical(other.fileSignature, fileSignature) ||
+                other.fileSignature == fileSignature) &&
+            (identical(other.fileEncryption, fileEncryption) ||
+                other.fileEncryption == fileEncryption) &&
+            (identical(other.symmetricKeyEncryption, symmetricKeyEncryption) ||
+                other.symmetricKeyEncryption == symmetricKeyEncryption));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      publicKey,
+      privateKey,
+      symmetricKey,
+      fileToSend,
+      teacherPublicKeyFile,
+      fileDigest,
+      fileSignature,
+      fileEncryption,
+      symmetricKeyEncryption);
+
+  /// Create a copy of Shipping
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ShippingImplCopyWith<_$ShippingImpl> get copyWith =>
+      __$$ShippingImplCopyWithImpl<_$ShippingImpl>(this, _$identity);
 }
 
 abstract class _Shipping implements Shipping {
-  const factory _Shipping() = _$ShippingImpl;
+  const factory _Shipping(
+      {required final String publicKey,
+      required final String privateKey,
+      required final String symmetricKey,
+      required final FileReader fileToSend,
+      required final FileReader teacherPublicKeyFile,
+      required final String fileDigest,
+      required final String fileSignature,
+      required final String fileEncryption,
+      required final String symmetricKeyEncryption}) = _$ShippingImpl;
+
+  @override
+  String get publicKey;
+  @override
+  String get privateKey;
+  @override
+  String get symmetricKey;
+  @override
+  FileReader get fileToSend;
+  @override
+  FileReader get teacherPublicKeyFile;
+  @override
+  String get fileDigest;
+  @override
+  String get fileSignature;
+  @override
+  String get fileEncryption;
+  @override
+  String get symmetricKeyEncryption;
+
+  /// Create a copy of Shipping
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ShippingImplCopyWith<_$ShippingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
