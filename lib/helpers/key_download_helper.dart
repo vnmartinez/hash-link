@@ -16,9 +16,9 @@ class KeyDownloadHelper {
     await _saveFile(privateKey, fileName);
   }
 
-  static Future<void> downloadSymmetricKey(List<int> symmetricKey) async {
+  static Future<void> downloadSymmetricKey(String symmetricKey) async {
     const String fileName = 'aes_key.key';
-    await _saveFile(symmetricKey.join(' '), fileName);
+    await _saveFile(symmetricKey, fileName);
   }
 
   static Future<void> _saveFile(String content, String fileName) async {

@@ -37,3 +37,8 @@ class SelectFileToSend extends GenerateKeyEvent with _$SelectFileToSend {
 class ClearSelectedFile extends GenerateKeyEvent {
   ClearSelectedFile();
 }
+
+@blocEvent
+class Signin extends GenerateKeyEvent with _$Signin {
+  const factory Signin() = _Signin;
+}

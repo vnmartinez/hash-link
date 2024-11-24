@@ -5,6 +5,7 @@ import 'package:hash_link/core/annotations.dart';
 import 'package:hash_link/helpers/aes_key_helper.dart';
 import 'package:hash_link/helpers/file_reader_helper.dart';
 import 'package:hash_link/helpers/rsa_key_helper.dart';
+import 'package:hash_link/helpers/secure_file_helper.dart';
 
 part 'generate_key_event.dart';
 part 'generate_key_state.dart';
@@ -30,8 +31,14 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
           symmetricKey: state.symmetricKey!,
         ));
         return;
-      } else if (state is Preparation) {
-        emit(const Signature());
+      } else if (state is Preparation && state.isValid) {
+        emit(Signature(
+          publicKey: state.publicKey,
+          privateKey: state.privateKey,
+          symmetricKey: state.symmetricKey,
+          fileToSend: state.fileToSend!,
+          teacherPublicKeyFile: state.teacherPublicKeyFile!,
+        ));
         return;
       } else if (state is Signature) {
         emit(const Protection());
@@ -67,7 +74,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
 
         if (publicKey != null && privateKey != null) {
           final aesKey = AESKeyHelper.generateAESKey();
-          emit(state.copyWith(symmetricKey: aesKey));
+          emit(state.copyWith(symmetricKey: AESKeyHelper.keyToBase64(aesKey)));
         }
       }
     });
@@ -100,6 +107,17 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
 
         final file = FileReader.fromPlatformFile(pickeFiles.files.single);
         emit(state.copyWith(fileToSend: file));
+      }
+    });
+
+    on<Signin>((event, emit) {
+      var state = this.state;
+      if (state is Signature) {
+        final privateKey =
+            RSAKeyHelper.parsePrivateKeyFromPem(state.privateKey);
+        final signature = SecureFileHelper.signFile(
+            Uint8List.fromList(state.fileToSend.bytes), privateKey);
+        print(signature);
       }
     });
   }

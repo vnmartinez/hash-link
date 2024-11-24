@@ -20,4 +20,29 @@ class AESKeyHelper {
   static Uint8List base64ToKey(String base64Key) {
     return Uint8List.fromList(base64.decode(base64Key));
   }
+
+  static Uint8List encryptWithAES(Uint8List data, Uint8List aesKey) {
+    final iv = Uint8List(16);
+    final secureRandom = pc.FortunaRandom();
+    secureRandom.seed(
+        pc.KeyParameter(Uint8List.fromList(List.generate(32, (i) => i + 1))));
+    secureRandom.nextBytes(iv.length);
+
+    final cipher = pc.PaddedBlockCipher('AES/CBC/PKCS7')
+      ..init(true, pc.ParametersWithIV(pc.KeyParameter(aesKey), iv));
+
+    final encryptedData = cipher.process(data);
+
+    return Uint8List.fromList(iv + encryptedData);
+  }
+
+  static Uint8List decryptWithAES(Uint8List encryptedData, Uint8List aesKey) {
+    final iv = encryptedData.sublist(0, 16);
+    final ciphertext = encryptedData.sublist(16);
+
+    final cipher = pc.PaddedBlockCipher('AES/CBC/PKCS7')
+      ..init(false, pc.ParametersWithIV(pc.KeyParameter(aesKey), iv));
+
+    return cipher.process(ciphertext);
+  }
 }

@@ -7,7 +7,7 @@ class KeyGeneration extends GenerateKeyState with _$KeyGeneration {
   const factory KeyGeneration({
     String? publicKey,
     String? privateKey,
-    Uint8List? symmetricKey,
+    String? symmetricKey,
   }) = _KeyGeneration;
 }
 
@@ -16,7 +16,7 @@ class Preparation extends GenerateKeyState with _$Preparation {
   const factory Preparation({
     required String publicKey,
     required String privateKey,
-    required Uint8List symmetricKey,
+    required String symmetricKey,
     FileReader? teacherPublicKeyFile,
     @Default(false) bool selectingTeacherPublicKeyFile,
     FileReader? fileToSend,
@@ -26,7 +26,13 @@ class Preparation extends GenerateKeyState with _$Preparation {
 
 @blocState
 class Signature extends GenerateKeyState with _$Signature {
-  const factory Signature() = _Signature;
+  const factory Signature({
+    required String publicKey,
+    required String privateKey,
+    required String symmetricKey,
+    required FileReader fileToSend,
+    required FileReader teacherPublicKeyFile,
+  }) = _Signature;
 }
 
 @blocState

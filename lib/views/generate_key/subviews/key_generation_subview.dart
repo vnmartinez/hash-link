@@ -260,9 +260,9 @@ class KeyGenerationSubview extends StatelessWidget {
                         margin: const EdgeInsets.only(top: AppSpacing.md),
                         child: _KeyCard(
                           title: 'Chave AES',
-                          content: state.symmetricKey!.join(' '),
-                          onCopy: () => _copyToClipboard(
-                              context, state.symmetricKey!.join(' ')),
+                          content: state.symmetricKey!,
+                          onCopy: () =>
+                              _copyToClipboard(context, state.symmetricKey!),
                           onDownload: () =>
                               KeyDownloadHelper.downloadSymmetricKey(
                                   state.symmetricKey!),
