@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/core/annotations.dart';
 import 'package:hash_link/helpers/aes_key_helper.dart';
+import 'package:hash_link/helpers/digest_helper.dart';
 import 'package:hash_link/helpers/file_reader_helper.dart';
 import 'package:hash_link/helpers/rsa_key_helper.dart';
 
@@ -48,6 +49,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
           symmetricKey: state.symmetricKey,
           fileToSend: state.fileToSend,
           teacherPublicKeyFile: state.teacherPublicKeyFile,
+          fileDigest: state.fileDigest!,
           fileSignature: state.fileSignature!,
           fileEncryption: state.fileEncryption!,
         ));
@@ -125,13 +127,15 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
     on<SignAndEncryptFile>((event, emit) {
       var state = this.state;
       if (state is Signature) {
+        final fileBytes = Uint8List.fromList(state.fileToSend.bytes);
+
         final privateKey =
             RSAKeyHelper.parsePrivateKeyFromPem(state.privateKey);
-        final fileSignature = RSAKeyHelper.signWithPrivateKey(
-            Uint8List.fromList(state.fileToSend.bytes), privateKey);
+        final fileDigest = DigestHelper.create(fileBytes);
+        final fileSignature =
+            RSAKeyHelper.signWithPrivateKey(fileDigest, privateKey);
         final signatureEncryption = AESKeyHelper.encryptWithAES(
-            Uint8List.fromList(state.fileToSend.bytes),
-            base64.decode(state.symmetricKey));
+            fileBytes, base64.decode(state.symmetricKey));
 
         emit(state.copyWith(
           fileSignature: base64.encode(fileSignature),

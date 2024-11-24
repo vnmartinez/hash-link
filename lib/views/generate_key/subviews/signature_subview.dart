@@ -91,6 +91,16 @@ class SignatureSubview extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (state.fileDigest != null)
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Digest'),
+                        Text(state.fileDigest!),
+                      ],
+                    ),
+                  ),
+                const SizedBox(width: 30),
                 if (state.fileSignature != null)
                   Expanded(
                     child: Column(

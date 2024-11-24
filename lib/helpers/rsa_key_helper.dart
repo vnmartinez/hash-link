@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:crypto/crypto.dart' as crypto;
 
 import 'package:pointycastle/asn1/asn1_parser.dart' as asn1_parser;
 import 'package:pointycastle/asn1/primitives/asn1_integer.dart' as asn1_integer;
@@ -127,15 +126,23 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     return pc.RSAPrivateKey(modulus!, privateExponent!, p!, q!);
   }
 
+  static Uint8List signWithPublicKey(
+      Uint8List data, pc.RSAPublicKey privateKey) {
+    final signer = pc.Signer('SHA-256/RSA')
+      ..init(true, pc.PublicKeyParameter<pc.RSAPublicKey>(privateKey));
+
+    final signature =
+        signer.generateSignature(Uint8List.fromList(data)) as pc.RSASignature;
+    return signature.bytes;
+  }
+
   static Uint8List signWithPrivateKey(
       Uint8List data, pc.RSAPrivateKey privateKey) {
-    final sha256Digest = crypto.sha256.convert(data);
     final signer = pc.Signer('SHA-256/RSA')
       ..init(true, pc.PrivateKeyParameter<pc.RSAPrivateKey>(privateKey));
 
     final signature =
-        signer.generateSignature(Uint8List.fromList(sha256Digest.bytes))
-            as pc.RSASignature;
+        signer.generateSignature(Uint8List.fromList(data)) as pc.RSASignature;
     return signature.bytes;
   }
 }
