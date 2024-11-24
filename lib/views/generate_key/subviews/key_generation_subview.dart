@@ -44,6 +44,33 @@ class KeyGenerationSubview extends StatelessWidget {
       ''',
       'icon': Icons.lightbulb_outline,
     },
+    'Curiosidades': {
+      'content': '''
+      • É usado por grandes empresas como Google, Amazon e bancos
+      • O recorde de quebra do RSA é de 829 bits (2020)
+      • Quanto maior a chave, mais seguro, mas mais lento
+      • É usado em certificados digitais HTTPS
+      ''',
+      'icon': Icons.psychology,
+    },
+    'Aplicações Práticas': {
+      'content': '''
+      • Assinatura digital de documentos
+      • Proteção de e-mails (PGP)
+      • Autenticação em sistemas
+      • Certificados SSL/TLS
+      ''',
+      'icon': Icons.work,
+    },
+    'Limitações': {
+      'content': '''
+      • Processo de cifragem lento para grandes volumes
+      • Requer gerenciamento seguro das chaves
+      • Vulnerável a ataques quânticos no futuro
+      • Tamanho das chaves cresce com o tempo
+      ''',
+      'icon': Icons.warning_amber,
+    },
   };
 
   static const Map<String, Map<String, dynamic>> aesDetailedInfo = {
@@ -80,7 +107,34 @@ class KeyGenerationSubview extends StatelessWidget {
       • Implemente rotação periódica de chaves
       ''',
       'icon': Icons.warning,
-    }
+    },
+    'Curiosidades': {
+      'content': '''
+      • Foi escolhido após 5 anos de testes e análises
+      • É resistente a ataques quânticos conhecidos
+      • Usado pela NSA para documentos top-secret
+      • Processa dados 6x mais rápido que o DES
+      ''',
+      'icon': Icons.psychology,
+    },
+    'Comparação com outros': {
+      'content': '''
+      • Mais seguro que DES e 3DES
+      • Mais rápido que Blowfish
+      • Menor consumo de memória que RC6
+      • Mais fácil de implementar que Twofish
+      ''',
+      'icon': Icons.compare_arrows,
+    },
+    'Aplicações Práticas': {
+      'content': '''
+      • Criptografia de discos rígidos
+      • Proteção de redes Wi-Fi (WPA2/3)
+      • VPNs e túneis seguros
+      • Armazenamento em nuvem
+      ''',
+      'icon': Icons.work,
+    },
   };
 
   const KeyGenerationSubview({super.key});
