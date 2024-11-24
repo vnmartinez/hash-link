@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:hash_link/helpers/rsa_key_helper.dart';
 
 part 'generate_key_event.dart';
 part 'generate_key_state.dart';
-
 part 'generate_key_bloc.freezed.dart';
 
 class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {

@@ -60,121 +60,147 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
+      padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
             AppColors.primary,
+            AppColors.primary.withOpacity(0.8),
             AppColors.accent,
           ],
-          stops: [0.3, 1.0],
+          stops: const [0.0, 0.5, 1.0],
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: AppShadows.low,
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
-        ),
+        boxShadow: AppShadows.medium,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTypography.h2.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTypography.h2.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xs,
+                        vertical: AppSpacing.xxs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                      ),
+                      child: Text(
+                        subtitle,
+                        style: AppTypography.bodyMedium.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: AppSpacing.xs),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm,
-                    vertical: AppSpacing.xs / 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(AppRadius.circular),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 1,
+              ),
+              if (logoPath != null) ...[
+                const SizedBox(width: AppSpacing.md),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.xxs),
+                    child: Image.asset(
+                      logoPath!,
+                      height: 80,
+                      width: 200,
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  child: Text(
-                    subtitle,
-                    style:
-                        AppTypography.bodyMedium.copyWith(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.xs,
-                  alignment: WrapAlignment.start,
-                  children: features
-                      .map((feature) =>
-                          _buildFeatureItem(feature.$2, feature.$1, feature.$3))
-                      .toList(),
                 ),
               ],
-            ),
+            ],
           ),
-          if (logoPath != null) ...[
-            const SizedBox(width: AppSpacing.md),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.sm),
-              child: Image.asset(
-                logoPath!,
-                height: 120,
-                width: 240,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ],
+          const SizedBox(height: AppSpacing.sm),
+          _buildFeaturesList(),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureItem(IconData icon, String text, [String? tooltip]) {
-    return Tooltip(
-      message: tooltip ?? text,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm,
-          vertical: AppSpacing.xs,
-        ),
+  Widget _buildFeaturesList() {
+    return Wrap(
+      spacing: AppSpacing.xxs,
+      runSpacing: AppSpacing.xxs,
+      children: features
+          .map((feature) => _buildFeatureItem(
+                icon: feature.$2,
+                text: feature.$1,
+                tooltip: feature.$3,
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildFeatureItem({
+    required IconData icon,
+    required String text,
+    String? tooltip,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: Tooltip(
+        message: tooltip ?? text,
+        textStyle: AppTypography.bodySmall.copyWith(color: Colors.white),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.2),
-            width: 1,
-          ),
+          color: Colors.black87,
+          borderRadius: BorderRadius.circular(AppRadius.xs),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: AppSpacing.xs),
-            Text(
-              text,
-              style: AppTypography.bodyMedium.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.sm,
+              vertical: AppSpacing.xs,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+                width: 0.5,
               ),
             ),
-          ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  text,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

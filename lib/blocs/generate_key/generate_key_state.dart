@@ -72,4 +72,6 @@ extension PreparationExtension on Preparation {
 
 extension SignatureExtension on Signature {
   bool get isValid => fileSignature != null && fileEncryption != null;
+  bool get hasRequiredKeys =>
+      publicKey.isNotEmpty && privateKey.isNotEmpty && symmetricKey.isNotEmpty;
 }

@@ -14,7 +14,7 @@ void main() async {
     await windowManager.waitUntilReadyToShow();
     await windowManager.setTitle('Hash Link');
     await windowManager.setMinimumSize(const Size(1366, 768));
-    await windowManager.setSize(const Size(1920, 1080));
+    await windowManager.setSize(const Size(1366, 768));
     await windowManager.center();
     await windowManager.show();
   }
