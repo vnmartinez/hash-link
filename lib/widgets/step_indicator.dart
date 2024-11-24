@@ -9,6 +9,17 @@ class StepIndicator extends StatefulWidget {
   final int currentStep;
   final List<String> steps;
 
+  static const Map<String, String> stepDescriptions = {
+    'Geração de Chaves':
+        'Crie suas chaves RSA e AES para garantir a segurança da comunicação',
+    'Preparação': 'Configure o ambiente e selecione o arquivo a ser protegido',
+    'Assinatura':
+        'Assine digitalmente o arquivo para garantir sua autenticidade',
+    'Proteção': 'Proteja a chave simétrica usando criptografia assimétrica',
+    'Envio': 'Prepare e envie o pacote criptografado',
+    'Descriptografia': 'Processo de recuperação do arquivo original',
+  };
+
   const StepIndicator({
     super.key,
     required this.currentStep,
@@ -134,6 +145,16 @@ class _StepIndicatorState extends State<StepIndicator> {
             )
           ],
         ),
+        if (isCurrent)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.sm),
+            child: Text(
+              StepIndicator.stepDescriptions[widget.steps[index]] ?? '',
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.grey700,
+              ),
+            ),
+          ),
       ],
     );
   }
