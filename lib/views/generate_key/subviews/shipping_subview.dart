@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
 
 class ShippingSubview extends StatelessWidget {
   const ShippingSubview({super.key});
@@ -90,7 +92,8 @@ class ShippingSubview extends StatelessWidget {
           flex: 2,
           child: Center(
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () =>
+                  context.read<GenerateKeyBloc>().add(const SendPackage()),
               icon: const Icon(Icons.send),
               label: const Text('Enviar Pacote'),
               style: ElevatedButton.styleFrom(

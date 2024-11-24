@@ -62,7 +62,7 @@ class GenerateKeyView extends StatelessWidget {
           widget: const ShippingSubview(),
           hasPrevious: true,
           hasNext: true,
-          canNext: true,
+          canNext: state.isValid,
         ),
       Decryption() => (
           step: 6,
