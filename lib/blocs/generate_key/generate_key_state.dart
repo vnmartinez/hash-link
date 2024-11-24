@@ -96,6 +96,7 @@ class Shipping extends GenerateKeyState with _$Shipping {
     required String fileSignature,
     required String fileEncryption,
     required String symmetricKeyEncryption,
+    @Default(false) bool packageSended,
   }) = _Shipping;
 
   factory Shipping.fromValidProtection(Protection state) {
@@ -135,4 +136,8 @@ extension SignatureExtension on Signature {
 
 extension ProtectionExtension on Protection {
   bool get isValid => symmetricKeyEncryption != null;
+}
+
+extension ShippingExtension on Shipping {
+  bool get isValid => packageSended;
 }

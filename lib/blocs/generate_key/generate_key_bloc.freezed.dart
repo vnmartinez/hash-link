@@ -1893,6 +1893,7 @@ mixin _$Shipping {
   String get fileSignature => throw _privateConstructorUsedError;
   String get fileEncryption => throw _privateConstructorUsedError;
   String get symmetricKeyEncryption => throw _privateConstructorUsedError;
+  bool get packageSended => throw _privateConstructorUsedError;
 
   /// Create a copy of Shipping
   /// with the given fields replaced by the non-null parameter values.
@@ -1915,7 +1916,8 @@ abstract class $ShippingCopyWith<$Res> {
       String fileDigest,
       String fileSignature,
       String fileEncryption,
-      String symmetricKeyEncryption});
+      String symmetricKeyEncryption,
+      bool packageSended});
 
   $FileReaderCopyWith<$Res> get fileToSend;
   $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
@@ -1945,6 +1947,7 @@ class _$ShippingCopyWithImpl<$Res, $Val extends Shipping>
     Object? fileSignature = null,
     Object? fileEncryption = null,
     Object? symmetricKeyEncryption = null,
+    Object? packageSended = null,
   }) {
     return _then(_value.copyWith(
       publicKey: null == publicKey
@@ -1983,6 +1986,10 @@ class _$ShippingCopyWithImpl<$Res, $Val extends Shipping>
           ? _value.symmetricKeyEncryption
           : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
               as String,
+      packageSended: null == packageSended
+          ? _value.packageSended
+          : packageSended // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -2024,7 +2031,8 @@ abstract class _$$ShippingImplCopyWith<$Res>
       String fileDigest,
       String fileSignature,
       String fileEncryption,
-      String symmetricKeyEncryption});
+      String symmetricKeyEncryption,
+      bool packageSended});
 
   @override
   $FileReaderCopyWith<$Res> get fileToSend;
@@ -2054,6 +2062,7 @@ class __$$ShippingImplCopyWithImpl<$Res>
     Object? fileSignature = null,
     Object? fileEncryption = null,
     Object? symmetricKeyEncryption = null,
+    Object? packageSended = null,
   }) {
     return _then(_$ShippingImpl(
       publicKey: null == publicKey
@@ -2092,6 +2101,10 @@ class __$$ShippingImplCopyWithImpl<$Res>
           ? _value.symmetricKeyEncryption
           : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
               as String,
+      packageSended: null == packageSended
+          ? _value.packageSended
+          : packageSended // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2108,7 +2121,8 @@ class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
       required this.fileDigest,
       required this.fileSignature,
       required this.fileEncryption,
-      required this.symmetricKeyEncryption});
+      required this.symmetricKeyEncryption,
+      this.packageSended = false});
 
   @override
   final String publicKey;
@@ -2128,10 +2142,13 @@ class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
   final String fileEncryption;
   @override
   final String symmetricKeyEncryption;
+  @override
+  @JsonKey()
+  final bool packageSended;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Shipping(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption)';
+    return 'Shipping(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption, packageSended: $packageSended)';
   }
 
   @override
@@ -2147,8 +2164,9 @@ class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
       ..add(DiagnosticsProperty('fileDigest', fileDigest))
       ..add(DiagnosticsProperty('fileSignature', fileSignature))
       ..add(DiagnosticsProperty('fileEncryption', fileEncryption))
-      ..add(DiagnosticsProperty(
-          'symmetricKeyEncryption', symmetricKeyEncryption));
+      ..add(
+          DiagnosticsProperty('symmetricKeyEncryption', symmetricKeyEncryption))
+      ..add(DiagnosticsProperty('packageSended', packageSended));
   }
 
   @override
@@ -2173,7 +2191,9 @@ class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
             (identical(other.fileEncryption, fileEncryption) ||
                 other.fileEncryption == fileEncryption) &&
             (identical(other.symmetricKeyEncryption, symmetricKeyEncryption) ||
-                other.symmetricKeyEncryption == symmetricKeyEncryption));
+                other.symmetricKeyEncryption == symmetricKeyEncryption) &&
+            (identical(other.packageSended, packageSended) ||
+                other.packageSended == packageSended));
   }
 
   @override
@@ -2187,7 +2207,8 @@ class _$ShippingImpl with DiagnosticableTreeMixin implements _Shipping {
       fileDigest,
       fileSignature,
       fileEncryption,
-      symmetricKeyEncryption);
+      symmetricKeyEncryption,
+      packageSended);
 
   /// Create a copy of Shipping
   /// with the given fields replaced by the non-null parameter values.
@@ -2208,7 +2229,8 @@ abstract class _Shipping implements Shipping {
       required final String fileDigest,
       required final String fileSignature,
       required final String fileEncryption,
-      required final String symmetricKeyEncryption}) = _$ShippingImpl;
+      required final String symmetricKeyEncryption,
+      final bool packageSended}) = _$ShippingImpl;
 
   @override
   String get publicKey;
@@ -2228,6 +2250,8 @@ abstract class _Shipping implements Shipping {
   String get fileEncryption;
   @override
   String get symmetricKeyEncryption;
+  @override
+  bool get packageSended;
 
   /// Create a copy of Shipping
   /// with the given fields replaced by the non-null parameter values.

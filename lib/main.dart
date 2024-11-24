@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import 'package:hash_link/helpers/zip_helper.dart';
 import 'package:hash_link/views/generate_key/generate_key_view.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -19,9 +20,15 @@ void main() async {
     await windowManager.show();
   }
 
+  final filePicker = FilePicker.platform;
+  final zipHelper = ZipHelper(filePicker: filePicker);
+
   runApp(
     BlocProvider(
-      create: (_) => GenerateKeyBloc(filePicker: FilePicker.platform),
+      create: (_) => GenerateKeyBloc(
+        filePicker: filePicker,
+        zipHelper: zipHelper,
+      ),
       child: const MaterialApp(
         home: GenerateKeyView(),
       ),

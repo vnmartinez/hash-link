@@ -7,6 +7,7 @@ import 'package:hash_link/helpers/aes_key_helper.dart';
 import 'package:hash_link/helpers/digest_helper.dart';
 import 'package:hash_link/helpers/file_reader_helper.dart';
 import 'package:hash_link/helpers/rsa_key_helper.dart';
+import 'package:hash_link/helpers/zip_helper.dart';
 
 part 'generate_key_event.dart';
 part 'generate_key_state.dart';
@@ -14,11 +15,14 @@ part 'generate_key_bloc.freezed.dart';
 
 class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
   final FilePicker _filePicker;
+  final ZipHelper _zipHelper;
 
   final _states = <GenerateKeyState>[];
 
-  GenerateKeyBloc({required FilePicker filePicker})
+  GenerateKeyBloc(
+      {required FilePicker filePicker, required ZipHelper zipHelper})
       : _filePicker = filePicker,
+        _zipHelper = zipHelper,
         super(const KeyGeneration()) {
     on<NextStep>((event, emit) {
       final state = this.state;
@@ -141,9 +145,23 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
       }
     });
 
-    on<SendPackage>((event, emit) {
+    on<SendPackage>((event, emit) async {
       final state = this.state;
-      if (state is Shipping) {}
+      if (state is Shipping) {
+        final fileEncripted = base64.decode(state.fileEncryption);
+        final signature = base64.decode(state.fileSignature);
+        final symmetricKey = base64.decode(state.symmetricKeyEncryption);
+        final publicKey = utf8.encode(state.publicKey);
+
+        await _zipHelper.zipAndSaveLocal('package', [
+          ZipData(name: 'data_encrypted.aes', bytes: fileEncripted),
+          ZipData(name: 'aes_key.rsa', bytes: symmetricKey),
+          ZipData(name: 'signature.sig', bytes: signature),
+          ZipData(name: 'public_key.pem', bytes: publicKey),
+        ]);
+
+        emit(state.copyWith(packageSended: true));
+      }
     });
   }
 }
