@@ -39,6 +39,11 @@ class ClearSelectedFile extends GenerateKeyEvent {
 }
 
 @blocEvent
-class Signin extends GenerateKeyEvent with _$Signin {
-  const factory Signin() = _Signin;
+class SignAndEncryptFile extends GenerateKeyEvent with _$SignAndEncryptFile {
+  const factory SignAndEncryptFile() = _SignAndEncryptFile;
+}
+
+@blocEvent
+class ProtectAES extends GenerateKeyEvent with _$ProtectAES {
+  const factory ProtectAES() = _ProtectAES;
 }

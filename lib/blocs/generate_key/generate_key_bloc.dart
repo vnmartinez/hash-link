@@ -41,8 +41,16 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
           teacherPublicKeyFile: state.teacherPublicKeyFile!,
         ));
         return;
-      } else if (state is Signature) {
-        emit(const Protection());
+      } else if (state is Signature && state.isValid) {
+        emit(Protection(
+          publicKey: state.publicKey,
+          privateKey: state.privateKey,
+          symmetricKey: state.symmetricKey,
+          fileToSend: state.fileToSend,
+          teacherPublicKeyFile: state.teacherPublicKeyFile,
+          fileSignature: state.fileSignature!,
+          fileEncryption: state.fileEncryption!,
+        ));
         return;
       } else if (state is Protection) {
         emit(const Shipping());
@@ -114,7 +122,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
       }
     });
 
-    on<Signin>((event, emit) {
+    on<SignAndEncryptFile>((event, emit) {
       var state = this.state;
       if (state is Signature) {
         final privateKey =

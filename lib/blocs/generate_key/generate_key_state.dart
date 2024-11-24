@@ -39,7 +39,15 @@ class Signature extends GenerateKeyState with _$Signature {
 
 @blocState
 class Protection extends GenerateKeyState with _$Protection {
-  const factory Protection() = _Protection;
+  const factory Protection({
+    required String publicKey,
+    required String privateKey,
+    required String symmetricKey,
+    required FileReader fileToSend,
+    required FileReader teacherPublicKeyFile,
+    required String fileSignature,
+    required String fileEncryption,
+  }) = _Protection;
 }
 
 @blocState

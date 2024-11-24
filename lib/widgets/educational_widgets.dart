@@ -23,7 +23,7 @@ class SecurityTips extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.security,
                   color: AppColors.primary,
                 ),

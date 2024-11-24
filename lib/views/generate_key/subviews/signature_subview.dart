@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-import 'package:hash_link/views/generate_key/subviews/preparation_subview.dart';
 
 class SignatureSubview extends StatelessWidget {
   const SignatureSubview({super.key});
@@ -75,7 +74,7 @@ class SignatureSubview extends StatelessWidget {
         Center(
           child: ElevatedButton.icon(
             onPressed: () =>
-                context.read<GenerateKeyBloc>().add(const Signin()),
+                context.read<GenerateKeyBloc>().add(const SignAndEncryptFile()),
             icon: const Icon(Icons.play_arrow),
             label: const Text('Iniciar Processo'),
             style: ElevatedButton.styleFrom(
