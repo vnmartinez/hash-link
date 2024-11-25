@@ -46,8 +46,8 @@ class _StepIndicatorState extends State<StepIndicator> {
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.all(AppSpacing.md),
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          margin: const EdgeInsets.all(AppSpacing.containerSm),
+          padding: const EdgeInsets.all(AppSpacing.containerSm),
           constraints: const BoxConstraints(
             minWidth: 600,
             maxWidth: 800,
@@ -135,13 +135,17 @@ class _StepIndicatorState extends State<StepIndicator> {
       children: [
         Row(
           children: [
-            Text(
-              widget.steps[index],
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: _getTextColor(isCompleted, isCurrent, theme),
-                fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+            Flexible(
+              child: Text(
+                widget.steps[index],
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: _getTextColor(isCompleted, isCurrent, theme),
+                  fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
               ),
-            )
+            ),
           ],
         ),
         if (isCurrent)
@@ -152,6 +156,8 @@ class _StepIndicatorState extends State<StepIndicator> {
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
+              overflow: TextOverflow.visible,
+              softWrap: true,
             ),
           ),
       ],

@@ -4,7 +4,8 @@ import 'theme_event.dart';
 import 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(ThemeState()) {
+  ThemeBloc({required ThemeMode initialThemeMode})
+      : super(ThemeState(themeMode: initialThemeMode)) {
     on<ToggleThemeEvent>(_onToggleTheme);
     on<SetThemeEvent>(_onSetTheme);
   }

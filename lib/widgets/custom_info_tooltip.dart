@@ -33,8 +33,8 @@ class CustomInfoTooltip extends StatelessWidget {
             ),
           ),
         ),
-        padding: const EdgeInsets.all(AppSpacing.md),
-        margin: const EdgeInsets.all(AppSpacing.sm),
+        padding: const EdgeInsets.all(AppSpacing.containerSm),
+        margin: const EdgeInsets.all(AppSpacing.containerSm),
         decoration: BoxDecoration(
           color: theme.colorScheme.inverseSurface.withOpacity(0.95),
           borderRadius: BorderRadius.circular(AppRadius.md),

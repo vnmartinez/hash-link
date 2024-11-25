@@ -393,8 +393,10 @@ class SignatureSubview extends StatelessWidget {
         return Column(
           children: [
             Center(
-              child: SizedBox(
-                width: 300,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width < 600 ? 280 : 300,
+                ),
                 child: ElevatedButton(
                   onPressed: hasSignature
                       ? null
@@ -427,16 +429,20 @@ class SignatureSubview extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(hasSignature
                           ? Icons.check_circle
                           : Icons.enhanced_encryption),
                       const SizedBox(width: AppSpacing.md),
-                      Text(
-                        hasSignature
-                            ? 'Assinado com sucesso'
-                            : 'Assinar e Cifrar Documento',
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      Flexible(
+                        child: Text(
+                          hasSignature
+                              ? 'Assinado com sucesso'
+                              : 'Assinar e Cifrar',
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),

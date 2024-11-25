@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
@@ -16,19 +17,39 @@ class FilePreviewHelper {
     if (kDebugMode) {
       print('DEBUG: Abrindo modal de preview para arquivo: $fileName');
     }
+
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: Container(
             constraints: BoxConstraints(
               maxWidth: 800,
               maxHeight: MediaQuery.of(context).size.height * 0.8,
             ),
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? [
+                        theme.cardTheme.color ?? Colors.grey[900]!,
+                        Colors.grey[850]!,
+                      ]
+                    : [
+                        Colors.white,
+                        AppColors.grey50,
+                      ],
+              ),
+            ),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -39,21 +60,19 @@ class FilePreviewHelper {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Visualização do Arquivo',
-                            style: TextStyle(
-                              fontSize: 20,
+                            style: theme.textTheme.headlineSmall?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: AppColors.grey900,
+                              color: AppColors.primary,
                             ),
                           ),
                           if (fileName != null) ...[
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppSpacing.sm),
                             Text(
                               fileName,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: AppColors.grey700,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.textTheme.bodyMedium?.color,
                                 fontStyle: FontStyle.italic,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -63,17 +82,27 @@ class FilePreviewHelper {
                         ],
                       ),
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () => Navigator.of(context).pop(),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.close,
-                            color: AppColors.grey700,
-                            size: 24,
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: AppColors.primary,
+                              size: 24,
+                            ),
                           ),
                         ),
                       ),
@@ -81,7 +110,7 @@ class FilePreviewHelper {
                   ],
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                   child: Divider(height: 1),
                 ),
                 Expanded(
