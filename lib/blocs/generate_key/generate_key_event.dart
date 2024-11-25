@@ -3,6 +3,11 @@ part of 'generate_key_bloc.dart';
 sealed class GenerateKeyEvent {}
 
 @blocEvent
+class ResetGenerateKey extends GenerateKeyEvent with _$ResetGenerateKey {
+  const factory ResetGenerateKey() = _ResetGenerateKey;
+}
+
+@blocEvent
 class NextStep extends GenerateKeyEvent with _$NextStep {
   const factory NextStep() = _NextStep;
 }

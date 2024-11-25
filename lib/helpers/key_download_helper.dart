@@ -7,17 +7,17 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class KeyDownloadHelper {
   static Future<void> downloadPublicKey(String publicKey) async {
-    const String fileName = 'public_key.pub';
+    const String fileName = 'public_key.pem';
     await _saveFile(publicKey, fileName);
   }
 
   static Future<void> downloadPrivateKey(String privateKey) async {
-    const String fileName = 'private_key.key';
+    const String fileName = 'private_key.pem';
     await _saveFile(privateKey, fileName);
   }
 
   static Future<void> downloadSymmetricKey(String symmetricKey) async {
-    const String fileName = 'aes_key.key';
+    const String fileName = 'symmetric.key';
     await _saveFile(symmetricKey, fileName);
   }
 

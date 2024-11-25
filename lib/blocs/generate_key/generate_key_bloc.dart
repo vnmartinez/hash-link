@@ -24,6 +24,11 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
       : _filePicker = filePicker,
         _zipHelper = zipHelper,
         super(const KeyGeneration()) {
+    on<ResetGenerateKey>((event, emit) {
+      emit(const KeyGeneration());
+      _states.clear();
+    });
+
     on<NextStep>((event, emit) {
       final state = this.state;
       _states.add(state);

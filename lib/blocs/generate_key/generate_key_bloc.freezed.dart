@@ -15,6 +15,81 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$ResetGenerateKey {}
+
+/// @nodoc
+abstract class $ResetGenerateKeyCopyWith<$Res> {
+  factory $ResetGenerateKeyCopyWith(
+          ResetGenerateKey value, $Res Function(ResetGenerateKey) then) =
+      _$ResetGenerateKeyCopyWithImpl<$Res, ResetGenerateKey>;
+}
+
+/// @nodoc
+class _$ResetGenerateKeyCopyWithImpl<$Res, $Val extends ResetGenerateKey>
+    implements $ResetGenerateKeyCopyWith<$Res> {
+  _$ResetGenerateKeyCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ResetGenerateKey
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$ResetGenerateKeyImplCopyWith<$Res> {
+  factory _$$ResetGenerateKeyImplCopyWith(_$ResetGenerateKeyImpl value,
+          $Res Function(_$ResetGenerateKeyImpl) then) =
+      __$$ResetGenerateKeyImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ResetGenerateKeyImplCopyWithImpl<$Res>
+    extends _$ResetGenerateKeyCopyWithImpl<$Res, _$ResetGenerateKeyImpl>
+    implements _$$ResetGenerateKeyImplCopyWith<$Res> {
+  __$$ResetGenerateKeyImplCopyWithImpl(_$ResetGenerateKeyImpl _value,
+      $Res Function(_$ResetGenerateKeyImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ResetGenerateKey
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ResetGenerateKeyImpl
+    with DiagnosticableTreeMixin
+    implements _ResetGenerateKey {
+  const _$ResetGenerateKeyImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ResetGenerateKey()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'ResetGenerateKey'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ResetGenerateKeyImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _ResetGenerateKey implements ResetGenerateKey {
+  const factory _ResetGenerateKey() = _$ResetGenerateKeyImpl;
+}
+
+/// @nodoc
 mixin _$NextStep {}
 
 /// @nodoc

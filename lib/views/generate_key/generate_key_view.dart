@@ -13,12 +13,25 @@ import 'package:hash_link/widgets/action_buttons.dart';
 import '../../theme/app_spacing.dart';
 import '../../widgets/custom_toast.dart';
 
-class GenerateKeyView extends StatelessWidget {
+class GenerateKeyView extends StatefulWidget {
   const GenerateKeyView({super.key});
+
+  static const route = '/generate-key';
 
   static void showToast(BuildContext context, String message,
       {ToastType type = ToastType.info}) {
     CustomToast.show(context, message, type: type);
+  }
+
+  @override
+  State<GenerateKeyView> createState() => _GenerateKeyViewState();
+}
+
+class _GenerateKeyViewState extends State<GenerateKeyView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<GenerateKeyBloc>().add(const ResetGenerateKey());
   }
 
   ({
