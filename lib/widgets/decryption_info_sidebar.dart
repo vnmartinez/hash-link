@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_spacing.dart';
-import '../theme/app_typography.dart';
 import '../widgets/custom_info_tooltip.dart';
 
 class DecryptionInfoSidebar extends StatelessWidget {
@@ -37,14 +35,18 @@ class DecryptionInfoSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: 300,
       margin: const EdgeInsets.only(top: AppSpacing.lg),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(
+          color: theme.colorScheme.outline.withOpacity(0.2),
+        ),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -52,29 +54,29 @@ class DecryptionInfoSidebar extends StatelessWidget {
           children: [
             Text(
               'Processo de Descriptografia',
-              style: AppTypography.h4.copyWith(
-                color: AppColors.grey900,
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Entenda como funciona o processo de descriptografia segura:',
-              style: AppTypography.bodySmall.copyWith(
-                color: AppColors.grey700,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            ...decryptionSteps.map((step) => _buildInfoStep(step)),
+            ...decryptionSteps.map((step) => _buildInfoStep(step, theme)),
             const SizedBox(height: AppSpacing.containerSm),
-            _buildSecurityNote(),
+            _buildSecurityNote(theme),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoStep(Map<String, String> step) {
+  Widget _buildInfoStep(Map<String, String> step, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Row(
@@ -83,13 +85,13 @@ class DecryptionInfoSidebar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: theme.colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppRadius.card),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.lock_open,
               size: 14,
-              color: AppColors.primary,
+              color: theme.colorScheme.primary,
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -102,20 +104,22 @@ class DecryptionInfoSidebar extends StatelessWidget {
                     Expanded(
                       child: Text(
                         step['title']!,
-                        style: AppTypography.bodyLarge.copyWith(
-                          color: AppColors.grey900,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    CustomInfoTooltip(message: step['description']!),
+                    CustomInfoTooltip(
+                      message: step['description']!,
+                    ),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   step['subtitle']!,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.grey500,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                   ),
                 ),
@@ -127,32 +131,34 @@ class DecryptionInfoSidebar extends StatelessWidget {
     );
   }
 
-  Widget _buildSecurityNote() {
+  Widget _buildSecurityNote(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: AppSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: AppColors.warning.withOpacity(0.1),
+        color: theme.colorScheme.errorContainer.withOpacity(0.2),
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+        border: Border.all(
+          color: theme.colorScheme.error.withOpacity(0.3),
+        ),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.security,
-                color: AppColors.warning,
+                color: theme.colorScheme.error,
                 size: 16,
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   'Mantenha sua chave privada segura e nunca a compartilhe. Ela é essencial para a descriptografia e não pode ser recuperada se perdida.',
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.grey700,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                   ),
                 ),

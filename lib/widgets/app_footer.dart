@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hash_link/theme/app_colors.dart';
 import 'package:hash_link/theme/app_spacing.dart';
 import 'package:hash_link/widgets/developers_modal.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,10 +12,13 @@ class AppFooter extends StatelessWidget {
   final bool isSmallScreen;
 
   Widget _buildFooterButton({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -32,13 +34,13 @@ class AppFooter extends StatelessWidget {
               Icon(
                 icon,
                 size: 20,
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
                 label,
-                style: const TextStyle(
-                  color: AppColors.primary,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -51,12 +53,15 @@ class AppFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: (isDark ? Colors.black : Colors.black.withOpacity(0.05)),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -70,6 +75,7 @@ class AppFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildFooterButton(
+            context: context,
             icon: Icons.code,
             label: 'Código Fonte',
             onTap: () => launchUrl(
@@ -78,6 +84,7 @@ class AppFooter extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.xl),
           _buildFooterButton(
+            context: context,
             icon: Icons.people_outline,
             label: 'Desenvolvedores',
             onTap: () => showDialog(

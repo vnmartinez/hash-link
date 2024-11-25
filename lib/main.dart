@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/decrypt/decrypt_bloc.dart';
 import 'package:hash_link/blocs/encrypt/encrypt_bloc.dart';
+import 'package:hash_link/blocs/theme/theme_bloc.dart';
 import 'package:hash_link/core/routes.dart';
 import 'package:hash_link/helpers/zip_helper.dart';
+import 'package:hash_link/theme/app_theme.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'blocs/theme/theme_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +31,7 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => ThemeBloc()),
         BlocProvider(
           create: (_) => GenerateKeyBloc(
             filePicker: filePicker,
@@ -40,11 +45,27 @@ void main() async {
           ),
         ),
       ],
-      child: const MaterialApp(
-        initialRoute: Routes.initialRoute,
-        onGenerateRoute: Routes.onGenerateRoute,
-        onGenerateInitialRoutes: Routes.onGenerateInitialRoutes,
-      ),
+      child: const AppWidget(),
     ),
   );
+}
+
+class AppWidget extends StatelessWidget {
+  const AppWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        return MaterialApp(
+          initialRoute: Routes.initialRoute,
+          onGenerateRoute: Routes.onGenerateRoute,
+          onGenerateInitialRoutes: Routes.onGenerateInitialRoutes,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: state.themeMode,
+        );
+      },
+    );
+  }
 }

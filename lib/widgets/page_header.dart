@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/theme/theme_event.dart';
+import '../blocs/theme/theme_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_shadows.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
+import '../blocs/theme/theme_bloc.dart';
 
 class PageHeader extends StatelessWidget {
   const PageHeader({
@@ -132,7 +136,36 @@ class PageHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          _buildFeaturesList(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildFeaturesList(),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              BlocBuilder<ThemeBloc, ThemeState>(
+                builder: (context, state) {
+                  final isDark = state.themeMode == ThemeMode.dark;
+                  return IconButton(
+                    onPressed: () {
+                      context.read<ThemeBloc>().add(ToggleThemeEvent());
+                    },
+                    icon: Icon(
+                      isDark ? Icons.light_mode : Icons.dark_mode,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    tooltip: isDark
+                        ? 'Mudar para tema claro'
+                        : 'Mudar para tema escuro',
+                    style: IconButton.styleFrom(
+                      padding: const EdgeInsets.all(AppSpacing.xxs),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );

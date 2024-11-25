@@ -14,8 +14,10 @@ class InitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.grey200,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
@@ -58,13 +60,18 @@ class InitialView extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24),
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            colors: [
-                              Colors.white,
-                              AppColors.grey50,
-                            ],
+                            colors: isDark
+                                ? [
+                                    theme.cardTheme.color ?? Colors.grey[900]!,
+                                    Colors.grey[850]!,
+                                  ]
+                                : [
+                                    Colors.white,
+                                    AppColors.grey50,
+                                  ],
                           ),
                         ),
                         child: Padding(
@@ -75,13 +82,9 @@ class InitialView extends StatelessWidget {
                             children: [
                               Text(
                                 'O que você deseja fazer?',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.grey900,
-                                    ),
+                                style: theme.textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: AppSpacing.xl),
                               Row(
@@ -147,6 +150,9 @@ class InitialView extends StatelessWidget {
     required VoidCallback onPressed,
     bool isPrimary = true,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
@@ -159,10 +165,11 @@ class InitialView extends StatelessWidget {
             color: AppColors.primary.withOpacity(0.2),
             width: 1.5,
           ),
-          color: Colors.white,
+          color: theme.cardTheme.color,
           boxShadow: [
             BoxShadow(
-              color: AppColors.grey200.withOpacity(0.5),
+              color:
+                  (isDark ? Colors.black : AppColors.grey200).withOpacity(0.5),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -199,17 +206,20 @@ class InitialView extends StatelessWidget {
                   Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     description,
                     textAlign: TextAlign.center,
-                    style:
-                        const TextStyle(fontSize: 14, color: AppColors.grey700),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
                   ),
                 ],
               ),

@@ -31,8 +31,9 @@ class AppColors {
 
   /// Surface Colors
   /// Used for different surface levels and backgrounds in the application
-  static const background = Color(0xFFEEEEEE); // Light grey background
-  static const surface = Color(0xFFEEEEEE); // Matches background
-  static const surfaceVariant = Color(0xFF393E46); // Dark grey surface
-  static const surfaceDark = Color(0xFF222831); // Darker grey surface
+  static const surface = Color(0xFFEEEEEE); // background
+  static const surfaceVariant =
+      Color.fromARGB(255, 41, 41, 41); // Dark grey surface
+  static const surfaceDark =
+      Color.fromARGB(255, 27, 27, 27); // Dark grey surface
 }
