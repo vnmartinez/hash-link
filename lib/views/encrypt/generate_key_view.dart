@@ -212,7 +212,7 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
                                             .read<GenerateKeyBloc>()
                                             .add(const PreviousStep()),
                                         onPressedNext: handleNextStep,
-                                        nextLabel: state is Decryption
+                                        nextLabel: state is Shipping
                                             ? 'Reiniciar processo'
                                             : 'Próximo',
                                         showBackButton:

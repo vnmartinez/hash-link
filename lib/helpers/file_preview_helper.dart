@@ -102,18 +102,19 @@ class FilePreviewHelper {
   }
 
   static Widget _buildPreviewContent(Uint8List bytes) {
-    if (_isPdfBytes(bytes)) {
-      return _buildPdfPreview(bytes);
-    } else if (_isImageBytes(bytes)) {
-      return Image.memory(
-        bytes,
-        fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) {
-          return _buildTextContent(_tryDecodeText(bytes));
-        },
-      );
-    } else {
-      return _buildTextContent(_tryDecodeText(bytes));
+    try {
+      if (_isPdfBytes(bytes)) {
+        return _buildPdfPreview(bytes);
+      } else if (_isImageBytes(bytes)) {
+        return _buildImagePreview(bytes);
+      } else {
+        return _buildTextContent(_tryDecodeText(bytes));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao construir preview: $e');
+      }
+      return _buildErrorWidget('Não foi possível visualizar este arquivo');
     }
   }
 
@@ -159,24 +160,89 @@ class FilePreviewHelper {
 
   static Widget _buildPdfPreview(Uint8List bytes) {
     return FutureBuilder<PdfDocument>(
-      future: PdfDocument.openData(bytes),
+      future: PdfDocument.openData(bytes).catchError((error) {
+        if (kDebugMode) {
+          print('Erro ao abrir PDF: $error');
+        }
+        throw error;
+      }),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return _buildTextContent('Erro ao carregar PDF');
+          return _buildErrorWidget('Não foi possível carregar o PDF');
         }
 
         if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
 
-        return PdfView(
-          controller: PdfController(
-            document: Future.value(snapshot.data!),
+        return SizedBox(
+          width: double.infinity,
+          height: 500,
+          child: PdfView(
+            controller: PdfController(
+              document: Future.value(snapshot.data!),
+            ),
+            scrollDirection: Axis.vertical,
+            pageSnapping: false,
+            builders: PdfViewBuilders<DefaultBuilderOptions>(
+              options: const DefaultBuilderOptions(),
+              documentLoaderBuilder: (_) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              pageLoaderBuilder: (_) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              errorBuilder: (_, error) => _buildErrorWidget(
+                'Erro ao carregar página do PDF',
+              ),
+            ),
           ),
-          scrollDirection: Axis.vertical,
-          pageSnapping: false,
         );
       },
+    );
+  }
+
+  static Widget _buildImagePreview(Uint8List bytes) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.memory(
+        bytes,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          if (kDebugMode) {
+            print('Erro ao carregar imagem: $error');
+          }
+          return _buildErrorWidget('Não foi possível carregar a imagem');
+        },
+      ),
+    );
+  }
+
+  static Widget _buildErrorWidget(String message) {
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.error_outline,
+            size: 48,
+            color: AppColors.grey700,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: AppColors.grey700,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

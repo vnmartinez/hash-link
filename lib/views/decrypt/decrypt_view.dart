@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/decrypt/decrypt_bloc.dart';
@@ -35,147 +34,164 @@ class _DecryptViewState extends State<DecryptView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          SizedBox(
-            width: 330,
-            child: Column(
-              children: [
-                const Expanded(
-                  child: DecryptionInfoSidebar(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(
-                        color: AppColors.grey300,
-                        width: 1,
-                      ),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
+      body: BlocListener<DecryptBloc, DecryptState>(
+        listener: (context, state) {
+          if (state.decryptedFile != null) {
+            CustomToast.show(
+              context,
+              'Arquivo descriptografado com sucesso!',
+              type: ToastType.success,
+            );
+          }
+        },
+        child: Row(
+          children: [
+            SizedBox(
+              width: 330,
+              child: Column(
+                children: [
+                  const Expanded(
+                    child: DecryptionInfoSidebar(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppRadius.md),
-                        onTap: () => Navigator.of(context)
-                            .pushReplacementNamed(InitialView.route),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.arrow_back,
-                                size: 20,
-                                color: AppColors.grey700,
-                              ),
-                              const SizedBox(width: AppSpacing.sm),
-                              Text(
-                                'Voltar ao Menu',
-                                style: AppTypography.bodyMedium.copyWith(
+                        border: Border.all(
+                          color: AppColors.grey300,
+                          width: 1,
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                          onTap: () => Navigator.of(context)
+                              .pushReplacementNamed(InitialView.route),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: AppSpacing.md,
+                              horizontal: AppSpacing.lg,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.arrow_back,
+                                  size: 20,
                                   color: AppColors.grey700,
-                                  fontWeight: FontWeight.w500,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: AppSpacing.sm),
+                                Text(
+                                  'Voltar ao Menu',
+                                  style: AppTypography.bodyMedium.copyWith(
+                                    color: AppColors.grey700,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: BlocBuilder<DecryptBloc, DecryptState>(
-              builder: (context, state) {
-                return Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
+            Expanded(
+              child: BlocBuilder<DecryptBloc, DecryptState>(
+                builder: (context, state) {
+                  return Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: AppSpacing.lg,
+                          right: AppSpacing.lg,
+                          left: AppSpacing.lg,
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: [
+                            const SizedBox(height: 185),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                              child: SectionTitle(
+                                title: 'Descriptografia de Arquivos',
+                                subtitle:
+                                    'Importe os arquivos necessários para descriptografar seu pacote',
+                                titleStyle: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.copyWith(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.grey900,
+                                    ),
+                                subtitleStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 16,
+                                      color: AppColors.grey700,
+                                    ),
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.xl),
+                            if (isSmallScreen) ...[
+                              _buildPrivateKeySection(context,
+                                  Theme.of(context), state, isSmallScreen),
+                              const SizedBox(height: AppSpacing.lg),
+                              _buildPackageSection(context, Theme.of(context),
+                                  state, isSmallScreen),
+                            ] else
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: _buildPrivateKeySection(
+                                        context,
+                                        Theme.of(context),
+                                        state,
+                                        isSmallScreen),
+                                  ),
+                                  const SizedBox(width: AppSpacing.lg),
+                                  Expanded(
+                                    child: _buildPackageSection(
+                                        context,
+                                        Theme.of(context),
+                                        state,
+                                        isSmallScreen),
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(height: AppSpacing.containerMd),
+                            _buildDecryptButton(
+                                context, state, Theme.of(context)),
+                            if (state.decryptedFile != null)
+                              _buildResultSection(
+                                  state, Theme.of(context), isSmallScreen),
+                          ],
+                        ),
+                      ),
+                      const Positioned(
                         top: AppSpacing.lg,
-                        right: AppSpacing.lg,
                         left: AppSpacing.lg,
+                        right: AppSpacing.lg,
+                        child: PageHeader(
+                          logoPath: 'assets/images/logo.png',
+                        ),
                       ),
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          const SizedBox(height: 185),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            child: SectionTitle(
-                              title: 'Descriptografia de Arquivos',
-                              subtitle:
-                                  'Importe os arquivos necessários para descriptografar seu pacote',
-                              titleStyle: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.grey900,
-                                  ),
-                              subtitleStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontSize: 16,
-                                    color: AppColors.grey700,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.xl),
-                          if (isSmallScreen) ...[
-                            _buildPrivateKeySection(context, Theme.of(context),
-                                state, isSmallScreen),
-                            const SizedBox(height: AppSpacing.lg),
-                            _buildPackageSection(context, Theme.of(context),
-                                state, isSmallScreen),
-                          ] else
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: _buildPrivateKeySection(context,
-                                      Theme.of(context), state, isSmallScreen),
-                                ),
-                                const SizedBox(width: AppSpacing.lg),
-                                Expanded(
-                                  child: _buildPackageSection(context,
-                                      Theme.of(context), state, isSmallScreen),
-                                ),
-                              ],
-                            ),
-                          const SizedBox(height: AppSpacing.containerMd),
-                          _buildDecryptButton(
-                              context, state, Theme.of(context)),
-                          if (state.decryptedFile != null)
-                            _buildResultSection(
-                                state, Theme.of(context), isSmallScreen),
-                        ],
-                      ),
-                    ),
-                    const Positioned(
-                      top: AppSpacing.lg,
-                      left: AppSpacing.lg,
-                      right: AppSpacing.lg,
-                      child: PageHeader(
-                        logoPath: 'assets/images/logo.png',
-                      ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -559,11 +575,6 @@ class _DecryptViewState extends State<DecryptView> {
           onPressed: state.inputsIsValid
               ? () {
                   context.read<DecryptBloc>().add(const DecryptData());
-                  CustomToast.show(
-                    context,
-                    'Arquivo descriptografado com sucesso!',
-                    type: ToastType.success,
-                  );
                 }
               : null,
           icon: const Icon(Icons.lock_open),
@@ -581,151 +592,160 @@ class _DecryptViewState extends State<DecryptView> {
 
   Widget _buildResultSection(
       DecryptState state, ThemeData theme, bool isSmallScreen) {
-    return Card(
-      elevation: 4,
-      shadowColor: AppColors.primary.withOpacity(0.2),
-      margin:
-          EdgeInsets.only(top: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
-          border: Border.all(
-            color: AppColors.success.withOpacity(0.3),
-            width: 1,
-          ),
+    // Primeiro, vamos verificar se temos um arquivo descriptografado
+    if (state.decryptedFile == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: Card(
+        elevation: 4,
+        shadowColor: AppColors.primary.withOpacity(0.2),
+        margin: EdgeInsets.only(
+          top: isSmallScreen ? AppSpacing.lg : AppSpacing.xl,
         ),
-        child: Padding(
-          padding:
-              EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.check_circle, color: AppColors.primary),
-                  SizedBox(
-                      width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
-                  Expanded(
-                    child: Text(
-                      'Arquivo descriptografado com sucesso!',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.grey900,
-                        fontSize: isSmallScreen ? 18 : 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Container(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: state.isSignatureValid
-                      ? AppColors.success.withOpacity(0.1)
-                      : AppColors.error.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: state.isSignatureValid
-                        ? AppColors.success
-                        : AppColors.error,
-                  ),
-                ),
-                child: Row(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+            border: Border.all(
+              color: AppColors.success.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding:
+                EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Icon(
-                      state.isSignatureValid
-                          ? Icons.verified_user
-                          : Icons.gpp_bad,
-                      color: state.isSignatureValid
-                          ? AppColors.success
-                          : AppColors.error,
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const Icon(Icons.check_circle, color: AppColors.primary),
+                    SizedBox(
+                        width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
                     Expanded(
                       child: Text(
-                        state.isSignatureValid
-                            ? 'Assinatura do arquivo é válida!'
-                            : 'Assinatura do arquivo não é válida!',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: state.isSignatureValid
-                              ? AppColors.success
-                              : AppColors.error,
+                        'Arquivo descriptografado com sucesso!',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.grey900,
+                          fontSize: isSmallScreen ? 18 : 20,
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.lg,
-                      ),
+                const SizedBox(height: AppSpacing.lg),
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: state.isSignatureValid
+                        ? AppColors.success.withOpacity(0.1)
+                        : AppColors.error.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: state.isSignatureValid
+                          ? AppColors.success
+                          : AppColors.error,
                     ),
-                    onPressed: () {
-                      FilePreviewHelper.showPreviewModal(
-                        context: context,
-                        content: state.decryptedFile!,
-                        fileName: 'arquivo_descriptografado',
-                      );
-                    },
-                    icon: const Icon(Icons.visibility),
-                    label: const Text('Visualizar Arquivo'),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.success,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.lg,
+                  child: Row(
+                    children: [
+                      Icon(
+                        state.isSignatureValid
+                            ? Icons.verified_user
+                            : Icons.gpp_bad,
+                        color: state.isSignatureValid
+                            ? AppColors.success
+                            : AppColors.error,
                       ),
-                    ),
-                    onPressed: () {
-                      FilePreviewHelper.saveFile(
-                        bytes: Uint8List.fromList(state.decryptedFile!),
-                        fileName: 'arquivo_descriptografado',
-                      );
-                    },
-                    icon: const Icon(Icons.save),
-                    label: const Text('Salvar Arquivo'),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          state.isSignatureValid
+                              ? 'Assinatura do arquivo é válida!'
+                              : 'Assinatura do arquivo não é válida!',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: state.isSignatureValid
+                                ? AppColors.success
+                                : AppColors.error,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Container(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: AppColors.grey100,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.grey300),
                 ),
-                child: Row(
+                const SizedBox(height: AppSpacing.lg),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.description, color: AppColors.grey700),
-                    const SizedBox(width: AppSpacing.sm),
-                    Text(
-                      'Tamanho do arquivo: ${state.decryptedFile!.length} bytes',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.grey900,
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl,
+                          vertical: AppSpacing.lg,
+                        ),
                       ),
+                      onPressed: () {
+                        FilePreviewHelper.showPreviewModal(
+                          context: context,
+                          content: state.decryptedFile!,
+                          fileName: 'arquivo_descriptografado',
+                        );
+                      },
+                      icon: const Icon(Icons.visibility),
+                      label: const Text('Visualizar Arquivo'),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.success,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl,
+                          vertical: AppSpacing.lg,
+                        ),
+                      ),
+                      onPressed: () {
+                        FilePreviewHelper.saveFile(
+                          bytes: Uint8List.fromList(state.decryptedFile!),
+                          fileName: 'arquivo_descriptografado',
+                        );
+                      },
+                      icon: const Icon(Icons.save),
+                      label: const Text('Salvar Arquivo'),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: AppSpacing.lg),
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.grey100,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.grey300),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.description, color: AppColors.grey700),
+                      const SizedBox(width: AppSpacing.sm),
+                      Text(
+                        'Tamanho do arquivo: ${state.decryptedFile!.length} bytes',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: AppColors.grey900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
