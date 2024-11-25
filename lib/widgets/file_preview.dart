@@ -172,87 +172,106 @@ class FilePreviewHelper {
         }
 
         if (!snapshot.hasData) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                ),
-                SizedBox(height: AppSpacing.md),
-                Text(
-                  'Carregando PDF...',
-                  style: TextStyle(
-                    color: AppColors.grey700,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
-        return Container(
-          width: double.infinity,
-          height: 500,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.grey200),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: PdfView(
-              controller: PdfController(
-                document: Future.value(snapshot.data!),
+        final pdfController = PdfController(
+          document: Future.value(snapshot.data!),
+        );
+
+        return Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 450, // Ajustado para acomodar os botões
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.grey200),
               ),
-              scrollDirection: Axis.vertical,
-              pageSnapping: false,
-              builders: PdfViewBuilders<DefaultBuilderOptions>(
-                options: const DefaultBuilderOptions(),
-                documentLoaderBuilder: (_) => const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      Text(
-                        'Preparando documento...',
-                        style: TextStyle(
-                          color: AppColors.grey700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: PdfView(
+                  controller: pdfController,
+                  scrollDirection: Axis.vertical,
+                  pageSnapping: false,
+                  builders: PdfViewBuilders<DefaultBuilderOptions>(
+                    options: const DefaultBuilderOptions(),
+                    documentLoaderBuilder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    pageLoaderBuilder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorBuilder: (_, error) => _buildErrorWidget(
+                      'Erro ao carregar página do PDF',
+                    ),
                   ),
-                ),
-                pageLoaderBuilder: (_) => const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      Text(
-                        'Carregando página...',
-                        style: TextStyle(
-                          color: AppColors.grey700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                errorBuilder: (_, error) => _buildErrorWidget(
-                  'Erro ao carregar página do PDF',
                 ),
               ),
             ),
-          ),
+            const SizedBox(height: AppSpacing.md),
+            _buildNavigationButtons(pdfController),
+          ],
+        );
+      },
+    );
+  }
+
+  static Widget _buildNavigationButtons(PdfController controller) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return FutureBuilder<PdfDocument>(
+          future: controller.document,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return const SizedBox.shrink();
+
+            final totalPages = snapshot.data!.pagesCount;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.first_page),
+                  onPressed: () => controller.jumpToPage(0),
+                  tooltip: 'Primeira página',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.navigate_before),
+                  onPressed: () => controller.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  tooltip: 'Página anterior',
+                ),
+                ValueListenableBuilder<int>(
+                  valueListenable: controller.pageListenable,
+                  builder: (context, value, _) {
+                    final currentPage = value + 1;
+                    return Text(
+                      '$currentPage de $totalPages',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.grey900,
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.navigate_next),
+                  onPressed: () => controller.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  tooltip: 'Próxima página',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.last_page),
+                  onPressed: () => controller.jumpToPage(totalPages - 1),
+                  tooltip: 'Última página',
+                ),
+              ],
+            );
+          },
         );
       },
     );
