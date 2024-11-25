@@ -34,7 +34,6 @@ class _DecryptViewState extends State<DecryptView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey200,
       body: BlocListener<DecryptBloc, DecryptState>(
         listener: (context, state) {
           if (state.decryptedFile != null) {
@@ -128,16 +127,13 @@ class _DecryptViewState extends State<DecryptView> {
                                     .textTheme
                                     .headlineSmall
                                     ?.copyWith(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.grey900,
+                                      fontSize: isSmallScreen ? 20 : 24,
                                     ),
                                 subtitleStyle: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      fontSize: 16,
-                                      color: AppColors.grey700,
+                                      fontSize: isSmallScreen ? 14 : 16,
                                     ),
                               ),
                             ),
@@ -200,18 +196,18 @@ class _DecryptViewState extends State<DecryptView> {
   Widget _buildPrivateKeySection(BuildContext context, ThemeData theme,
       DecryptState state, bool isSmallScreen) {
     return Card(
-      elevation: 4,
-      shadowColor: AppColors.primary.withOpacity(0.2),
+      elevation: 2,
+      shadowColor: theme.colorScheme.primary.withOpacity(0.2),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+        borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+          borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
           border: Border.all(
             color: state.privateKey != null
-                ? AppColors.success.withOpacity(0.3)
-                : AppColors.grey200,
+                ? theme.colorScheme.primary.withOpacity(0.3)
+                : theme.colorScheme.outline.withOpacity(0.2),
             width: 1,
           ),
         ),
@@ -223,7 +219,7 @@ class _DecryptViewState extends State<DecryptView> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.key, color: AppColors.primary),
+                  Icon(Icons.key, color: theme.colorScheme.primary),
                   SizedBox(
                       width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
                   Expanded(
@@ -231,7 +227,6 @@ class _DecryptViewState extends State<DecryptView> {
                       'Chave Privada',
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppColors.grey900,
                         fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
@@ -241,9 +236,7 @@ class _DecryptViewState extends State<DecryptView> {
               const SizedBox(height: AppSpacing.md),
               Text(
                 'Importe sua chave privada para descriptografar o arquivo',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.grey700,
-                ),
+                style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: AppSpacing.lg),
               Row(
@@ -252,9 +245,9 @@ class _DecryptViewState extends State<DecryptView> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: state.privateKey != null
-                            ? AppColors.success.withOpacity(0.9)
-                            : AppColors.primary,
-                        foregroundColor: Colors.white,
+                            ? theme.colorScheme.primary.withOpacity(0.9)
+                            : theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.xl,
                           vertical: AppSpacing.lg,
@@ -263,7 +256,7 @@ class _DecryptViewState extends State<DecryptView> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: state.privateKey != null ? 0 : 2,
-                        shadowColor: AppColors.primary.withOpacity(0.3),
+                        shadowColor: theme.colorScheme.primary.withOpacity(0.3),
                       ),
                       onPressed: state.privateKey != null
                           ? null
@@ -286,9 +279,10 @@ class _DecryptViewState extends State<DecryptView> {
                         state.privateKey != null
                             ? 'Chave Importada com Sucesso'
                             : 'Selecionar Chave',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -361,18 +355,18 @@ class _DecryptViewState extends State<DecryptView> {
   Widget _buildPackageSection(BuildContext context, ThemeData theme,
       DecryptState state, bool isSmallScreen) {
     return Card(
-      elevation: 4,
-      shadowColor: AppColors.primary.withOpacity(0.2),
+      elevation: 2,
+      shadowColor: theme.colorScheme.primary.withOpacity(0.2),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+        borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
+          borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
           border: Border.all(
-            color: _hasAnyPackageStatus(state)
-                ? AppColors.success.withOpacity(0.3)
-                : AppColors.grey200,
+            color: _hasValidPackageImport(state)
+                ? theme.colorScheme.primary.withOpacity(0.3)
+                : theme.colorScheme.outline.withOpacity(0.2),
             width: 1,
           ),
         ),
@@ -384,7 +378,7 @@ class _DecryptViewState extends State<DecryptView> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.folder_zip, color: AppColors.primary),
+                  Icon(Icons.folder_zip, color: theme.colorScheme.primary),
                   SizedBox(
                       width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
                   Expanded(
@@ -392,7 +386,6 @@ class _DecryptViewState extends State<DecryptView> {
                       'Pacote Criptografado',
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppColors.grey900,
                         fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
@@ -402,9 +395,7 @@ class _DecryptViewState extends State<DecryptView> {
               const SizedBox(height: AppSpacing.md),
               Text(
                 'Selecione o pacote criptografado que deseja descriptografar',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.grey700,
-                ),
+                style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: AppSpacing.lg),
               Row(
@@ -413,9 +404,9 @@ class _DecryptViewState extends State<DecryptView> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _hasValidPackageImport(state)
-                            ? AppColors.success.withOpacity(0.9)
-                            : AppColors.primary,
-                        foregroundColor: Colors.white,
+                            ? theme.colorScheme.primary.withOpacity(0.9)
+                            : theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.xl,
                           vertical: AppSpacing.lg,
@@ -424,7 +415,7 @@ class _DecryptViewState extends State<DecryptView> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: _hasValidPackageImport(state) ? 0 : 2,
-                        shadowColor: AppColors.primary.withOpacity(0.3),
+                        shadowColor: theme.colorScheme.primary.withOpacity(0.3),
                       ),
                       onPressed: _hasValidPackageImport(state)
                           ? null
@@ -447,9 +438,10 @@ class _DecryptViewState extends State<DecryptView> {
                         _hasValidPackageImport(state)
                             ? 'Pacote Importado com Sucesso'
                             : 'Selecionar Pacote',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -560,30 +552,44 @@ class _DecryptViewState extends State<DecryptView> {
         curve: Curves.easeInOut,
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
+            backgroundColor: state.inputsIsValid
+                ? theme.colorScheme.primary
+                : theme.colorScheme.onPrimary,
+            foregroundColor: state.inputsIsValid
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurfaceVariant,
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.xl,
               vertical: AppSpacing.lg,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
-            elevation: state.inputsIsValid ? 4 : 0,
-            shadowColor: AppColors.primary.withOpacity(0.4),
-            disabledBackgroundColor: AppColors.grey300,
+            elevation: state.inputsIsValid ? 2 : 0,
+            shadowColor: theme.colorScheme.primary.withOpacity(0.3),
+            disabledBackgroundColor: theme.colorScheme.surfaceVariant,
+            disabledForegroundColor: theme.colorScheme.onSurfaceVariant,
           ),
           onPressed: state.inputsIsValid
               ? () {
+                  HapticFeedback.lightImpact();
                   context.read<DecryptBloc>().add(const DecryptData());
                 }
               : null,
-          icon: const Icon(Icons.lock_open),
-          label: const Text(
+          icon: Icon(
+            Icons.lock_open,
+            size: 20,
+            color: state.inputsIsValid
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurfaceVariant,
+          ),
+          label: Text(
             'Descriptografar',
-            style: TextStyle(
-              fontSize: 16,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              color: state.inputsIsValid
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -593,160 +599,153 @@ class _DecryptViewState extends State<DecryptView> {
 
   Widget _buildResultSection(
       DecryptState state, ThemeData theme, bool isSmallScreen) {
-    // Primeiro, vamos verificar se temos um arquivo descriptografado
     if (state.decryptedFile == null) {
       return const SizedBox.shrink();
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-      child: Card(
-        elevation: 4,
-        shadowColor: AppColors.primary.withOpacity(0.2),
-        margin: EdgeInsets.only(
-          top: isSmallScreen ? AppSpacing.lg : AppSpacing.xl,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
-            border: Border.all(
-              color: AppColors.success.withOpacity(0.3),
-              width: 1,
-            ),
+    return Card(
+      elevation: 2,
+      shadowColor: theme.colorScheme.primary.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
+          border: Border.all(
+            color: theme.colorScheme.primary.withOpacity(0.3),
+            width: 1,
           ),
-          child: Padding(
-            padding:
-                EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.check_circle, color: AppColors.primary),
-                    SizedBox(
-                        width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        'Arquivo descriptografado com sucesso!',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.grey900,
-                          fontSize: isSmallScreen ? 18 : 20,
-                        ),
+        ),
+        child: Padding(
+          padding:
+              EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.check_circle, color: AppColors.primary),
+                  SizedBox(
+                      width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
+                  Expanded(
+                    child: Text(
+                      'Arquivo descriptografado com sucesso!',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.grey900,
+                        fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: state.isSignatureValid
+                      ? AppColors.success.withOpacity(0.1)
+                      : AppColors.error.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
                     color: state.isSignatureValid
-                        ? AppColors.success.withOpacity(0.1)
-                        : AppColors.error.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
+                        ? AppColors.success
+                        : AppColors.error,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      state.isSignatureValid
+                          ? Icons.verified_user
+                          : Icons.gpp_bad,
                       color: state.isSignatureValid
                           ? AppColors.success
                           : AppColors.error,
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Text(
                         state.isSignatureValid
-                            ? Icons.verified_user
-                            : Icons.gpp_bad,
-                        color: state.isSignatureValid
-                            ? AppColors.success
-                            : AppColors.error,
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: Text(
-                          state.isSignatureValid
-                              ? 'Assinatura do arquivo é válida!'
-                              : 'Assinatura do arquivo não é válida!',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: state.isSignatureValid
-                                ? AppColors.success
-                                : AppColors.error,
-                          ),
+                            ? 'Assinatura do arquivo é válida!'
+                            : 'Assinatura do arquivo não é válida!',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: state.isSignatureValid
+                              ? AppColors.success
+                              : AppColors.error,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xl,
-                          vertical: AppSpacing.lg,
-                        ),
-                      ),
-                      onPressed: () {
-                        FilePreviewHelper.showPreviewModal(
-                          context: context,
-                          content: state.decryptedFile!,
-                          fileName: 'arquivo_descriptografado',
-                        );
-                      },
-                      icon: const Icon(Icons.visibility),
-                      label: const Text('Visualizar Arquivo'),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.success,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xl,
-                          vertical: AppSpacing.lg,
-                        ),
-                      ),
-                      onPressed: () {
-                        FilePreviewHelper.saveFile(
-                          bytes: Uint8List.fromList(state.decryptedFile!),
-                          fileName: 'arquivo_descriptografado',
-                        );
-                      },
-                      icon: const Icon(Icons.save),
-                      label: const Text('Salvar Arquivo'),
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: AppColors.grey100,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.grey300),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.description, color: AppColors.grey700),
-                      const SizedBox(width: AppSpacing.sm),
-                      Text(
-                        'Tamanho do arquivo: ${state.decryptedFile!.length} bytes',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.grey900,
-                        ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.lg,
                       ),
-                    ],
+                    ),
+                    onPressed: () {
+                      FilePreviewHelper.showPreviewModal(
+                        context: context,
+                        content: state.decryptedFile!,
+                        fileName: 'arquivo_descriptografado',
+                      );
+                    },
+                    icon: const Icon(Icons.visibility),
+                    label: const Text('Visualizar Arquivo'),
                   ),
+                  const SizedBox(width: AppSpacing.md),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.success,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.lg,
+                      ),
+                    ),
+                    onPressed: () {
+                      FilePreviewHelper.saveFile(
+                        bytes: Uint8List.fromList(state.decryptedFile!),
+                        fileName: 'arquivo_descriptografado',
+                      );
+                    },
+                    icon: const Icon(Icons.save),
+                    label: const Text('Salvar Arquivo'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.grey100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.grey300),
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.description, color: AppColors.grey700),
+                    const SizedBox(width: AppSpacing.sm),
+                    Text(
+                      'Tamanho do arquivo: ${state.decryptedFile!.length} bytes',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.grey900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

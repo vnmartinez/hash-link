@@ -5,15 +5,26 @@ import 'app_spacing.dart';
 import 'app_typography.dart';
 
 class AppTheme {
-  static ThemeData get light {
+  static ThemeData createTheme({required Brightness brightness}) {
+    final isDark = brightness == Brightness.dark;
+
     return ThemeData(
       useMaterial3: true,
-      colorScheme: const ColorScheme.light(
-        primary: AppColors.primary,
-        secondary: AppColors.secondary,
-        surface: AppColors.surface,
-        error: AppColors.error,
-      ),
+      brightness: brightness,
+      colorScheme: isDark
+          ? const ColorScheme.dark(
+              primary: AppColors.primary,
+              secondary: AppColors.secondary,
+              surface: AppColors.surfaceDark,
+              error: AppColors.error,
+              onSurface: Colors.white,
+            )
+          : const ColorScheme.light(
+              primary: AppColors.primary,
+              secondary: AppColors.secondary,
+              surface: AppColors.surface,
+              error: AppColors.error,
+            ),
       textTheme: const TextTheme(
         displayLarge: AppTypography.h1,
         displayMedium: AppTypography.h2,
@@ -26,19 +37,21 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.card),
         ),
-        color: AppColors.grey50,
+        color: isDark ? Colors.grey[900] : AppColors.grey50,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return AppColors.grey300;
+              return isDark ? AppColors.grey700 : AppColors.grey300;
             }
             return AppColors.primary;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return const Color.fromARGB(153, 244, 244, 244);
+              return isDark
+                  ? AppColors.grey500
+                  : const Color.fromARGB(153, 244, 244, 244);
             }
             return Colors.white;
           }),
@@ -69,14 +82,14 @@ class AppTheme {
           overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.1)),
         ),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
-        backgroundColor: AppColors.background,
-        foregroundColor: AppColors.grey900,
+        backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surface,
+        foregroundColor: isDark ? Colors.white : AppColors.grey700,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.grey50,
+        fillColor: isDark ? AppColors.grey700 : AppColors.grey50,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
@@ -97,17 +110,26 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppRadius.input),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
-        hintStyle: AppTypography.bodyMedium.copyWith(color: AppColors.grey500),
-        labelStyle: AppTypography.bodyMedium.copyWith(color: AppColors.grey700),
+        hintStyle: AppTypography.bodyMedium.copyWith(
+          color: isDark ? AppColors.grey300 : AppColors.grey500,
+        ),
+        labelStyle: AppTypography.bodyMedium.copyWith(
+          color: isDark ? AppColors.grey300 : AppColors.grey700,
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.card),
         ),
-        contentTextStyle: AppTypography.bodyMedium,
-        backgroundColor: AppColors.grey900,
+        contentTextStyle: AppTypography.bodyMedium.copyWith(
+          color: isDark ? Colors.white : Colors.white,
+        ),
+        backgroundColor: isDark ? AppColors.grey700 : AppColors.grey900,
       ),
     );
   }
+
+  static ThemeData get light => createTheme(brightness: Brightness.light);
+  static ThemeData get dark => createTheme(brightness: Brightness.dark);
 }

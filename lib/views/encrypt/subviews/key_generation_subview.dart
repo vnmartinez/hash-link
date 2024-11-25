@@ -220,7 +220,6 @@ class KeyGenerationSubview extends StatelessWidget {
                     'Par de Chaves RSA',
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
                       fontSize: isSmallScreen ? 18 : 20,
                     ),
                   ),
@@ -230,9 +229,7 @@ class KeyGenerationSubview extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             Text(
               'Gere um par de chaves RSA para garantir a segurança da comunicação',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.grey700,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: AppSpacing.lg),
             BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
@@ -351,7 +348,6 @@ class KeyGenerationSubview extends StatelessWidget {
                     'Chave Simétrica AES',
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
                       fontSize: isSmallScreen ? 18 : 20,
                     ),
                   ),
@@ -361,9 +357,7 @@ class KeyGenerationSubview extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             Text(
               'Gere uma chave simétrica AES para cifrar os arquivos',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.grey700,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: AppSpacing.lg),
             BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
@@ -481,7 +475,7 @@ class _KeyCardState extends State<_KeyCard> {
 
     return Card(
       elevation: 1,
-      color: AppColors.grey100,
+      color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(isSmallScreen ? 6 : 8),
       ),
@@ -501,7 +495,6 @@ class _KeyCardState extends State<_KeyCard> {
               widget.title,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.grey900,
                 fontSize: isSmallScreen ? 14 : 16,
               ),
             ),
@@ -515,9 +508,9 @@ class _KeyCardState extends State<_KeyCard> {
               padding:
                   EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(isSmallScreen ? 6 : 8),
-                border: Border.all(color: AppColors.grey300),
+                border: Border.all(color: theme.dividerColor),
               ),
               child: SelectableText(
                 widget.content,

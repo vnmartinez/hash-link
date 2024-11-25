@@ -112,7 +112,6 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
         }
 
         return Scaffold(
-          backgroundColor: AppColors.grey200,
           body: Row(
             children: [
               SizedBox(
