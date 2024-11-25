@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
 
 class DecryptionSubview extends StatelessWidget {
   const DecryptionSubview({super.key});
@@ -80,11 +82,110 @@ class DecryptionSubview extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        const Text(
-          'Chave privada do professor:',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+        BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+          builder: (context, state) {
+            if (state is! Decryption) return const SizedBox();
+
+            if (state.validDecryption) {
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.only(bottom: 24),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.green.shade300,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.check_circle, color: Colors.green[700]),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Descriptografia concluída com sucesso!',
+                          style: TextStyle(
+                            color: Colors.green[700],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'O arquivo foi descriptografado e a assinatura digital foi verificada com sucesso.',
+                      style: TextStyle(
+                        color: Colors.green[700],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.grey.shade300,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Chave privada do professor:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+                builder: (context, state) {
+                  if (state is! Decryption) return const SizedBox();
+                  return ElevatedButton.icon(
+                    onPressed: state.selectingTeacherPrivateKeyFile
+                        ? null
+                        : () => context
+                            .read<GenerateKeyBloc>()
+                            .add(const SelectTeacherPrivateKeyFile()),
+                    icon: state.selectingTeacherPrivateKeyFile
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Icon(Icons.upload_file),
+                    label: Text(
+                      state.selectingTeacherPrivateKeyFile
+                          ? 'Selecionando arquivo...'
+                          : 'Selecionar arquivo',
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 12),
@@ -108,19 +209,32 @@ class DecryptionSubview extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Center(
-          child: ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.lock_open),
-            label: const Text('Iniciar descriptografia'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 16,
-              ),
-            ),
+          child: BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
+            builder: (context, state) {
+              if (state is! Decryption) return const SizedBox();
+
+              return ElevatedButton.icon(
+                onPressed: state.validDecryption
+                    ? null
+                    : () => context
+                        .read<GenerateKeyBloc>()
+                        .add(const CheckPackage()),
+                icon: const Icon(Icons.lock_open),
+                label: Text(state.validDecryption
+                    ? 'Descriptografia concluída'
+                    : 'Iniciar descriptografia'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
     );
   }
 }
+

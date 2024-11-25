@@ -41,7 +41,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
         emit(Shipping.fromValidProtection(state));
         return;
       } else if (state is Shipping) {
-        emit(const Decryption());
+        emit(Decryption.fromValidShipping(state));
         return;
       } else if (state is Decryption) {
         // Do nothing cause is the last step.
@@ -137,7 +137,7 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
         final externalPublicKey =
             RSAKeyHelper.parsePublicKeyFromPem(externalPublicKeyPem);
         final aesEncryption =
-            RSAKeyHelper.encryptAESKeyWithPublicKey(aes, externalPublicKey);
+            RSAKeyHelper.encryptDataWithPublicKey(aes, externalPublicKey);
 
         emit(state.copyWith(
           symmetricKeyEncryption: base64.encode(aesEncryption),
@@ -161,6 +161,54 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
         ]);
 
         emit(state.copyWith(packageSended: true));
+      }
+    });
+
+    on<SelectTeacherPrivateKeyFile>((event, emit) async {
+      var state = this.state;
+      if (state is Decryption) {
+        state = state.copyWith(selectingTeacherPrivateKeyFile: true);
+        emit(state);
+        final pickeFiles = await _filePicker.pickFiles(
+            allowCompression: false, withData: true);
+        state = state.copyWith(selectingTeacherPrivateKeyFile: false);
+        emit(state);
+        if (pickeFiles == null) return;
+
+        final file = FileReader.fromPlatformFile(pickeFiles.files.single);
+        emit(state.copyWith(teacherPrivateKeyFile: file));
+      }
+    });
+
+    on<CheckPackage>((event, emit) {
+      final state = this.state;
+      if (state is Decryption && state.teacherPrivateKeyFile != null) {
+        final encryptedKey = base64.decode(state.symmetricKeyEncryption);
+        final privateKey = RSAKeyHelper.parsePrivateKeyFromPem(utf8
+            .decode(Uint8List.fromList(state.teacherPrivateKeyFile!.bytes)));
+        final decryptedKey =
+            RSAKeyHelper.decryptDataWithPrivateKey(encryptedKey, privateKey);
+
+        if (base64.encode(decryptedKey) != state.symmetricKey) {
+          emit(state.copyWith(validDecryption: false));
+          return;
+        }
+
+        final fileSignature = RSAKeyHelper.parseSignatureFromBytes(
+            base64.decode(state.fileSignature));
+
+        final fileEncryption = base64.decode(state.fileEncryption);
+
+        final fileBytes =
+            AESKeyHelper.decryptWithAES(fileEncryption, decryptedKey);
+
+        final fileDigest = DigestHelper.create(fileBytes);
+        final publicKey = RSAKeyHelper.parsePublicKeyFromPem(state.publicKey);
+
+        final isValidSignature = RSAKeyHelper.verifySignatureWithPublicKey(
+            fileSignature, fileDigest, publicKey);
+
+        emit(state.copyWith(validDecryption: isValidSignature));
       }
     });
   }

@@ -52,3 +52,14 @@ class ProtectAES extends GenerateKeyEvent with _$ProtectAES {
 class SendPackage extends GenerateKeyEvent with _$SendPackage {
   const factory SendPackage() = _SendPackage;
 }
+
+@blocEvent
+class SelectTeacherPrivateKeyFile extends GenerateKeyEvent
+    with _$SelectTeacherPrivateKeyFile {
+  const factory SelectTeacherPrivateKeyFile() = _SelectTeacherPrivateKeyFile;
+}
+
+@blocEvent
+class CheckPackage extends GenerateKeyEvent with _$CheckPackage {
+  const factory CheckPackage() = _CheckPackage;
+}
