@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../theme/app_radius.dart';
-import '../theme/app_shadows.dart';
 import '../theme/app_spacing.dart';
 
 class StepIndicator extends StatefulWidget {
