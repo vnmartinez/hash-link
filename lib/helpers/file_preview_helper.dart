@@ -66,8 +66,8 @@ class FilePreviewHelper {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
                         onTap: () => Navigator.of(context).pop(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.close,
                             color: AppColors.grey700,
