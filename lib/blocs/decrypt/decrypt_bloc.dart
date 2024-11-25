@@ -108,7 +108,7 @@ class DecryptBloc extends Bloc<DecryptEvent, DecryptState> {
       emit(state.copyWith(selectingPrivateKey: true));
       final result = await _filePicker.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pem'],
+        allowedExtensions: ['pem', 'pub', 'key', 'asc'],
         withData: true,
       );
       if (result == null) {

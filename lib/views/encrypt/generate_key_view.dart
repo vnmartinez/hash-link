@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-import 'package:hash_link/views/encrypt/subviews/decryption_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/key_generation_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/preparation_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/protection_subview.dart';
@@ -10,8 +9,12 @@ import 'package:hash_link/views/encrypt/subviews/signature_subview.dart';
 import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/widgets/step_indicator.dart';
 import 'package:hash_link/widgets/action_buttons.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 import '../../widgets/custom_toast.dart';
+import '../initial/initial_view.dart';
 
 class GenerateKeyView extends StatefulWidget {
   const GenerateKeyView({super.key});
@@ -77,12 +80,12 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
           hasNext: true,
           canNext: state.isValid,
         ),
-      Decryption() => (
-          step: 6,
-          widget: const DecryptionSubview(),
-          hasPrevious: true,
-          hasNext: false,
-          canNext: true,
+      _ => (
+          step: 1,
+          widget: const KeyGenerationSubview(),
+          hasPrevious: false,
+          hasNext: true,
+          canNext: false,
         ),
     };
   }
@@ -113,7 +116,58 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
             children: [
               SizedBox(
                 width: 330,
-                child: StepIndicator(currentStep: configuration.step),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: StepIndicator(currentStep: configuration.step),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                          border: Border.all(
+                            color: AppColors.grey300,
+                            width: 1,
+                          ),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            onTap: () => Navigator.of(context)
+                                .pushReplacementNamed(InitialView.route),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.md,
+                                horizontal: AppSpacing.lg,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.arrow_back,
+                                    size: 20,
+                                    color: AppColors.grey700,
+                                  ),
+                                  const SizedBox(width: AppSpacing.sm),
+                                  Text(
+                                    'Voltar ao Menu',
+                                    style: AppTypography.bodyMedium.copyWith(
+                                      color: AppColors.grey700,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Stack(

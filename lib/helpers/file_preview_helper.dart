@@ -1,19 +1,21 @@
-import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:pdfx/pdfx.dart';
 
 class FilePreviewHelper {
   static void showPreviewModal({
     required BuildContext context,
-    required String content,
+    required Uint8List content,
     String? fileName,
   }) {
-    print('DEBUG: Abrindo modal de preview para arquivo: $fileName');
+    if (kDebugMode) {
+      print('DEBUG: Abrindo modal de preview para arquivo: $fileName');
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -99,39 +101,29 @@ class FilePreviewHelper {
     );
   }
 
-  static Widget _buildPreviewContent(String content) {
-    try {
-      // Primeiro, tenta decodificar o conteúdo como base64
-      final bytes = base64Decode(content);
-
-      // Tenta detectar se é uma imagem válida
-      if (_isImageBytes(bytes)) {
-        return Image.memory(
-          bytes,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return _buildTextContent(_tryDecodeText(bytes));
-          },
-        );
-      } else {
-        // Se não for uma imagem, tenta decodificar como texto
-        return _buildTextContent(_tryDecodeText(bytes));
-      }
-    } catch (e) {
-      // Se falhar a decodificação base64, mostra o conteúdo bruto
-      return _buildTextContent(content);
+  static Widget _buildPreviewContent(Uint8List bytes) {
+    if (_isPdfBytes(bytes)) {
+      return _buildPdfPreview(bytes);
+    } else if (_isImageBytes(bytes)) {
+      return Image.memory(
+        bytes,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildTextContent(_tryDecodeText(bytes));
+        },
+      );
+    } else {
+      return _buildTextContent(_tryDecodeText(bytes));
     }
   }
 
   static String _tryDecodeText(List<int> bytes) {
     try {
-      // Tenta diferentes codificações
       return utf8.decode(bytes);
     } catch (_) {
       try {
         return latin1.decode(bytes);
       } catch (_) {
-        // Se todas as tentativas falharem, retorna representação hexadecimal
         return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ');
       }
     }
@@ -140,7 +132,6 @@ class FilePreviewHelper {
   static bool _isImageBytes(List<int> bytes) {
     if (bytes.length < 4) return false;
 
-    // PNG signature
     if (bytes.length >= 8 &&
         bytes[0] == 0x89 &&
         bytes[1] == 0x50 &&
@@ -149,7 +140,6 @@ class FilePreviewHelper {
       return true;
     }
 
-    // JPEG signature
     if (bytes[0] == 0xFF && bytes[1] == 0xD8) {
       return true;
     }
@@ -157,9 +147,44 @@ class FilePreviewHelper {
     return false;
   }
 
+  static bool _isPdfBytes(List<int> bytes) {
+    if (bytes.length < 5) return false;
+    // Verifica a assinatura do PDF ('%PDF-')
+    return bytes[0] == 0x25 && // %
+        bytes[1] == 0x50 && // P
+        bytes[2] == 0x44 && // D
+        bytes[3] == 0x46 && // F
+        bytes[4] == 0x2D; // -
+  }
+
+  static Widget _buildPdfPreview(Uint8List bytes) {
+    return FutureBuilder<PdfDocument>(
+      future: PdfDocument.openData(bytes),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return _buildTextContent('Erro ao carregar PDF');
+        }
+
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return PdfView(
+          controller: PdfController(
+            document: Future.value(snapshot.data!),
+          ),
+          scrollDirection: Axis.vertical,
+          pageSnapping: false,
+        );
+      },
+    );
+  }
+
   static Widget _buildTextContent(String content) {
-    print(
-        'DEBUG: Renderizando como texto. Tamanho: ${content.length} caracteres');
+    if (kDebugMode) {
+      print(
+          'DEBUG: Renderizando como texto. Tamanho: ${content.length} caracteres');
+    }
     return Container(
       decoration: BoxDecoration(
         color: AppColors.grey100,
@@ -196,7 +221,9 @@ class FilePreviewHelper {
       final File file = File(outputFile);
       await file.writeAsBytes(bytes);
     } catch (e) {
-      print('Erro ao salvar arquivo: $e');
+      if (kDebugMode) {
+        print('Erro ao salvar arquivo: $e');
+      }
       rethrow;
     }
   }

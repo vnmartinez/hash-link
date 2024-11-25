@@ -23,6 +23,10 @@ dependencies:
   window_manager: ^0.4.3
   archive: ^3.6.1
   page_transition: ^2.1.0
+  url_launcher: ^6.3.1
+  font_awesome_flutter: ^10.8.0
+  pdfx: ^2.8.0
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -31,7 +35,24 @@ dev_dependencies:
   build_runner: ^2.4.13
   freezed: ^2.5.7
 
+
 flutter:
   uses-material-design: true
   assets:
     - assets/images/logo.png
+    - assets/images/icon.jpg
+  
+flutter_launcher_icons:
+  image_path: "assets/images/icon.jpg"
+  web:
+    generate: true
+    image_path: "assets/images/icon.jpg"
+  windows:
+    generate: true
+    image_path: "assets/images/icon.jpg"
+    icon_size: 256
+  macos:
+    generate: true
+    image_path: "assets/images/icon.jpg"
+
+license: MIT

@@ -10,7 +10,6 @@ import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
 import '../../../widgets/section_title.dart';
 import '../generate_key_view.dart';
-import 'dart:convert';
 
 class SignatureSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> signatureDetailedInfo = {
@@ -277,10 +276,9 @@ class SignatureSubview extends StatelessWidget {
   }
 
   void _showFilePreview(BuildContext context, FileReader file) {
-    final base64Content = base64Encode(file.bytes);
     FilePreviewHelper.showPreviewModal(
       context: context,
-      content: base64Content,
+      content: Uint8List.fromList(file.bytes),
       fileName: file.name,
     );
   }
@@ -511,7 +509,7 @@ class SignatureSubview extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     GenerateKeyView.showToast(
       context,
-      'Copiado para a área de transferência',
+      'Copiado para a área de transfer��ncia',
       type: ToastType.success,
     );
   }

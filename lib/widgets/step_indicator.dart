@@ -17,7 +17,6 @@ class StepIndicator extends StatefulWidget {
         'Assine digitalmente o arquivo para garantir sua autenticidade',
     'Proteção': 'Proteja a chave simétrica usando criptografia assimétrica',
     'Envio': 'Prepare e envie o pacote criptografado',
-    'Descriptografia': 'Processo de recuperação do arquivo original',
   };
 
   const StepIndicator({
@@ -29,7 +28,6 @@ class StepIndicator extends StatefulWidget {
       'Assinatura',
       'Proteção',
       'Envio',
-      'Descriptografia',
     ],
   });
 
