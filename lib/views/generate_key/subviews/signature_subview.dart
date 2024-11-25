@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-
+import '../../../helpers/file_preview_helper.dart';
 import '../../../helpers/file_reader_helper.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
@@ -10,6 +10,7 @@ import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
 import '../../../widgets/section_title.dart';
 import '../generate_key_view.dart';
+import 'dart:convert';
 
 class SignatureSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> signatureDetailedInfo = {
@@ -237,40 +238,37 @@ class SignatureSubview extends StatelessWidget {
                 color: AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-
-              //TODO: FILE PREVIEW QUE ESTAVA DANDO PROBLEMA NO BUILD DO WINDOWS
-
-              // child: Material(
-              //   color: Colors.transparent,
-              //   child: InkWell(
-              //     borderRadius: BorderRadius.circular(8),
-              //     onTap: () => _showFilePreview(context, state.fileToSend),
-              //     child: Padding(
-              //       padding: const EdgeInsets.symmetric(
-              //         horizontal: AppSpacing.sm,
-              //         vertical: AppSpacing.xs,
-              //       ),
-              //       child: Row(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           const Icon(
-              //             Icons.visibility_outlined,
-              //             size: 18,
-              //             color: AppColors.primary,
-              //           ),
-              //           const SizedBox(width: AppSpacing.xs),
-              //           Text(
-              //             'Pré-visualizar arquivo.',
-              //             style: theme.textTheme.bodySmall?.copyWith(
-              //               color: AppColors.primary,
-              //               fontWeight: FontWeight.w500,
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () => _showFilePreview(context, state.fileToSend),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xs,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.visibility_outlined,
+                          size: 18,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text(
+                          'Pré-visualizar arquivo',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -278,19 +276,14 @@ class SignatureSubview extends StatelessWidget {
     );
   }
 
-  // void _showFilePreview(BuildContext context, FileReader file) {
-  //   FilePreviewDialog.show(
-  //     context,
-  //     files: [
-  //       FilePreviewItem(
-  //         fileName: file.name,
-  //         fileSize: file.size,
-  //         fileBytes: file.bytes,
-  //       ),
-  //     ],
-  //     initialIndex: 0,
-  //   );
-  // }
+  void _showFilePreview(BuildContext context, FileReader file) {
+    final base64Content = base64Encode(file.bytes);
+    FilePreviewHelper.showPreviewModal(
+      context: context,
+      content: base64Content,
+      fileName: file.name,
+    );
+  }
 
   Widget _buildProcessSteps(ThemeData theme, bool isSmallScreen) {
     return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(

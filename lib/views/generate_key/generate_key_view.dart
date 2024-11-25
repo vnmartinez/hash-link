@@ -80,11 +80,21 @@ class GenerateKeyView extends StatelessWidget {
       buildWhen: (previous, current) {
         final prevConfig = _subviewConfiguration(previous);
         final currentConfig = _subviewConfiguration(current);
-        return prevConfig.step != currentConfig.step ||
-            prevConfig.hasPrevious != currentConfig.hasPrevious;
+        return prevConfig.canNext != currentConfig.canNext ||
+            prevConfig.hasPrevious != currentConfig.hasPrevious ||
+            previous.runtimeType != current.runtimeType;
       },
       builder: (context, state) {
         final configuration = _subviewConfiguration(state);
+
+        void handleNextStep() {
+          if (state is Decryption) {
+            context.read<GenerateKeyBloc>().add(RestartProcess());
+          } else {
+            context.read<GenerateKeyBloc>().add(const NextStep());
+          }
+        }
+
         return Scaffold(
           body: Row(
             children: [
@@ -123,7 +133,9 @@ class GenerateKeyView extends StatelessWidget {
                                       return prevConfig.canNext !=
                                               currentConfig.canNext ||
                                           prevConfig.hasPrevious !=
-                                              currentConfig.hasPrevious;
+                                              currentConfig.hasPrevious ||
+                                          previous.runtimeType !=
+                                              current.runtimeType;
                                     },
                                     builder: (context, state) {
                                       final configuration =
@@ -132,12 +144,13 @@ class GenerateKeyView extends StatelessWidget {
                                         onPressedBack: () => context
                                             .read<GenerateKeyBloc>()
                                             .add(const PreviousStep()),
-                                        onPressedNext: () => context
-                                            .read<GenerateKeyBloc>()
-                                            .add(const NextStep()),
+                                        onPressedNext: handleNextStep,
+                                        nextLabel: state is Decryption
+                                            ? 'Reiniciar processo'
+                                            : 'Próximo',
                                         showBackButton:
                                             configuration.hasPrevious,
-                                        showNextButton: configuration.hasNext,
+                                        showNextButton: true,
                                         enableNextButton: configuration.canNext,
                                       );
                                     },

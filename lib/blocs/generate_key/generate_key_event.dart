@@ -63,3 +63,7 @@ class SelectTeacherPrivateKeyFile extends GenerateKeyEvent
 class CheckPackage extends GenerateKeyEvent with _$CheckPackage {
   const factory CheckPackage() = _CheckPackage;
 }
+
+class RestartProcess extends GenerateKeyEvent {
+  RestartProcess();
+}

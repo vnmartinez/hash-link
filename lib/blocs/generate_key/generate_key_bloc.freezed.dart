@@ -2432,6 +2432,8 @@ mixin _$Decryption {
   FileReader? get teacherPrivateKeyFile => throw _privateConstructorUsedError;
   bool get selectingTeacherPrivateKeyFile => throw _privateConstructorUsedError;
   bool get validDecryption => throw _privateConstructorUsedError;
+  String? get decryptedContent => throw _privateConstructorUsedError;
+  String? get decryptedFileName => throw _privateConstructorUsedError;
 
   /// Create a copy of Decryption
   /// with the given fields replaced by the non-null parameter values.
@@ -2458,7 +2460,9 @@ abstract class $DecryptionCopyWith<$Res> {
       String symmetricKeyEncryption,
       FileReader? teacherPrivateKeyFile,
       bool selectingTeacherPrivateKeyFile,
-      bool validDecryption});
+      bool validDecryption,
+      String? decryptedContent,
+      String? decryptedFileName});
 
   $FileReaderCopyWith<$Res> get fileToSend;
   $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
@@ -2492,6 +2496,8 @@ class _$DecryptionCopyWithImpl<$Res, $Val extends Decryption>
     Object? teacherPrivateKeyFile = freezed,
     Object? selectingTeacherPrivateKeyFile = null,
     Object? validDecryption = null,
+    Object? decryptedContent = freezed,
+    Object? decryptedFileName = freezed,
   }) {
     return _then(_value.copyWith(
       publicKey: null == publicKey
@@ -2542,6 +2548,14 @@ class _$DecryptionCopyWithImpl<$Res, $Val extends Decryption>
           ? _value.validDecryption
           : validDecryption // ignore: cast_nullable_to_non_nullable
               as bool,
+      decryptedContent: freezed == decryptedContent
+          ? _value.decryptedContent
+          : decryptedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      decryptedFileName: freezed == decryptedFileName
+          ? _value.decryptedFileName
+          : decryptedFileName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -2600,7 +2614,9 @@ abstract class _$$DecryptionImplCopyWith<$Res>
       String symmetricKeyEncryption,
       FileReader? teacherPrivateKeyFile,
       bool selectingTeacherPrivateKeyFile,
-      bool validDecryption});
+      bool validDecryption,
+      String? decryptedContent,
+      String? decryptedFileName});
 
   @override
   $FileReaderCopyWith<$Res> get fileToSend;
@@ -2635,6 +2651,8 @@ class __$$DecryptionImplCopyWithImpl<$Res>
     Object? teacherPrivateKeyFile = freezed,
     Object? selectingTeacherPrivateKeyFile = null,
     Object? validDecryption = null,
+    Object? decryptedContent = freezed,
+    Object? decryptedFileName = freezed,
   }) {
     return _then(_$DecryptionImpl(
       publicKey: null == publicKey
@@ -2685,6 +2703,14 @@ class __$$DecryptionImplCopyWithImpl<$Res>
           ? _value.validDecryption
           : validDecryption // ignore: cast_nullable_to_non_nullable
               as bool,
+      decryptedContent: freezed == decryptedContent
+          ? _value.decryptedContent
+          : decryptedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      decryptedFileName: freezed == decryptedFileName
+          ? _value.decryptedFileName
+          : decryptedFileName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -2704,7 +2730,9 @@ class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
       required this.symmetricKeyEncryption,
       this.teacherPrivateKeyFile,
       this.selectingTeacherPrivateKeyFile = false,
-      this.validDecryption = false});
+      this.validDecryption = false,
+      this.decryptedContent,
+      this.decryptedFileName});
 
   @override
   final String publicKey;
@@ -2732,10 +2760,14 @@ class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
   @override
   @JsonKey()
   final bool validDecryption;
+  @override
+  final String? decryptedContent;
+  @override
+  final String? decryptedFileName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Decryption(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption, teacherPrivateKeyFile: $teacherPrivateKeyFile, selectingTeacherPrivateKeyFile: $selectingTeacherPrivateKeyFile, validDecryption: $validDecryption)';
+    return 'Decryption(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption, teacherPrivateKeyFile: $teacherPrivateKeyFile, selectingTeacherPrivateKeyFile: $selectingTeacherPrivateKeyFile, validDecryption: $validDecryption, decryptedContent: $decryptedContent, decryptedFileName: $decryptedFileName)';
   }
 
   @override
@@ -2756,7 +2788,9 @@ class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
       ..add(DiagnosticsProperty('teacherPrivateKeyFile', teacherPrivateKeyFile))
       ..add(DiagnosticsProperty(
           'selectingTeacherPrivateKeyFile', selectingTeacherPrivateKeyFile))
-      ..add(DiagnosticsProperty('validDecryption', validDecryption));
+      ..add(DiagnosticsProperty('validDecryption', validDecryption))
+      ..add(DiagnosticsProperty('decryptedContent', decryptedContent))
+      ..add(DiagnosticsProperty('decryptedFileName', decryptedFileName));
   }
 
   @override
@@ -2789,7 +2823,11 @@ class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
                 other.selectingTeacherPrivateKeyFile ==
                     selectingTeacherPrivateKeyFile) &&
             (identical(other.validDecryption, validDecryption) ||
-                other.validDecryption == validDecryption));
+                other.validDecryption == validDecryption) &&
+            (identical(other.decryptedContent, decryptedContent) ||
+                other.decryptedContent == decryptedContent) &&
+            (identical(other.decryptedFileName, decryptedFileName) ||
+                other.decryptedFileName == decryptedFileName));
   }
 
   @override
@@ -2806,7 +2844,9 @@ class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
       symmetricKeyEncryption,
       teacherPrivateKeyFile,
       selectingTeacherPrivateKeyFile,
-      validDecryption);
+      validDecryption,
+      decryptedContent,
+      decryptedFileName);
 
   /// Create a copy of Decryption
   /// with the given fields replaced by the non-null parameter values.
@@ -2830,7 +2870,9 @@ abstract class _Decryption implements Decryption {
       required final String symmetricKeyEncryption,
       final FileReader? teacherPrivateKeyFile,
       final bool selectingTeacherPrivateKeyFile,
-      final bool validDecryption}) = _$DecryptionImpl;
+      final bool validDecryption,
+      final String? decryptedContent,
+      final String? decryptedFileName}) = _$DecryptionImpl;
 
   @override
   String get publicKey;
@@ -2856,6 +2898,10 @@ abstract class _Decryption implements Decryption {
   bool get selectingTeacherPrivateKeyFile;
   @override
   bool get validDecryption;
+  @override
+  String? get decryptedContent;
+  @override
+  String? get decryptedFileName;
 
   /// Create a copy of Decryption
   /// with the given fields replaced by the non-null parameter values.

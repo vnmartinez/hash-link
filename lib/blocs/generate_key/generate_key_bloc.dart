@@ -208,8 +208,16 @@ class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
         final isValidSignature = RSAKeyHelper.verifySignatureWithPublicKey(
             fileSignature, fileDigest, publicKey);
 
-        emit(state.copyWith(validDecryption: isValidSignature));
+        emit(state.copyWith(
+          validDecryption: isValidSignature,
+          decryptedContent: base64.encode(fileBytes),
+          decryptedFileName: state.fileToSend.name,
+        ));
       }
+    });
+
+    on<RestartProcess>((event, emit) {
+      emit(const KeyGeneration());
     });
   }
 }

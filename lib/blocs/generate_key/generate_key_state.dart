@@ -129,6 +129,8 @@ class Decryption extends GenerateKeyState with _$Decryption {
     FileReader? teacherPrivateKeyFile,
     @Default(false) bool selectingTeacherPrivateKeyFile,
     @Default(false) bool validDecryption,
+    String? decryptedContent,
+    String? decryptedFileName,
   }) = _Decryption;
 
   factory Decryption.fromValidShipping(Shipping state) {
@@ -142,6 +144,7 @@ class Decryption extends GenerateKeyState with _$Decryption {
       fileSignature: state.fileSignature,
       fileEncryption: state.fileEncryption,
       symmetricKeyEncryption: state.symmetricKeyEncryption,
+      decryptedContent: '',
     );
   }
 }
@@ -167,4 +170,8 @@ extension ProtectionExtension on Protection {
 
 extension ShippingExtension on Shipping {
   bool get isValid => packageSended;
+}
+
+extension DecryptionExtension on Decryption {
+  bool get isValid => validDecryption && decryptedContent != null;
 }
