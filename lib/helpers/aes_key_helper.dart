@@ -34,8 +34,9 @@ class AESKeyHelper {
     final iv = encryptedData.sublist(0, 16);
     final ciphertext = encryptedData.sublist(16);
 
+    final parameters = pc.ParametersWithIV(pc.KeyParameter(aesKey), iv);
     final cipher = pc.PaddedBlockCipher('AES/CBC/PKCS7')
-      ..init(false, pc.ParametersWithIV(pc.KeyParameter(aesKey), iv));
+      ..init(false, pc.PaddedBlockCipherParameters(parameters, null));
 
     return cipher.process(ciphertext);
   }

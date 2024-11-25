@@ -116,7 +116,37 @@ class Shipping extends GenerateKeyState with _$Shipping {
 
 @blocState
 class Decryption extends GenerateKeyState with _$Decryption {
-  const factory Decryption() = _Decryption;
+  const factory Decryption({
+    required String publicKey,
+    required String privateKey,
+    required String symmetricKey,
+    required FileReader fileToSend,
+    required FileReader teacherPublicKeyFile,
+    required String fileDigest,
+    required String fileSignature,
+    required String fileEncryption,
+    required String symmetricKeyEncryption,
+    FileReader? teacherPrivateKeyFile,
+    @Default(false) bool selectingTeacherPrivateKeyFile,
+    @Default(false) bool validDecryption,
+    String? decryptedContent,
+    String? decryptedFileName,
+  }) = _Decryption;
+
+  factory Decryption.fromValidShipping(Shipping state) {
+    return Decryption(
+      publicKey: state.publicKey,
+      privateKey: state.privateKey,
+      symmetricKey: state.symmetricKey,
+      fileToSend: state.fileToSend,
+      teacherPublicKeyFile: state.teacherPublicKeyFile,
+      fileDigest: state.fileDigest,
+      fileSignature: state.fileSignature,
+      fileEncryption: state.fileEncryption,
+      symmetricKeyEncryption: state.symmetricKeyEncryption,
+      decryptedContent: '',
+    );
+  }
 }
 
 extension KeyGenerationExtension on KeyGeneration {
@@ -140,4 +170,8 @@ extension ProtectionExtension on Protection {
 
 extension ShippingExtension on Shipping {
   bool get isValid => packageSended;
+}
+
+extension DecryptionExtension on Decryption {
+  bool get isValid => validDecryption && decryptedContent != null;
 }

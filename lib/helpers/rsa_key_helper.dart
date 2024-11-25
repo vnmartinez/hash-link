@@ -136,10 +136,28 @@ ${base64.encode(_encodePrivateKey(privateKey))}
     return signature.bytes;
   }
 
-  static Uint8List encryptAESKeyWithPublicKey(
+  static Uint8List encryptDataWithPublicKey(
       Uint8List aesKey, pc.RSAPublicKey publicKey) {
     final rsaEngine = pc.RSAEngine()
       ..init(true, pc.PublicKeyParameter<pc.RSAPublicKey>(publicKey));
     return rsaEngine.process(aesKey);
+  }
+
+  static Uint8List decryptDataWithPrivateKey(
+      Uint8List encryptedData, pc.RSAPrivateKey privateKey) {
+    final rsaEngine = pc.RSAEngine()
+      ..init(false, pc.PrivateKeyParameter<pc.RSAPrivateKey>(privateKey));
+    return rsaEngine.process(encryptedData);
+  }
+
+  static pc.RSASignature parseSignatureFromBytes(Uint8List signatureBytes) {
+    return pc.RSASignature(signatureBytes);
+  }
+
+  static bool verifySignatureWithPublicKey(
+      pc.RSASignature signature, Uint8List data, pc.RSAPublicKey publicKey) {
+    final verifier = pc.Signer('SHA-256/RSA')
+      ..init(false, pc.PublicKeyParameter<pc.RSAPublicKey>(publicKey));
+    return verifier.verifySignature(data, signature);
   }
 }

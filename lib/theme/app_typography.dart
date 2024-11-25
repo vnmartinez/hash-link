@@ -44,4 +44,9 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     letterSpacing: 1.25,
   );
+
+  static TextStyle h4 = const TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+  );
 }

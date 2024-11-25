@@ -15,6 +15,81 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$ResetGenerateKey {}
+
+/// @nodoc
+abstract class $ResetGenerateKeyCopyWith<$Res> {
+  factory $ResetGenerateKeyCopyWith(
+          ResetGenerateKey value, $Res Function(ResetGenerateKey) then) =
+      _$ResetGenerateKeyCopyWithImpl<$Res, ResetGenerateKey>;
+}
+
+/// @nodoc
+class _$ResetGenerateKeyCopyWithImpl<$Res, $Val extends ResetGenerateKey>
+    implements $ResetGenerateKeyCopyWith<$Res> {
+  _$ResetGenerateKeyCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ResetGenerateKey
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$ResetGenerateKeyImplCopyWith<$Res> {
+  factory _$$ResetGenerateKeyImplCopyWith(_$ResetGenerateKeyImpl value,
+          $Res Function(_$ResetGenerateKeyImpl) then) =
+      __$$ResetGenerateKeyImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ResetGenerateKeyImplCopyWithImpl<$Res>
+    extends _$ResetGenerateKeyCopyWithImpl<$Res, _$ResetGenerateKeyImpl>
+    implements _$$ResetGenerateKeyImplCopyWith<$Res> {
+  __$$ResetGenerateKeyImplCopyWithImpl(_$ResetGenerateKeyImpl _value,
+      $Res Function(_$ResetGenerateKeyImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ResetGenerateKey
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ResetGenerateKeyImpl
+    with DiagnosticableTreeMixin
+    implements _ResetGenerateKey {
+  const _$ResetGenerateKeyImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ResetGenerateKey()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'ResetGenerateKey'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ResetGenerateKeyImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _ResetGenerateKey implements ResetGenerateKey {
+  const factory _ResetGenerateKey() = _$ResetGenerateKeyImpl;
+}
+
+/// @nodoc
 mixin _$NextStep {}
 
 /// @nodoc
@@ -691,6 +766,163 @@ class _$SendPackageImpl with DiagnosticableTreeMixin implements _SendPackage {
 
 abstract class _SendPackage implements SendPackage {
   const factory _SendPackage() = _$SendPackageImpl;
+}
+
+/// @nodoc
+mixin _$SelectTeacherPrivateKeyFile {}
+
+/// @nodoc
+abstract class $SelectTeacherPrivateKeyFileCopyWith<$Res> {
+  factory $SelectTeacherPrivateKeyFileCopyWith(
+          SelectTeacherPrivateKeyFile value,
+          $Res Function(SelectTeacherPrivateKeyFile) then) =
+      _$SelectTeacherPrivateKeyFileCopyWithImpl<$Res,
+          SelectTeacherPrivateKeyFile>;
+}
+
+/// @nodoc
+class _$SelectTeacherPrivateKeyFileCopyWithImpl<$Res,
+        $Val extends SelectTeacherPrivateKeyFile>
+    implements $SelectTeacherPrivateKeyFileCopyWith<$Res> {
+  _$SelectTeacherPrivateKeyFileCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SelectTeacherPrivateKeyFile
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$SelectTeacherPrivateKeyFileImplCopyWith<$Res> {
+  factory _$$SelectTeacherPrivateKeyFileImplCopyWith(
+          _$SelectTeacherPrivateKeyFileImpl value,
+          $Res Function(_$SelectTeacherPrivateKeyFileImpl) then) =
+      __$$SelectTeacherPrivateKeyFileImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SelectTeacherPrivateKeyFileImplCopyWithImpl<$Res>
+    extends _$SelectTeacherPrivateKeyFileCopyWithImpl<$Res,
+        _$SelectTeacherPrivateKeyFileImpl>
+    implements _$$SelectTeacherPrivateKeyFileImplCopyWith<$Res> {
+  __$$SelectTeacherPrivateKeyFileImplCopyWithImpl(
+      _$SelectTeacherPrivateKeyFileImpl _value,
+      $Res Function(_$SelectTeacherPrivateKeyFileImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SelectTeacherPrivateKeyFile
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SelectTeacherPrivateKeyFileImpl
+    with DiagnosticableTreeMixin
+    implements _SelectTeacherPrivateKeyFile {
+  const _$SelectTeacherPrivateKeyFileImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'SelectTeacherPrivateKeyFile()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'SelectTeacherPrivateKeyFile'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectTeacherPrivateKeyFileImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _SelectTeacherPrivateKeyFile
+    implements SelectTeacherPrivateKeyFile {
+  const factory _SelectTeacherPrivateKeyFile() =
+      _$SelectTeacherPrivateKeyFileImpl;
+}
+
+/// @nodoc
+mixin _$CheckPackage {}
+
+/// @nodoc
+abstract class $CheckPackageCopyWith<$Res> {
+  factory $CheckPackageCopyWith(
+          CheckPackage value, $Res Function(CheckPackage) then) =
+      _$CheckPackageCopyWithImpl<$Res, CheckPackage>;
+}
+
+/// @nodoc
+class _$CheckPackageCopyWithImpl<$Res, $Val extends CheckPackage>
+    implements $CheckPackageCopyWith<$Res> {
+  _$CheckPackageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CheckPackage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$CheckPackageImplCopyWith<$Res> {
+  factory _$$CheckPackageImplCopyWith(
+          _$CheckPackageImpl value, $Res Function(_$CheckPackageImpl) then) =
+      __$$CheckPackageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CheckPackageImplCopyWithImpl<$Res>
+    extends _$CheckPackageCopyWithImpl<$Res, _$CheckPackageImpl>
+    implements _$$CheckPackageImplCopyWith<$Res> {
+  __$$CheckPackageImplCopyWithImpl(
+      _$CheckPackageImpl _value, $Res Function(_$CheckPackageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CheckPackage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CheckPackageImpl with DiagnosticableTreeMixin implements _CheckPackage {
+  const _$CheckPackageImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CheckPackage()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'CheckPackage'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$CheckPackageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _CheckPackage implements CheckPackage {
+  const factory _CheckPackage() = _$CheckPackageImpl;
 }
 
 /// @nodoc
@@ -2262,13 +2494,54 @@ abstract class _Shipping implements Shipping {
 }
 
 /// @nodoc
-mixin _$Decryption {}
+mixin _$Decryption {
+  String get publicKey => throw _privateConstructorUsedError;
+  String get privateKey => throw _privateConstructorUsedError;
+  String get symmetricKey => throw _privateConstructorUsedError;
+  FileReader get fileToSend => throw _privateConstructorUsedError;
+  FileReader get teacherPublicKeyFile => throw _privateConstructorUsedError;
+  String get fileDigest => throw _privateConstructorUsedError;
+  String get fileSignature => throw _privateConstructorUsedError;
+  String get fileEncryption => throw _privateConstructorUsedError;
+  String get symmetricKeyEncryption => throw _privateConstructorUsedError;
+  FileReader? get teacherPrivateKeyFile => throw _privateConstructorUsedError;
+  bool get selectingTeacherPrivateKeyFile => throw _privateConstructorUsedError;
+  bool get validDecryption => throw _privateConstructorUsedError;
+  String? get decryptedContent => throw _privateConstructorUsedError;
+  String? get decryptedFileName => throw _privateConstructorUsedError;
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $DecryptionCopyWith<Decryption> get copyWith =>
+      throw _privateConstructorUsedError;
+}
 
 /// @nodoc
 abstract class $DecryptionCopyWith<$Res> {
   factory $DecryptionCopyWith(
           Decryption value, $Res Function(Decryption) then) =
       _$DecryptionCopyWithImpl<$Res, Decryption>;
+  @useResult
+  $Res call(
+      {String publicKey,
+      String privateKey,
+      String symmetricKey,
+      FileReader fileToSend,
+      FileReader teacherPublicKeyFile,
+      String fileDigest,
+      String fileSignature,
+      String fileEncryption,
+      String symmetricKeyEncryption,
+      FileReader? teacherPrivateKeyFile,
+      bool selectingTeacherPrivateKeyFile,
+      bool validDecryption,
+      String? decryptedContent,
+      String? decryptedFileName});
+
+  $FileReaderCopyWith<$Res> get fileToSend;
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
+  $FileReaderCopyWith<$Res>? get teacherPrivateKeyFile;
 }
 
 /// @nodoc
@@ -2283,13 +2556,149 @@ class _$DecryptionCopyWithImpl<$Res, $Val extends Decryption>
 
   /// Create a copy of Decryption
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = null,
+    Object? privateKey = null,
+    Object? symmetricKey = null,
+    Object? fileToSend = null,
+    Object? teacherPublicKeyFile = null,
+    Object? fileDigest = null,
+    Object? fileSignature = null,
+    Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = null,
+    Object? teacherPrivateKeyFile = freezed,
+    Object? selectingTeacherPrivateKeyFile = null,
+    Object? validDecryption = null,
+    Object? decryptedContent = freezed,
+    Object? decryptedFileName = freezed,
+  }) {
+    return _then(_value.copyWith(
+      publicKey: null == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKey: null == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileToSend: null == fileToSend
+          ? _value.fileToSend
+          : fileToSend // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      teacherPublicKeyFile: null == teacherPublicKeyFile
+          ? _value.teacherPublicKeyFile
+          : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      fileDigest: null == fileDigest
+          ? _value.fileDigest
+          : fileDigest // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSignature: null == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileEncryption: null == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKeyEncryption: null == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      teacherPrivateKeyFile: freezed == teacherPrivateKeyFile
+          ? _value.teacherPrivateKeyFile
+          : teacherPrivateKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader?,
+      selectingTeacherPrivateKeyFile: null == selectingTeacherPrivateKeyFile
+          ? _value.selectingTeacherPrivateKeyFile
+          : selectingTeacherPrivateKeyFile // ignore: cast_nullable_to_non_nullable
+              as bool,
+      validDecryption: null == validDecryption
+          ? _value.validDecryption
+          : validDecryption // ignore: cast_nullable_to_non_nullable
+              as bool,
+      decryptedContent: freezed == decryptedContent
+          ? _value.decryptedContent
+          : decryptedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      decryptedFileName: freezed == decryptedFileName
+          ? _value.decryptedFileName
+          : decryptedFileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileReaderCopyWith<$Res> get fileToSend {
+    return $FileReaderCopyWith<$Res>(_value.fileToSend, (value) {
+      return _then(_value.copyWith(fileToSend: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile {
+    return $FileReaderCopyWith<$Res>(_value.teacherPublicKeyFile, (value) {
+      return _then(_value.copyWith(teacherPublicKeyFile: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileReaderCopyWith<$Res>? get teacherPrivateKeyFile {
+    if (_value.teacherPrivateKeyFile == null) {
+      return null;
+    }
+
+    return $FileReaderCopyWith<$Res>(_value.teacherPrivateKeyFile!, (value) {
+      return _then(_value.copyWith(teacherPrivateKeyFile: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$DecryptionImplCopyWith<$Res> {
+abstract class _$$DecryptionImplCopyWith<$Res>
+    implements $DecryptionCopyWith<$Res> {
   factory _$$DecryptionImplCopyWith(
           _$DecryptionImpl value, $Res Function(_$DecryptionImpl) then) =
       __$$DecryptionImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String publicKey,
+      String privateKey,
+      String symmetricKey,
+      FileReader fileToSend,
+      FileReader teacherPublicKeyFile,
+      String fileDigest,
+      String fileSignature,
+      String fileEncryption,
+      String symmetricKeyEncryption,
+      FileReader? teacherPrivateKeyFile,
+      bool selectingTeacherPrivateKeyFile,
+      bool validDecryption,
+      String? decryptedContent,
+      String? decryptedFileName});
+
+  @override
+  $FileReaderCopyWith<$Res> get fileToSend;
+  @override
+  $FileReaderCopyWith<$Res> get teacherPublicKeyFile;
+  @override
+  $FileReaderCopyWith<$Res>? get teacherPrivateKeyFile;
 }
 
 /// @nodoc
@@ -2302,34 +2711,277 @@ class __$$DecryptionImplCopyWithImpl<$Res>
 
   /// Create a copy of Decryption
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? publicKey = null,
+    Object? privateKey = null,
+    Object? symmetricKey = null,
+    Object? fileToSend = null,
+    Object? teacherPublicKeyFile = null,
+    Object? fileDigest = null,
+    Object? fileSignature = null,
+    Object? fileEncryption = null,
+    Object? symmetricKeyEncryption = null,
+    Object? teacherPrivateKeyFile = freezed,
+    Object? selectingTeacherPrivateKeyFile = null,
+    Object? validDecryption = null,
+    Object? decryptedContent = freezed,
+    Object? decryptedFileName = freezed,
+  }) {
+    return _then(_$DecryptionImpl(
+      publicKey: null == publicKey
+          ? _value.publicKey
+          : publicKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKey: null == symmetricKey
+          ? _value.symmetricKey
+          : symmetricKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileToSend: null == fileToSend
+          ? _value.fileToSend
+          : fileToSend // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      teacherPublicKeyFile: null == teacherPublicKeyFile
+          ? _value.teacherPublicKeyFile
+          : teacherPublicKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader,
+      fileDigest: null == fileDigest
+          ? _value.fileDigest
+          : fileDigest // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSignature: null == fileSignature
+          ? _value.fileSignature
+          : fileSignature // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileEncryption: null == fileEncryption
+          ? _value.fileEncryption
+          : fileEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      symmetricKeyEncryption: null == symmetricKeyEncryption
+          ? _value.symmetricKeyEncryption
+          : symmetricKeyEncryption // ignore: cast_nullable_to_non_nullable
+              as String,
+      teacherPrivateKeyFile: freezed == teacherPrivateKeyFile
+          ? _value.teacherPrivateKeyFile
+          : teacherPrivateKeyFile // ignore: cast_nullable_to_non_nullable
+              as FileReader?,
+      selectingTeacherPrivateKeyFile: null == selectingTeacherPrivateKeyFile
+          ? _value.selectingTeacherPrivateKeyFile
+          : selectingTeacherPrivateKeyFile // ignore: cast_nullable_to_non_nullable
+              as bool,
+      validDecryption: null == validDecryption
+          ? _value.validDecryption
+          : validDecryption // ignore: cast_nullable_to_non_nullable
+              as bool,
+      decryptedContent: freezed == decryptedContent
+          ? _value.decryptedContent
+          : decryptedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      decryptedFileName: freezed == decryptedFileName
+          ? _value.decryptedFileName
+          : decryptedFileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$DecryptionImpl with DiagnosticableTreeMixin implements _Decryption {
-  const _$DecryptionImpl();
+  const _$DecryptionImpl(
+      {required this.publicKey,
+      required this.privateKey,
+      required this.symmetricKey,
+      required this.fileToSend,
+      required this.teacherPublicKeyFile,
+      required this.fileDigest,
+      required this.fileSignature,
+      required this.fileEncryption,
+      required this.symmetricKeyEncryption,
+      this.teacherPrivateKeyFile,
+      this.selectingTeacherPrivateKeyFile = false,
+      this.validDecryption = false,
+      this.decryptedContent,
+      this.decryptedFileName});
+
+  @override
+  final String publicKey;
+  @override
+  final String privateKey;
+  @override
+  final String symmetricKey;
+  @override
+  final FileReader fileToSend;
+  @override
+  final FileReader teacherPublicKeyFile;
+  @override
+  final String fileDigest;
+  @override
+  final String fileSignature;
+  @override
+  final String fileEncryption;
+  @override
+  final String symmetricKeyEncryption;
+  @override
+  final FileReader? teacherPrivateKeyFile;
+  @override
+  @JsonKey()
+  final bool selectingTeacherPrivateKeyFile;
+  @override
+  @JsonKey()
+  final bool validDecryption;
+  @override
+  final String? decryptedContent;
+  @override
+  final String? decryptedFileName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Decryption()';
+    return 'Decryption(publicKey: $publicKey, privateKey: $privateKey, symmetricKey: $symmetricKey, fileToSend: $fileToSend, teacherPublicKeyFile: $teacherPublicKeyFile, fileDigest: $fileDigest, fileSignature: $fileSignature, fileEncryption: $fileEncryption, symmetricKeyEncryption: $symmetricKeyEncryption, teacherPrivateKeyFile: $teacherPrivateKeyFile, selectingTeacherPrivateKeyFile: $selectingTeacherPrivateKeyFile, validDecryption: $validDecryption, decryptedContent: $decryptedContent, decryptedFileName: $decryptedFileName)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'Decryption'));
+    properties
+      ..add(DiagnosticsProperty('type', 'Decryption'))
+      ..add(DiagnosticsProperty('publicKey', publicKey))
+      ..add(DiagnosticsProperty('privateKey', privateKey))
+      ..add(DiagnosticsProperty('symmetricKey', symmetricKey))
+      ..add(DiagnosticsProperty('fileToSend', fileToSend))
+      ..add(DiagnosticsProperty('teacherPublicKeyFile', teacherPublicKeyFile))
+      ..add(DiagnosticsProperty('fileDigest', fileDigest))
+      ..add(DiagnosticsProperty('fileSignature', fileSignature))
+      ..add(DiagnosticsProperty('fileEncryption', fileEncryption))
+      ..add(
+          DiagnosticsProperty('symmetricKeyEncryption', symmetricKeyEncryption))
+      ..add(DiagnosticsProperty('teacherPrivateKeyFile', teacherPrivateKeyFile))
+      ..add(DiagnosticsProperty(
+          'selectingTeacherPrivateKeyFile', selectingTeacherPrivateKeyFile))
+      ..add(DiagnosticsProperty('validDecryption', validDecryption))
+      ..add(DiagnosticsProperty('decryptedContent', decryptedContent))
+      ..add(DiagnosticsProperty('decryptedFileName', decryptedFileName));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DecryptionImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$DecryptionImpl &&
+            (identical(other.publicKey, publicKey) ||
+                other.publicKey == publicKey) &&
+            (identical(other.privateKey, privateKey) ||
+                other.privateKey == privateKey) &&
+            (identical(other.symmetricKey, symmetricKey) ||
+                other.symmetricKey == symmetricKey) &&
+            (identical(other.fileToSend, fileToSend) ||
+                other.fileToSend == fileToSend) &&
+            (identical(other.teacherPublicKeyFile, teacherPublicKeyFile) ||
+                other.teacherPublicKeyFile == teacherPublicKeyFile) &&
+            (identical(other.fileDigest, fileDigest) ||
+                other.fileDigest == fileDigest) &&
+            (identical(other.fileSignature, fileSignature) ||
+                other.fileSignature == fileSignature) &&
+            (identical(other.fileEncryption, fileEncryption) ||
+                other.fileEncryption == fileEncryption) &&
+            (identical(other.symmetricKeyEncryption, symmetricKeyEncryption) ||
+                other.symmetricKeyEncryption == symmetricKeyEncryption) &&
+            (identical(other.teacherPrivateKeyFile, teacherPrivateKeyFile) ||
+                other.teacherPrivateKeyFile == teacherPrivateKeyFile) &&
+            (identical(other.selectingTeacherPrivateKeyFile,
+                    selectingTeacherPrivateKeyFile) ||
+                other.selectingTeacherPrivateKeyFile ==
+                    selectingTeacherPrivateKeyFile) &&
+            (identical(other.validDecryption, validDecryption) ||
+                other.validDecryption == validDecryption) &&
+            (identical(other.decryptedContent, decryptedContent) ||
+                other.decryptedContent == decryptedContent) &&
+            (identical(other.decryptedFileName, decryptedFileName) ||
+                other.decryptedFileName == decryptedFileName));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      publicKey,
+      privateKey,
+      symmetricKey,
+      fileToSend,
+      teacherPublicKeyFile,
+      fileDigest,
+      fileSignature,
+      fileEncryption,
+      symmetricKeyEncryption,
+      teacherPrivateKeyFile,
+      selectingTeacherPrivateKeyFile,
+      validDecryption,
+      decryptedContent,
+      decryptedFileName);
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DecryptionImplCopyWith<_$DecryptionImpl> get copyWith =>
+      __$$DecryptionImplCopyWithImpl<_$DecryptionImpl>(this, _$identity);
 }
 
 abstract class _Decryption implements Decryption {
-  const factory _Decryption() = _$DecryptionImpl;
+  const factory _Decryption(
+      {required final String publicKey,
+      required final String privateKey,
+      required final String symmetricKey,
+      required final FileReader fileToSend,
+      required final FileReader teacherPublicKeyFile,
+      required final String fileDigest,
+      required final String fileSignature,
+      required final String fileEncryption,
+      required final String symmetricKeyEncryption,
+      final FileReader? teacherPrivateKeyFile,
+      final bool selectingTeacherPrivateKeyFile,
+      final bool validDecryption,
+      final String? decryptedContent,
+      final String? decryptedFileName}) = _$DecryptionImpl;
+
+  @override
+  String get publicKey;
+  @override
+  String get privateKey;
+  @override
+  String get symmetricKey;
+  @override
+  FileReader get fileToSend;
+  @override
+  FileReader get teacherPublicKeyFile;
+  @override
+  String get fileDigest;
+  @override
+  String get fileSignature;
+  @override
+  String get fileEncryption;
+  @override
+  String get symmetricKeyEncryption;
+  @override
+  FileReader? get teacherPrivateKeyFile;
+  @override
+  bool get selectingTeacherPrivateKeyFile;
+  @override
+  bool get validDecryption;
+  @override
+  String? get decryptedContent;
+  @override
+  String? get decryptedFileName;
+
+  /// Create a copy of Decryption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DecryptionImplCopyWith<_$DecryptionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

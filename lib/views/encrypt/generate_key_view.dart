@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-import 'package:hash_link/views/generate_key/subviews/decryption_subview.dart';
-import 'package:hash_link/views/generate_key/subviews/key_generation_subview.dart';
-import 'package:hash_link/views/generate_key/subviews/preparation_subview.dart';
-import 'package:hash_link/views/generate_key/subviews/protection_subview.dart';
-import 'package:hash_link/views/generate_key/subviews/shipping_subview.dart';
-import 'package:hash_link/views/generate_key/subviews/signature_subview.dart';
+import 'package:hash_link/views/encrypt/subviews/key_generation_subview.dart';
+import 'package:hash_link/views/encrypt/subviews/preparation_subview.dart';
+import 'package:hash_link/views/encrypt/subviews/protection_subview.dart';
+import 'package:hash_link/views/encrypt/subviews/shipping_subview.dart';
+import 'package:hash_link/views/encrypt/subviews/signature_subview.dart';
 import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/widgets/step_indicator.dart';
 import 'package:hash_link/widgets/action_buttons.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 import '../../widgets/custom_toast.dart';
+import '../initial/initial_view.dart';
 
-class GenerateKeyView extends StatelessWidget {
+class GenerateKeyView extends StatefulWidget {
   const GenerateKeyView({super.key});
+
+  static const route = '/generate-key';
 
   static void showToast(BuildContext context, String message,
       {ToastType type = ToastType.info}) {
     CustomToast.show(context, message, type: type);
+  }
+
+  @override
+  State<GenerateKeyView> createState() => _GenerateKeyViewState();
+}
+
+class _GenerateKeyViewState extends State<GenerateKeyView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<GenerateKeyBloc>().add(const ResetGenerateKey());
   }
 
   ({
@@ -64,12 +80,12 @@ class GenerateKeyView extends StatelessWidget {
           hasNext: true,
           canNext: state.isValid,
         ),
-      Decryption() => (
-          step: 6,
-          widget: const DecryptionSubview(),
-          hasPrevious: true,
-          hasNext: false,
-          canNext: true,
+      _ => (
+          step: 1,
+          widget: const KeyGenerationSubview(),
+          hasPrevious: false,
+          hasNext: true,
+          canNext: false,
         ),
     };
   }
@@ -80,17 +96,78 @@ class GenerateKeyView extends StatelessWidget {
       buildWhen: (previous, current) {
         final prevConfig = _subviewConfiguration(previous);
         final currentConfig = _subviewConfiguration(current);
-        return prevConfig.step != currentConfig.step ||
-            prevConfig.hasPrevious != currentConfig.hasPrevious;
+        return prevConfig.canNext != currentConfig.canNext ||
+            prevConfig.hasPrevious != currentConfig.hasPrevious ||
+            previous.runtimeType != current.runtimeType;
       },
       builder: (context, state) {
         final configuration = _subviewConfiguration(state);
+
+        void handleNextStep() {
+          if (state is Decryption) {
+            context.read<GenerateKeyBloc>().add(RestartProcess());
+          } else {
+            context.read<GenerateKeyBloc>().add(const NextStep());
+          }
+        }
+
         return Scaffold(
           body: Row(
             children: [
               SizedBox(
                 width: 330,
-                child: StepIndicator(currentStep: configuration.step),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: StepIndicator(currentStep: configuration.step),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                          border: Border.all(
+                            color: AppColors.grey300,
+                            width: 1,
+                          ),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            onTap: () => Navigator.of(context)
+                                .pushReplacementNamed(InitialView.route),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.md,
+                                horizontal: AppSpacing.lg,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.arrow_back,
+                                    size: 20,
+                                    color: AppColors.grey700,
+                                  ),
+                                  const SizedBox(width: AppSpacing.sm),
+                                  Text(
+                                    'Voltar ao Menu',
+                                    style: AppTypography.bodyMedium.copyWith(
+                                      color: AppColors.grey700,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Stack(
@@ -123,7 +200,9 @@ class GenerateKeyView extends StatelessWidget {
                                       return prevConfig.canNext !=
                                               currentConfig.canNext ||
                                           prevConfig.hasPrevious !=
-                                              currentConfig.hasPrevious;
+                                              currentConfig.hasPrevious ||
+                                          previous.runtimeType !=
+                                              current.runtimeType;
                                     },
                                     builder: (context, state) {
                                       final configuration =
@@ -132,12 +211,13 @@ class GenerateKeyView extends StatelessWidget {
                                         onPressedBack: () => context
                                             .read<GenerateKeyBloc>()
                                             .add(const PreviousStep()),
-                                        onPressedNext: () => context
-                                            .read<GenerateKeyBloc>()
-                                            .add(const NextStep()),
+                                        onPressedNext: handleNextStep,
+                                        nextLabel: state is Shipping
+                                            ? 'Reiniciar processo'
+                                            : 'Próximo',
                                         showBackButton:
                                             configuration.hasPrevious,
-                                        showNextButton: configuration.hasNext,
+                                        showNextButton: true,
                                         enableNextButton: configuration.canNext,
                                       );
                                     },

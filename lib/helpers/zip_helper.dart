@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:hash_link/helpers/file_reader_helper.dart';
 
 class ZipData {
   final String name;
@@ -37,5 +38,14 @@ class ZipHelper {
 
     final file = File(outputFile);
     await file.writeAsBytes(zipData);
+  }
+
+  Future<List<ZipData>> unzip(FileReader file) async {
+    final decoder = ZipDecoder();
+    final archive = decoder.decodeBytes(file.bytes);
+
+    return archive.files.map((e) {
+      return ZipData(name: e.name, bytes: e.content);
+    }).toList();
   }
 }

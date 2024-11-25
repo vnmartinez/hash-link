@@ -3,6 +3,11 @@ part of 'generate_key_bloc.dart';
 sealed class GenerateKeyEvent {}
 
 @blocEvent
+class ResetGenerateKey extends GenerateKeyEvent with _$ResetGenerateKey {
+  const factory ResetGenerateKey() = _ResetGenerateKey;
+}
+
+@blocEvent
 class NextStep extends GenerateKeyEvent with _$NextStep {
   const factory NextStep() = _NextStep;
 }
@@ -51,4 +56,19 @@ class ProtectAES extends GenerateKeyEvent with _$ProtectAES {
 @blocEvent
 class SendPackage extends GenerateKeyEvent with _$SendPackage {
   const factory SendPackage() = _SendPackage;
+}
+
+@blocEvent
+class SelectTeacherPrivateKeyFile extends GenerateKeyEvent
+    with _$SelectTeacherPrivateKeyFile {
+  const factory SelectTeacherPrivateKeyFile() = _SelectTeacherPrivateKeyFile;
+}
+
+@blocEvent
+class CheckPackage extends GenerateKeyEvent with _$CheckPackage {
+  const factory CheckPackage() = _CheckPackage;
+}
+
+class RestartProcess extends GenerateKeyEvent {
+  RestartProcess();
 }
