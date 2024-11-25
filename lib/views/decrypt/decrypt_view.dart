@@ -34,6 +34,7 @@ class _DecryptViewState extends State<DecryptView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.grey200,
       body: BlocListener<DecryptBloc, DecryptState>(
         listener: (context, state) {
           if (state.decryptedFile != null) {

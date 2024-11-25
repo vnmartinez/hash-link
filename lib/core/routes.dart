@@ -3,7 +3,7 @@ import 'package:hash_link/views/decrypt/decrypt_view.dart';
 import 'package:hash_link/views/initial/initial_view.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../views/encrypt/generate_key_view.dart';
+import '../views/encrypt/encrypt_view.dart';
 
 class Routes {
   static const initialRoute = InitialView.route;

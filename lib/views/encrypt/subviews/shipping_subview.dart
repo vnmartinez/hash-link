@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import 'package:hash_link/blocs/encrypt/encrypt_bloc.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
 import '../../../widgets/educational_widgets.dart';

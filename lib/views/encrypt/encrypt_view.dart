@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import 'package:hash_link/blocs/encrypt/encrypt_bloc.dart';
 import 'package:hash_link/views/encrypt/subviews/key_generation_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/preparation_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/protection_subview.dart';
@@ -112,6 +112,7 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
         }
 
         return Scaffold(
+          backgroundColor: AppColors.grey200,
           body: Row(
             children: [
               SizedBox(
