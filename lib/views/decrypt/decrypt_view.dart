@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/decrypt/decrypt_bloc.dart';
-import 'package:hash_link/helpers/file_preview_helper.dart';
+import 'package:hash_link/widgets/file_preview.dart';
 import 'package:hash_link/theme/app_colors.dart';
 import 'package:hash_link/theme/app_spacing.dart';
 import 'package:hash_link/widgets/page_header.dart';

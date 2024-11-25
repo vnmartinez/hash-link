@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-import '../../../helpers/file_preview_helper.dart';
+import '../../../widgets/file_preview.dart';
 import '../../../helpers/file_reader_helper.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
