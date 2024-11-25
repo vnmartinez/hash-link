@@ -227,7 +227,7 @@ class _DecryptViewState extends State<DecryptView> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Text(
-                          utf8.decode(state.decryptedFile!),
+                          state.decryptedFile!.length.toString(),
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
