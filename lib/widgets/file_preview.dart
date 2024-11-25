@@ -5,6 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:pdfx/pdfx.dart';
 
 class FilePreviewHelper {
   static void showPreviewModal({
@@ -102,10 +103,9 @@ class FilePreviewHelper {
 
   static Widget _buildPreviewContent(Uint8List bytes) {
     try {
-      // if (_isPdfBytes(bytes)) {
-      //   return _buildPdfPreview(bytes);
-      // } else
-      if (_isImageBytes(bytes)) {
+      if (_isPdfBytes(bytes)) {
+        return _buildPdfPreview(bytes);
+      } else if (_isImageBytes(bytes)) {
         return _buildImagePreview(bytes);
       } else {
         return _buildTextContent(_tryDecodeText(bytes));
@@ -158,105 +158,105 @@ class FilePreviewHelper {
         bytes[4] == 0x2D; // -
   }
 
-  // static Widget _buildPdfPreview(Uint8List bytes) {
-  //   return FutureBuilder<PdfDocument>(
-  //     future: PdfDocument.openData(bytes).catchError((error) {
-  //       if (kDebugMode) {
-  //         print('Erro ao abrir PDF: $error');
-  //       }
-  //       throw error;
-  //     }),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasError) {
-  //         return _buildErrorWidget('Não foi possível carregar o PDF');
-  //       }
+  static Widget _buildPdfPreview(Uint8List bytes) {
+    return FutureBuilder<PdfDocument>(
+      future: PdfDocument.openData(bytes).catchError((error) {
+        if (kDebugMode) {
+          print('Erro ao abrir PDF: $error');
+        }
+        throw error;
+      }),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return _buildErrorWidget('Não foi possível carregar o PDF');
+        }
 
-  //       if (!snapshot.hasData) {
-  //         return const Center(
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               CircularProgressIndicator(
-  //                 valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-  //               ),
-  //               SizedBox(height: AppSpacing.md),
-  //               Text(
-  //                 'Carregando PDF...',
-  //                 style: TextStyle(
-  //                   color: AppColors.grey700,
-  //                   fontSize: 14,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       }
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
+                SizedBox(height: AppSpacing.md),
+                Text(
+                  'Carregando PDF...',
+                  style: TextStyle(
+                    color: AppColors.grey700,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
-  //       return Container(
-  //         width: double.infinity,
-  //         height: 500,
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(8),
-  //           border: Border.all(color: AppColors.grey200),
-  //         ),
-  //         child: ClipRRect(
-  //           borderRadius: BorderRadius.circular(8),
-  //           child: PdfView(
-  //             controller: PdfController(
-  //               document: Future.value(snapshot.data!),
-  //             ),
-  //             scrollDirection: Axis.vertical,
-  //             pageSnapping: false,
-  //             builders: PdfViewBuilders<DefaultBuilderOptions>(
-  //               options: const DefaultBuilderOptions(),
-  //               documentLoaderBuilder: (_) => const Center(
-  //                 child: Column(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     CircularProgressIndicator(
-  //                       valueColor:
-  //                           AlwaysStoppedAnimation<Color>(AppColors.primary),
-  //                     ),
-  //                     SizedBox(height: AppSpacing.md),
-  //                     Text(
-  //                       'Preparando documento...',
-  //                       style: TextStyle(
-  //                         color: AppColors.grey700,
-  //                         fontSize: 14,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               pageLoaderBuilder: (_) => const Center(
-  //                 child: Column(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     CircularProgressIndicator(
-  //                       valueColor:
-  //                           AlwaysStoppedAnimation<Color>(AppColors.primary),
-  //                     ),
-  //                     SizedBox(height: AppSpacing.md),
-  //                     Text(
-  //                       'Carregando página...',
-  //                       style: TextStyle(
-  //                         color: AppColors.grey700,
-  //                         fontSize: 14,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               errorBuilder: (_, error) => _buildErrorWidget(
-  //                 'Erro ao carregar página do PDF',
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+        return Container(
+          width: double.infinity,
+          height: 500,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.grey200),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: PdfView(
+              controller: PdfController(
+                document: Future.value(snapshot.data!),
+              ),
+              scrollDirection: Axis.vertical,
+              pageSnapping: false,
+              builders: PdfViewBuilders<DefaultBuilderOptions>(
+                options: const DefaultBuilderOptions(),
+                documentLoaderBuilder: (_) => const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Preparando documento...',
+                        style: TextStyle(
+                          color: AppColors.grey700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                pageLoaderBuilder: (_) => const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Carregando página...',
+                        style: TextStyle(
+                          color: AppColors.grey700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                errorBuilder: (_, error) => _buildErrorWidget(
+                  'Erro ao carregar página do PDF',
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   static Widget _buildImagePreview(Uint8List bytes) {
     return ClipRRect(
