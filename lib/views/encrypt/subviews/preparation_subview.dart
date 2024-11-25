@@ -61,6 +61,7 @@ class PreparationSubview extends StatelessWidget {
       BuildContext context, ThemeData theme, bool isSmallScreen) {
     return Card(
       elevation: 2,
+      color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12)),
       child: Padding(
@@ -85,7 +86,7 @@ class PreparationSubview extends StatelessWidget {
                         'Chave Pública do Destinatário',
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: AppColors.grey900,
+                          color: theme.colorScheme.onSurface,
                           fontSize: isSmallScreen ? 18 : 20,
                         ),
                       ),
@@ -96,7 +97,7 @@ class PreparationSubview extends StatelessWidget {
                 Text(
                   'Importe a chave pública fornecida pelo destinatário',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey700,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -163,11 +164,15 @@ class PreparationSubview extends StatelessWidget {
                             children: [
                               Text(
                                 'Arquivo selecionado:',
-                                style: theme.textTheme.labelLarge,
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: theme.colorScheme.onSurface,
+                                ),
                               ),
                               Text(
                                 file.name,
-                                style: theme.textTheme.bodyMedium,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
                               ),
                               if (!_isValidFile(file))
                                 Text(
@@ -202,6 +207,7 @@ class PreparationSubview extends StatelessWidget {
       BuildContext context, ThemeData theme, bool isSmallScreen) {
     return Card(
       elevation: 2,
+      color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12)),
       child: Padding(
@@ -224,7 +230,7 @@ class PreparationSubview extends StatelessWidget {
                         'Arquivo para envio',
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: AppColors.grey900,
+                          color: theme.colorScheme.onSurface,
                           fontSize: isSmallScreen ? 18 : 20,
                         ),
                       ),
@@ -235,7 +241,7 @@ class PreparationSubview extends StatelessWidget {
                 Text(
                   'Selecione o arquivo que deseja enviar',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey700,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -276,9 +282,9 @@ class PreparationSubview extends StatelessWidget {
                     margin: const EdgeInsets.only(top: AppSpacing.md),
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: AppColors.grey100,
+                      color: theme.colorScheme.surfaceVariant,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.grey300),
+                      border: Border.all(color: theme.colorScheme.outline),
                     ),
                     child: Row(
                       children: [
@@ -289,11 +295,16 @@ class PreparationSubview extends StatelessWidget {
                               Text(
                                 'Arquivo selecionado:',
                                 style: theme.textTheme.labelLarge?.copyWith(
-                                  color: AppColors.grey700,
+                                  color: theme.colorScheme.onSurfaceVariant,
                                 ),
                               ),
                               const SizedBox(height: AppSpacing.xs),
-                              Text(file.name),
+                              Text(
+                                file.name,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
                             ],
                           ),
                         ),

@@ -7,8 +7,12 @@ import 'package:url_launcher/url_launcher.dart';
 class DevelopersModal extends StatelessWidget {
   const DevelopersModal({super.key});
 
-  Widget _buildDeveloperInfo(String name, String githubUrl, String linkedinUrl,
+  Widget _buildDeveloperInfo(
+      BuildContext context, String name, String githubUrl, String linkedinUrl,
       [String? role]) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
@@ -31,74 +35,36 @@ class DevelopersModal extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.grey900,
+                    color: theme.textTheme.titleMedium?.color,
                   ),
                 ),
                 if (role != null) ...[
                   const SizedBox(height: 2),
                   Text(
                     role,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.grey700,
+                      color: isDark ? AppColors.grey300 : AppColors.grey700,
                     ),
                   ),
                 ],
                 const SizedBox(height: AppSpacing.sm),
                 Row(
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        final uri = Uri.parse(linkedinUrl);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri);
-                        }
-                      },
-                      child: const Row(
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.linkedin,
-                            size: 16,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            'LinkedIn',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                    _buildSocialButton(
+                      context: context,
+                      icon: FontAwesomeIcons.linkedin,
+                      label: 'LinkedIn',
+                      url: linkedinUrl,
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    GestureDetector(
-                      onTap: () async {
-                        final uri = Uri.parse(githubUrl);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri);
-                        }
-                      },
-                      child: const Row(
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.github,
-                            size: 16,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            'GitHub',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                    _buildSocialButton(
+                      context: context,
+                      icon: FontAwesomeIcons.github,
+                      label: 'GitHub',
+                      url: githubUrl,
                     ),
                   ],
                 ),
@@ -110,10 +76,46 @@ class DevelopersModal extends StatelessWidget {
     );
   }
 
+  Widget _buildSocialButton({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required String url,
+  }) {
+    return GestureDetector(
+      onTap: () async {
+        final uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        }
+      },
+      child: Row(
+        children: [
+          FaIcon(
+            icon,
+            size: 16,
+            color: AppColors.primary,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.cardTheme.color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -127,10 +129,10 @@ class DevelopersModal extends StatelessWidget {
           const SizedBox(width: AppSpacing.md),
           Text(
             'Desenvolvedores',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.grey900,
-                  fontWeight: FontWeight.bold,
-                ),
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.textTheme.titleLarge?.color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -143,22 +145,31 @@ class DevelopersModal extends StatelessWidget {
           children: [
             Text(
               'Conheça nossa equipe:',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey700,
-                  ),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.textTheme.bodyMedium?.color,
+              ),
             ),
             const SizedBox(height: AppSpacing.lg),
             _buildDeveloperInfo(
+                context,
                 'Gabriel Pagotto',
                 'https://github.com/gabrielpagotto',
                 'https://www.linkedin.com/in/gabrielpagotto/'),
-            const Divider(height: AppSpacing.xl),
+            Divider(
+              height: AppSpacing.xl,
+              color: isDark ? AppColors.grey700 : AppColors.grey200,
+            ),
             _buildDeveloperInfo(
+                context,
                 'Luciano Martins',
                 'https://github.com/lucianomartinsjr',
                 'https://www.linkedin.com/in/lucianomartinsjr/'),
-            const Divider(height: AppSpacing.xl),
+            Divider(
+              height: AppSpacing.xl,
+              color: isDark ? AppColors.grey700 : AppColors.grey200,
+            ),
             _buildDeveloperInfo(
+                context,
                 'Vinicius Martinez',
                 'https://github.com/vnmartinez',
                 'https://www.linkedin.com/in/martinezvinicius/'),
@@ -174,9 +185,11 @@ class DevelopersModal extends StatelessWidget {
               vertical: AppSpacing.md,
             ),
           ),
-          child: const Text(
+          child: Text(
             'Fechar',
-            style: TextStyle(color: AppColors.grey700),
+            style: TextStyle(
+              color: theme.textTheme.bodyMedium?.color,
+            ),
           ),
         ),
       ],

@@ -17,13 +17,15 @@ class AppTheme {
               secondary: AppColors.secondary,
               surface: AppColors.surfaceDark,
               error: AppColors.error,
-              onSurface: Colors.white,
+              onSurface: Color.fromARGB(255, 219, 219, 219),
             )
           : const ColorScheme.light(
               primary: AppColors.primary,
               secondary: AppColors.secondary,
               surface: AppColors.surface,
+              surfaceContainer: Color.fromARGB(255, 240, 240, 240),
               error: AppColors.error,
+              onSurface: Color.fromARGB(255, 37, 37, 37),
             ),
       textTheme: const TextTheme(
         displayLarge: AppTypography.h1,

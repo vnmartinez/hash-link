@@ -7,7 +7,7 @@ import 'package:hash_link/views/encrypt/subviews/protection_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/shipping_subview.dart';
 import 'package:hash_link/views/encrypt/subviews/signature_subview.dart';
 import 'package:hash_link/widgets/page_header.dart';
-import 'package:hash_link/widgets/step_indicator.dart';
+import 'package:hash_link/widgets/step_indicator_sidebar.dart';
 import 'package:hash_link/widgets/action_buttons.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_radius.dart';

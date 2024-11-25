@@ -91,14 +91,17 @@ class SignatureSubview extends StatelessWidget {
                   'Proteja seu arquivo com assinatura digital e criptografia',
               titleStyle: theme.textTheme.headlineSmall?.copyWith(
                 fontSize: isSmallScreen ? 20 : 24,
+                color: theme.colorScheme.onSurface,
               ),
               subtitleStyle: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: isSmallScreen ? 14 : 16,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
+              color: theme.colorScheme.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -148,9 +151,9 @@ class SignatureSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.grey100,
+            color: theme.colorScheme.surfaceVariant,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.grey300),
+            border: Border.all(color: theme.colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +162,9 @@ class SignatureSubview extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.file_present,
-                    color: hasFile ? AppColors.primary : AppColors.grey700,
+                    color: hasFile
+                        ? AppColors.primary
+                        : theme.colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -167,7 +172,7 @@ class SignatureSubview extends StatelessWidget {
                     'Arquivo Selecionado',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -179,7 +184,7 @@ class SignatureSubview extends StatelessWidget {
                 Text(
                   'Nenhum arquivo selecionado',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey500,
+                    color: theme.colorScheme.onSurfaceVariant,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -191,8 +196,8 @@ class SignatureSubview extends StatelessWidget {
                         .read<GenerateKeyBloc>()
                         .add(const SelectFileToSend()),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.grey200,
-                      foregroundColor: AppColors.grey900,
+                      backgroundColor: theme.colorScheme.surfaceVariant,
+                      foregroundColor: theme.colorScheme.onSurfaceVariant,
                       padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
                         vertical: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
@@ -226,7 +231,7 @@ class SignatureSubview extends StatelessWidget {
               child: Text(
                 fileName,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.grey700,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -293,9 +298,9 @@ class SignatureSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.grey100,
+            color: theme.colorScheme.surfaceVariant,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.grey300),
+            border: Border.all(color: theme.colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,7 +309,7 @@ class SignatureSubview extends StatelessWidget {
                 'Processo de Assinatura',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.grey900,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -345,38 +350,27 @@ class SignatureSubview extends StatelessWidget {
     final color = isDone
         ? AppColors.primary
         : isDisabled
-            ? AppColors.grey300
-            : AppColors.grey700;
+            ? theme.colorScheme.outline
+            : theme.colorScheme.onSurfaceVariant;
 
-    return BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
-      builder: (context, state) {
-        final hasSignature = state is Signature && state.fileSignature != null;
-        final isSignStep = text.contains('Assinar digitalmente');
-
-        if (isSignStep && hasSignature) {
-          isDone = true;
-        }
-
-        return Row(
-          children: [
-            Icon(
-              isDone ? Icons.check_circle : icon,
-              size: 20,
+    return Row(
+      children: [
+        Icon(
+          isDone ? Icons.check_circle : icon,
+          size: 20,
+          color: color,
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: color,
+              decoration: isDone ? TextDecoration.lineThrough : null,
             ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                text,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: color,
-                  decoration: isDone ? TextDecoration.lineThrough : null,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 
@@ -509,7 +503,7 @@ class SignatureSubview extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     GenerateKeyView.showToast(
       context,
-      'Copiado para a área de transfer��ncia',
+      'Copiado para a área de transferência',
       type: ToastType.success,
     );
   }
@@ -539,10 +533,10 @@ class _ProcessStatusCard extends StatelessWidget {
 
     return Card(
       elevation: 1,
-      color: backgroundColor,
+      color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(isSmallScreen ? 6 : 8),
-        side: BorderSide(color: borderColor),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -558,7 +552,7 @@ class _ProcessStatusCard extends StatelessWidget {
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
+                      color: theme.colorScheme.onSurface,
                       fontSize: isSmallScreen ? 14 : 16,
                     ),
                   ),
@@ -566,7 +560,7 @@ class _ProcessStatusCard extends StatelessWidget {
                   Text(
                     content,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.grey700,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -577,7 +571,7 @@ class _ProcessStatusCard extends StatelessWidget {
             IconButton(
               onPressed: onCopy,
               icon: const Icon(Icons.copy),
-              color: AppColors.grey700,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ],
         ),
