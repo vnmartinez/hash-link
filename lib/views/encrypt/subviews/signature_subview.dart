@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
-import '../../../helpers/file_preview_helper.dart';
+import 'package:hash_link/blocs/encrypt/encrypt_bloc.dart';
+import '../../../widgets/file_preview.dart';
 import '../../../helpers/file_reader_helper.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
 import '../../../widgets/section_title.dart';
-import '../generate_key_view.dart';
+import '../encrypt_view.dart';
 
 class SignatureSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> signatureDetailedInfo = {

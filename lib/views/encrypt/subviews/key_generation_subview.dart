@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hash_link/blocs/generate_key/generate_key_bloc.dart';
+import 'package:hash_link/blocs/encrypt/encrypt_bloc.dart';
 import 'package:hash_link/widgets/section_title.dart';
 import 'package:flutter/services.dart';
 import '../../../theme/app_colors.dart';
@@ -8,7 +8,7 @@ import '../../../theme/app_spacing.dart';
 import 'package:hash_link/helpers/key_download_helper.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
-import '../generate_key_view.dart';
+import '../encrypt_view.dart';
 
 class KeyGenerationSubview extends StatelessWidget {
   static const Map<String, Map<String, dynamic>> rsaDetailedInfo = {

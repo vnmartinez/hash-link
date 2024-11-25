@@ -9,9 +9,9 @@ import 'package:hash_link/helpers/file_reader_helper.dart';
 import 'package:hash_link/helpers/rsa_key_helper.dart';
 import 'package:hash_link/helpers/zip_helper.dart';
 
-part 'generate_key_event.dart';
-part 'generate_key_state.dart';
-part 'generate_key_bloc.freezed.dart';
+part 'encrypty_event.dart';
+part 'encrypt_state.dart';
+part 'encript_bloc.freezed.dart';
 
 class GenerateKeyBloc extends Bloc<GenerateKeyEvent, GenerateKeyState> {
   final FilePicker _filePicker;

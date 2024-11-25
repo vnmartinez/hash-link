@@ -1,4 +1,4 @@
-part of 'generate_key_bloc.dart';
+part of 'encrypt_bloc.dart';
 
 sealed class GenerateKeyState {}
 

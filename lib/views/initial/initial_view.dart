@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hash_link/views/decrypt/decrypt_view.dart';
-import 'package:hash_link/views/encrypt/generate_key_view.dart';
+import 'package:hash_link/views/encrypt/encrypt_view.dart';
 import 'package:hash_link/widgets/page_header.dart';
 import 'package:hash_link/theme/app_colors.dart';
 import 'package:hash_link/theme/app_spacing.dart';
@@ -15,7 +15,7 @@ class InitialView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey50,
+      backgroundColor: AppColors.grey200,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
