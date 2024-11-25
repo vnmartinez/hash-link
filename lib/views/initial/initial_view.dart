@@ -29,7 +29,7 @@ class InitialView extends StatelessWidget {
                 ),
                 children: [
                   const PageHeader(
-                    title: 'Hash Link',
+                    title: 'Segurança de Sistemas',
                     subtitle: 'Sistema de Criptografia e Assinatura Digital',
                     logoPath: 'assets/images/logo.png',
                     features: [

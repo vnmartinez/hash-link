@@ -173,29 +173,83 @@ class FilePreviewHelper {
 
         if (!snapshot.hasData) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
+                SizedBox(height: AppSpacing.md),
+                Text(
+                  'Carregando PDF...',
+                  style: TextStyle(
+                    color: AppColors.grey700,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
-        return SizedBox(
+        return Container(
           width: double.infinity,
           height: 500,
-          child: PdfView(
-            controller: PdfController(
-              document: Future.value(snapshot.data!),
-            ),
-            scrollDirection: Axis.vertical,
-            pageSnapping: false,
-            builders: PdfViewBuilders<DefaultBuilderOptions>(
-              options: const DefaultBuilderOptions(),
-              documentLoaderBuilder: (_) => const Center(
-                child: CircularProgressIndicator(),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.grey200),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: PdfView(
+              controller: PdfController(
+                document: Future.value(snapshot.data!),
               ),
-              pageLoaderBuilder: (_) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              errorBuilder: (_, error) => _buildErrorWidget(
-                'Erro ao carregar página do PDF',
+              scrollDirection: Axis.vertical,
+              pageSnapping: false,
+              builders: PdfViewBuilders<DefaultBuilderOptions>(
+                options: const DefaultBuilderOptions(),
+                documentLoaderBuilder: (_) => const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Preparando documento...',
+                        style: TextStyle(
+                          color: AppColors.grey700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                pageLoaderBuilder: (_) => const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Carregando página...',
+                        style: TextStyle(
+                          color: AppColors.grey700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                errorBuilder: (_, error) => _buildErrorWidget(
+                  'Erro ao carregar página do PDF',
+                ),
               ),
             ),
           ),
