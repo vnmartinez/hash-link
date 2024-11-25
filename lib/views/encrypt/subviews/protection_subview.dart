@@ -70,6 +70,7 @@ class ProtectionSubview extends StatelessWidget {
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
+              color: theme.colorScheme.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -256,9 +257,9 @@ class ProtectionSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.grey100,
+            color: theme.colorScheme.surfaceVariant,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.grey300),
+            border: Border.all(color: theme.colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,8 +268,9 @@ class ProtectionSubview extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.shield,
-                    color:
-                        hasProtection ? AppColors.primary : AppColors.grey700,
+                    color: hasProtection
+                        ? AppColors.primary
+                        : theme.colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -276,7 +278,7 @@ class ProtectionSubview extends StatelessWidget {
                     'Status da Proteção',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -320,8 +322,8 @@ class ProtectionSubview extends StatelessWidget {
     final color = isDone
         ? AppColors.primary
         : isDisabled
-            ? AppColors.grey300
-            : AppColors.grey700;
+            ? theme.colorScheme.outline
+            : theme.colorScheme.onSurfaceVariant;
 
     return Row(
       children: [
@@ -373,12 +375,14 @@ class _ProcessStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: theme.colorScheme.surfaceVariant,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: borderColor),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -387,16 +391,16 @@ class _ProcessStatusCard extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: AppColors.grey700,
+                color: theme.colorScheme.onSurfaceVariant,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.grey900,
-                    ),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
             ],
           ),
@@ -407,16 +411,16 @@ class _ProcessStatusCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   content,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.grey700,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
               IconButton(
                 onPressed: onCopy,
-                icon: const Icon(
+                icon: Icon(
                   Icons.copy,
-                  color: AppColors.grey700,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -433,68 +437,82 @@ Widget _buildProcessStep({
   required String description,
   required bool isActive,
 }) {
-  return Container(
-    width: 120,
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: isActive ? AppColors.primary.withOpacity(0.1) : AppColors.grey100,
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(
-        color: isActive ? AppColors.primary : AppColors.grey300,
-        width: 1,
+  return Builder(builder: (context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      width: 120,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isActive
+            ? AppColors.primary.withOpacity(0.1)
+            : theme.colorScheme.surfaceVariant,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isActive ? AppColors.primary : theme.colorScheme.outline,
+          width: 1,
+        ),
       ),
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? AppColors.primary : AppColors.grey500,
-          size: 24,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isActive ? AppColors.primary : AppColors.grey500,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isActive
+                ? AppColors.primary
+                : theme.colorScheme.onSurfaceVariant,
+            size: 24,
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: AppColors.grey500,
-            fontSize: 10,
+          const SizedBox(height: 8),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: isActive
+                  ? AppColors.primary
+                  : theme.colorScheme.onSurfaceVariant,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+          const SizedBox(height: 4),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  });
 }
 
 Widget _buildArrow(String label) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(
-          Icons.arrow_forward,
-          color: AppColors.grey500,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.grey500,
-            fontSize: 10,
+  return Builder(builder: (context) {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.arrow_forward,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
-        ),
-      ],
-    ),
-  );
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  });
 }

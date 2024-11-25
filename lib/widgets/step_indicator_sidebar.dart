@@ -38,33 +38,33 @@ class _StepIndicatorState extends State<StepIndicator> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      margin: const EdgeInsets.all(AppSpacing.md),
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: AppShadows.low,
-        border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.2),
-          width: 1,
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-      ),
-      constraints: const BoxConstraints(
-        minWidth: 600,
-        maxWidth: 800,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(theme),
-          const SizedBox(height: AppSpacing.md),
-          ...List.generate(
-            widget.steps.length,
-            (index) => _buildStep(index, theme),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.all(AppSpacing.md),
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          constraints: const BoxConstraints(
+            minWidth: 600,
+            maxWidth: 800,
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(theme),
+              const SizedBox(height: AppSpacing.md),
+              ...List.generate(
+                widget.steps.length,
+                (index) => _buildStep(index, theme),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -624,7 +624,7 @@ class _DecryptViewState extends State<DecryptView> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.check_circle, color: AppColors.primary),
+                  Icon(Icons.check_circle, color: theme.colorScheme.primary),
                   SizedBox(
                       width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
                   Expanded(
@@ -632,7 +632,6 @@ class _DecryptViewState extends State<DecryptView> {
                       'Arquivo descriptografado com sucesso!',
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppColors.grey900,
                         fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
@@ -643,14 +642,15 @@ class _DecryptViewState extends State<DecryptView> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: state.isSignatureValid
-                      ? AppColors.success.withOpacity(0.1)
-                      : AppColors.error.withOpacity(0.1),
+                  color: (state.isSignatureValid
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.error)
+                      .withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: state.isSignatureValid
-                        ? AppColors.success
-                        : AppColors.error,
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.error,
                   ),
                 ),
                 child: Row(
@@ -660,8 +660,8 @@ class _DecryptViewState extends State<DecryptView> {
                           ? Icons.verified_user
                           : Icons.gpp_bad,
                       color: state.isSignatureValid
-                          ? AppColors.success
-                          : AppColors.error,
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.error,
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
@@ -671,8 +671,8 @@ class _DecryptViewState extends State<DecryptView> {
                             : 'Assinatura do arquivo não é válida!',
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: state.isSignatureValid
-                              ? AppColors.success
-                              : AppColors.error,
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.error,
                         ),
                       ),
                     ),
@@ -685,8 +685,8 @@ class _DecryptViewState extends State<DecryptView> {
                 children: [
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xl,
                         vertical: AppSpacing.lg,
@@ -705,8 +705,8 @@ class _DecryptViewState extends State<DecryptView> {
                   const SizedBox(width: AppSpacing.md),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.success,
-                      foregroundColor: Colors.white,
+                      backgroundColor: theme.colorScheme.onPrimary,
+                      foregroundColor: theme.colorScheme.onSecondary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xl,
                         vertical: AppSpacing.lg,
@@ -727,19 +727,20 @@ class _DecryptViewState extends State<DecryptView> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.grey100,
+                  color: theme.colorScheme.surfaceVariant,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.grey300),
+                  border: Border.all(color: theme.colorScheme.outline),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.description, color: AppColors.grey700),
+                    Icon(Icons.description,
+                        color: theme.colorScheme.onSurfaceVariant),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
                       'Tamanho do arquivo: ${state.decryptedFile!.length} bytes',
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.grey900,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],

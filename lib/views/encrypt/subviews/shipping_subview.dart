@@ -67,6 +67,7 @@ class ShippingSubview extends StatelessWidget {
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
+              color: theme.colorScheme.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -117,6 +118,7 @@ class ShippingSubview extends StatelessWidget {
                     const SizedBox(height: AppSpacing.lg),
                     Card(
                       elevation: 1,
+                      color: theme.colorScheme.surface,
                       child: Padding(
                         padding: const EdgeInsets.all(AppSpacing.lg),
                         child: Column(
@@ -124,13 +126,14 @@ class ShippingSubview extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.swap_horiz,
+                                Icon(Icons.swap_horiz,
                                     color: AppColors.primary),
                                 const SizedBox(width: AppSpacing.sm),
                                 Text(
                                   'Fluxo de Transmissão',
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -187,18 +190,18 @@ class ShippingSubview extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.grey100,
+        color: theme.colorScheme.surfaceVariant,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.grey300),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.inventory_2,
-                color: AppColors.grey700,
+                color: theme.colorScheme.onSurfaceVariant,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -206,7 +209,7 @@ class ShippingSubview extends StatelessWidget {
                 'Componentes do Pacote',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.grey900,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ],
@@ -244,14 +247,14 @@ class ShippingSubview extends StatelessWidget {
         Icon(
           icon,
           size: 20,
-          color: AppColors.grey700,
+          color: theme.colorScheme.onSurfaceVariant,
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             text,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.grey700,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -265,68 +268,81 @@ class ShippingSubview extends StatelessWidget {
     String subtitulo,
     bool isActive,
   ) {
-    return Container(
-      width: 120,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color:
-            isActive ? AppColors.primary.withOpacity(0.1) : AppColors.grey100,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isActive ? AppColors.primary : AppColors.grey300,
-          width: 1,
+    return Builder(builder: (context) {
+      final theme = Theme.of(context);
+
+      return Container(
+        width: 120,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isActive
+              ? AppColors.primary.withOpacity(0.1)
+              : theme.colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isActive ? AppColors.primary : theme.colorScheme.outline,
+            width: 1,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppColors.primary : AppColors.grey500,
-            size: 24,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            titulo,
-            style: TextStyle(
-              color: isActive ? AppColors.primary : AppColors.grey500,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isActive
+                  ? AppColors.primary
+                  : theme.colorScheme.onSurfaceVariant,
+              size: 24,
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            subtitulo,
-            style: const TextStyle(
-              color: AppColors.grey500,
-              fontSize: 10,
+            const SizedBox(height: 8),
+            Text(
+              titulo,
+              style: TextStyle(
+                color: isActive
+                    ? AppColors.primary
+                    : theme.colorScheme.onSurfaceVariant,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 4),
+            Text(
+              subtitulo,
+              style: TextStyle(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildArrow(String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.arrow_forward,
-            color: AppColors.grey500,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.grey500,
-              fontSize: 10,
+    return Builder(builder: (context) {
+      final theme = Theme.of(context);
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.arrow_forward,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

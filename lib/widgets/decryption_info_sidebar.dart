@@ -37,40 +37,42 @@ class DecryptionInfoSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      width: 300,
-      margin: const EdgeInsets.only(top: AppSpacing.lg),
+    return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.2),
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Processo de Descriptografia',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
-              ),
+        child: Container(
+          width: 300,
+          margin: const EdgeInsets.all(AppSpacing.md),
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Processo de Descriptografia',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  'Entenda como funciona o processo de descriptografia segura:',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                ...decryptionSteps.map((step) => _buildInfoStep(step, theme)),
+                const SizedBox(height: AppSpacing.containerSm),
+                _buildSecurityNote(theme),
+              ],
             ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Entenda como funciona o processo de descriptografia segura:',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            ...decryptionSteps.map((step) => _buildInfoStep(step, theme)),
-            const SizedBox(height: AppSpacing.containerSm),
-            _buildSecurityNote(theme),
-          ],
+          ),
         ),
       ),
     );
