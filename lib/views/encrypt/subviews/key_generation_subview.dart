@@ -530,7 +530,6 @@ class _KeyCardState extends State<_KeyCard> {
       icon: const Icon(Icons.more_vert, color: AppColors.grey700),
       itemBuilder: (context) => [
         PopupMenuItem(
-          onTap: widget.onCopy,
           child: const Row(
             children: [
               Icon(Icons.copy, size: 18),
@@ -538,9 +537,9 @@ class _KeyCardState extends State<_KeyCard> {
               Text('Copiar'),
             ],
           ),
+          onTap: () => widget.onCopy(),
         ),
         PopupMenuItem(
-          onTap: widget.onDownload,
           child: const Row(
             children: [
               Icon(Icons.download, size: 18),
@@ -548,9 +547,9 @@ class _KeyCardState extends State<_KeyCard> {
               Text('Baixar'),
             ],
           ),
+          onTap: () => widget.onDownload(),
         ),
         PopupMenuItem(
-          onTap: () => setState(() => _isExpanded = !_isExpanded),
           child: Row(
             children: [
               Icon(_isExpanded ? Icons.visibility_off : Icons.visibility,
@@ -559,6 +558,7 @@ class _KeyCardState extends State<_KeyCard> {
               Text(_isExpanded ? 'Ocultar' : 'Mostrar'),
             ],
           ),
+          onTap: () => setState(() => _isExpanded = !_isExpanded),
         ),
       ],
     );
