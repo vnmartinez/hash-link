@@ -38,7 +38,7 @@ class DecryptionInfoSidebar extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(AppSpacing.containerSm),
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -47,7 +47,7 @@ class DecryptionInfoSidebar extends StatelessWidget {
         child: Container(
           width: 300,
           margin: const EdgeInsets.all(AppSpacing.md),
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,11 +157,15 @@ class DecryptionInfoSidebar extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
-                child: Text(
-                  'Mantenha sua chave privada segura e nunca a compartilhe. Ela é essencial para a descriptografia e não pode ser recuperada se perdida.',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 12,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(
+                    'Nunca compartilhe sua chave privada. Ela é essencial para a descriptografia e não pode ser recuperada se perdida.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      leadingDistribution: TextLeadingDistribution.proportional,
+                      fontSize: 11,
+                    ),
                   ),
                 ),
               ),

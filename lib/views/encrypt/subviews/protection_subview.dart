@@ -263,7 +263,7 @@ class ProtectionSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceVariant,
+            color: theme.colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: theme.colorScheme.outline),
           ),

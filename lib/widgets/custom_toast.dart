@@ -24,7 +24,7 @@ class CustomToast extends StatelessWidget {
       builder: (context) => Stack(
         children: [
           Positioned(
-            top: MediaQuery.of(context).padding.top + 190,
+            top: MediaQuery.of(context).padding.top + 200,
             right: 16,
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
