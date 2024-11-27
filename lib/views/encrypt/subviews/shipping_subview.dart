@@ -67,7 +67,7 @@ class ShippingSubview extends StatelessWidget {
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.surfaceContainer,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -118,7 +118,7 @@ class ShippingSubview extends StatelessWidget {
                     const SizedBox(height: AppSpacing.lg),
                     Card(
                       elevation: 1,
-                      color: theme.colorScheme.surface,
+                      color: theme.colorScheme.surfaceContainerLow,
                       child: Padding(
                         padding: const EdgeInsets.all(AppSpacing.lg),
                         child: Column(
@@ -126,7 +126,7 @@ class ShippingSubview extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.swap_horiz,
+                                const Icon(Icons.swap_horiz,
                                     color: AppColors.primary),
                                 const SizedBox(width: AppSpacing.sm),
                                 Text(
@@ -190,7 +190,7 @@ class ShippingSubview extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: theme.colorScheme.outline),
       ),

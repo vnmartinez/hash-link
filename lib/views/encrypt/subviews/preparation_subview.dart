@@ -61,7 +61,7 @@ class PreparationSubview extends StatelessWidget {
       BuildContext context, ThemeData theme, bool isSmallScreen) {
     return Card(
       elevation: 2,
-      color: theme.colorScheme.surface,
+      color: theme.colorScheme.surfaceContainer,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12)),
       child: Padding(
@@ -75,20 +75,19 @@ class PreparationSubview extends StatelessWidget {
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
                     const Icon(Icons.upload_file, color: AppColors.primary),
                     SizedBox(
                         width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        'Chave Pública do Destinatário',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
-                          fontSize: isSmallScreen ? 18 : 20,
-                        ),
+                    Text(
+                      'Chave Pública do Destinatário',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                        fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
                   ],
@@ -104,7 +103,7 @@ class PreparationSubview extends StatelessWidget {
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        file != null ? AppColors.success : AppColors.primary,
+                        file != null ? AppColors.primary : AppColors.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: AppSpacing.xl,
@@ -139,13 +138,11 @@ class PreparationSubview extends StatelessWidget {
                     margin: const EdgeInsets.only(top: AppSpacing.md),
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: _isValidFile(file)
-                          ? AppColors.success.withOpacity(0.1)
-                          : AppColors.error.withOpacity(0.1),
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: _isValidFile(file)
-                            ? AppColors.success
+                            ? AppColors.primary
                             : AppColors.error,
                       ),
                     ),
@@ -154,7 +151,7 @@ class PreparationSubview extends StatelessWidget {
                         Icon(
                           _isValidFile(file) ? Icons.check_circle : Icons.error,
                           color: _isValidFile(file)
-                              ? AppColors.success
+                              ? AppColors.primary
                               : AppColors.error,
                         ),
                         const SizedBox(width: AppSpacing.sm),
@@ -207,7 +204,7 @@ class PreparationSubview extends StatelessWidget {
       BuildContext context, ThemeData theme, bool isSmallScreen) {
     return Card(
       elevation: 2,
-      color: theme.colorScheme.surface,
+      color: theme.colorScheme.surfaceContainer,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12)),
       child: Padding(
@@ -219,20 +216,19 @@ class PreparationSubview extends StatelessWidget {
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
                     const Icon(Icons.upload_file, color: AppColors.primary),
                     SizedBox(
                         width: isSmallScreen ? AppSpacing.sm : AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        'Arquivo para envio',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
-                          fontSize: isSmallScreen ? 18 : 20,
-                        ),
+                    Text(
+                      'Arquivo para envio',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                        fontSize: isSmallScreen ? 18 : 20,
                       ),
                     ),
                   ],
@@ -282,9 +278,9 @@ class PreparationSubview extends StatelessWidget {
                     margin: const EdgeInsets.only(top: AppSpacing.md),
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceVariant,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: theme.colorScheme.outline),
+                      border: Border.all(color: AppColors.primary),
                     ),
                     child: Row(
                       children: [

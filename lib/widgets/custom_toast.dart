@@ -21,74 +21,76 @@ class CustomToast extends StatelessWidget {
     late OverlayEntry overlayEntry;
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: MediaQuery.of(context).padding.top + 190,
-        right: 16,
-        child: Center(
-          child: TweenAnimationBuilder<double>(
-            tween: Tween(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-            onEnd: () {
-              Future.delayed(const Duration(seconds: 2), () {
-                if (overlayEntry.mounted) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _animateOut(context, overlayEntry);
-                  });
-                }
-              });
-            },
-            builder: (context, value, child) => Transform.translate(
-              offset: Offset(0, -20 * (1 - value)),
-              child: Opacity(
-                opacity: value,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Semantics(
-                    label: message,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 400),
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 16),
-                      decoration: BoxDecoration(
-                        color: _getBackgroundColor(type).withOpacity(0.95),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.15),
-                          width: 1,
+      builder: (context) => Stack(
+        children: [
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 190,
+            right: 16,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0.0, end: 1.0),
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              onEnd: () {
+                Future.delayed(const Duration(seconds: 2), () {
+                  if (overlayEntry.mounted) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _animateOut(context, overlayEntry);
+                    });
+                  }
+                });
+              },
+              builder: (context, value, child) => Transform.translate(
+                offset: Offset(0, -20 * (1 - value)),
+                child: Opacity(
+                  opacity: value,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Semantics(
+                      label: message,
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 400),
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 16),
+                        decoration: BoxDecoration(
+                          color: _getBackgroundColor(type).withOpacity(0.95),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.15),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _getBackgroundColor(type).withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: _getBackgroundColor(type).withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _getIcon(type),
-                          const SizedBox(width: 12),
-                          Flexible(
-                            child: Text(
-                              message,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.95),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.2,
-                                height: 1.2,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _getIcon(type),
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Text(
+                                message,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.95),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.2,
+                                  height: 1.2,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -96,7 +98,7 @@ class CustomToast extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
 

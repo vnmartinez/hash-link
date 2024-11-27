@@ -9,11 +9,15 @@ import 'package:hash_link/core/routes.dart';
 import 'package:hash_link/helpers/zip_helper.dart';
 import 'package:hash_link/theme/app_theme.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/theme/theme_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final savedThemeMode = prefs.getString('themeMode') ?? 'light';
 
   if (!kIsWeb) {
     await windowManager.ensureInitialized();
@@ -31,7 +35,13 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => ThemeBloc()),
+        BlocProvider(
+            create: (_) => ThemeBloc(
+                  initialThemeMode: ThemeMode.values.firstWhere(
+                    (mode) => mode.toString() == 'ThemeMode.$savedThemeMode',
+                    orElse: () => ThemeMode.light,
+                  ),
+                )),
         BlocProvider(
           create: (_) => GenerateKeyBloc(
             filePicker: filePicker,
