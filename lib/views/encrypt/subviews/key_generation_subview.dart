@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_spacing.dart';
 import 'package:hash_link/helpers/key_download_helper.dart';
+import '../../../widgets/custom_info_tooltip.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../../widgets/educational_widgets.dart';
 import '../encrypt_view.dart';
@@ -40,8 +41,7 @@ class KeyGenerationSubview extends StatelessWidget {
     },
     'Analogia': {
       'content': '''
-      Imagine um cadeado que pode ser fechado por qualquer pessoa (chave pública),
-      mas só pode ser aberto pelo dono da chave (chave privada).
+      Imagine um cadeado que pode ser fechado por qualquer pessoa (chave pública), mas só pode ser aberto pelo dono da chave (chave privada).
       ''',
       'icon': Icons.lightbulb_outline,
     },
@@ -158,42 +158,86 @@ class KeyGenerationSubview extends StatelessWidget {
         final isSmallScreen = constraints.maxWidth < 600;
         final isMediumScreen = constraints.maxWidth < 900;
 
-        return ListView(
-          padding: EdgeInsets.only(
-            left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-            right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-            bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-          ),
+        return Stack(
           children: [
-            SectionTitle(
-              title: 'Geração de Chaves',
-              subtitle:
-                  'Gere as chaves necessárias para o processo de criptografia',
-              titleStyle: theme.textTheme.headlineSmall?.copyWith(
-                fontSize: isSmallScreen ? 20 : 24,
+            ListView(
+              padding: EdgeInsets.only(
+                left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+                right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+                bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
               ),
-              subtitleStyle: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: isSmallScreen ? 14 : 16,
+              children: [
+                SectionTitle(
+                  title: 'Geração de Chaves',
+                  subtitle:
+                      'Gere as chaves necessárias para o processo de criptografia',
+                  titleStyle: theme.textTheme.headlineSmall?.copyWith(
+                    fontSize: isSmallScreen ? 20 : 24,
+                  ),
+                  subtitleStyle: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: isSmallScreen ? 14 : 16,
+                  ),
+                ),
+                SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
+                if (isMediumScreen)
+                  Column(
+                    children: [
+                      _buildRSACard(context, theme, isSmallScreen),
+                      const SizedBox(height: AppSpacing.lg),
+                      _buildAESCard(context, theme, isSmallScreen),
+                    ],
+                  )
+                else
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: _buildRSACard(context, theme, isSmallScreen)),
+                      const SizedBox(width: AppSpacing.lg),
+                      Expanded(
+                          child: _buildAESCard(context, theme, isSmallScreen)),
+                    ],
+                  ),
+              ],
+            ),
+            const Positioned(
+              top: AppSpacing.md,
+              right: AppSpacing.md,
+              child: CustomInfoTooltip(
+                maxWidth: 300,
+                message: '''
+Configurações atuais de geração:
+
+RSA (pointycastle):
+• Tamanho da chave: 2048 bits
+• Expoente público: 65537
+• Iterações de teste: 12
+• Algoritmo de hash: SHA-256
+• Formato: PEM (PKCS#1)
+• Biblioteca: PointyCastle
+• Gerador aleatório: Fortuna
+
+AES (pointycastle):
+• Tamanho da chave: 256 bits (32 bytes)
+• Modo de operação: CBC
+• Padding: PKCS7
+• IV: 16 bytes aleatórios
+• Biblioteca: PointyCastle
+• Gerador aleatório: Fortuna
+
+Segurança:
+• Seed aleatório: DateTime.microsecond
+• Assinatura: SHA-256/RSA
+• Verificação: RSA/PSS
+• Chaves exportadas em Base64
+
+Compatibilidade:
+• OpenSSL
+• PEM format
+• PKCS standards
+''',
               ),
             ),
-            SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
-            if (isMediumScreen)
-              Column(
-                children: [
-                  _buildRSACard(context, theme, isSmallScreen),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildAESCard(context, theme, isSmallScreen),
-                ],
-              )
-            else
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildRSACard(context, theme, isSmallScreen)),
-                  const SizedBox(width: AppSpacing.lg),
-                  Expanded(child: _buildAESCard(context, theme, isSmallScreen)),
-                ],
-              ),
           ],
         );
       },

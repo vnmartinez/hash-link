@@ -546,55 +546,82 @@ class _DecryptViewState extends State<DecryptView> {
       return const SizedBox.shrink();
     }
 
-    return Center(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: state.inputsIsValid
-                ? theme.colorScheme.primary
-                : theme.colorScheme.onPrimary,
-            foregroundColor: state.inputsIsValid
-                ? theme.colorScheme.onPrimary
-                : theme.colorScheme.onSurfaceVariant,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.xl,
-              vertical: AppSpacing.lg,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      child: Column(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: isSmallScreen ? double.infinity : 300,
+            height: 56,
+            curve: Curves.easeInOut,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: state.inputsIsValid
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.surfaceVariant,
+                foregroundColor: state.inputsIsValid
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurfaceVariant,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: state.inputsIsValid ? 2 : 0,
+                shadowColor: theme.colorScheme.primary.withOpacity(0.3),
+              ),
+              onPressed: state.inputsIsValid
+                  ? () {
+                      HapticFeedback.mediumImpact();
+                      context.read<DecryptBloc>().add(const DecryptData());
+                    }
+                  : null,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.lock_open_rounded,
+                    size: 22,
+                    color: state.inputsIsValid
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Text(
+                    'Descriptografar Arquivo',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: state.inputsIsValid
+                          ? theme.colorScheme.onPrimary
+                          : theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          ),
+          if (!state.inputsIsValid) ...[
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              _getValidationMessage(state),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.error,
+              ),
             ),
-            elevation: state.inputsIsValid ? 2 : 0,
-            shadowColor: theme.colorScheme.primary.withOpacity(0.3),
-            disabledBackgroundColor: theme.colorScheme.surfaceVariant,
-            disabledForegroundColor: theme.colorScheme.onSurfaceVariant,
-          ),
-          onPressed: state.inputsIsValid
-              ? () {
-                  HapticFeedback.lightImpact();
-                  context.read<DecryptBloc>().add(const DecryptData());
-                }
-              : null,
-          icon: Icon(
-            Icons.lock_open,
-            size: 20,
-            color: state.inputsIsValid
-                ? theme.colorScheme.onPrimary
-                : theme.colorScheme.onSurfaceVariant,
-          ),
-          label: Text(
-            'Descriptografar',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: state.inputsIsValid
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
+          ],
+        ],
       ),
     );
+  }
+
+  String _getValidationMessage(DecryptState state) {
+    if (state.privateKey == null) {
+      return 'Importe a chave privada para continuar';
+    }
+    if (!_hasValidPackageImport(state)) {
+      return 'Importe o pacote criptografado para continuar';
+    }
+    return 'Verifique os arquivos importados';
   }
 
   Widget _buildResultSection(
@@ -727,7 +754,7 @@ class _DecryptViewState extends State<DecryptView> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceVariant,
+                  color: theme.colorScheme.surfaceContainerLow,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: theme.colorScheme.outline),
                 ),

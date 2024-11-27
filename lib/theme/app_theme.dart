@@ -16,16 +16,21 @@ class AppTheme {
               primary: AppColors.primary,
               secondary: AppColors.secondary,
               surface: AppColors.surfaceDark,
+              surfaceContainer: Color.fromARGB(255, 36, 36, 36),
+              surfaceContainerLow: Color.fromARGB(255, 54, 54, 54),
               error: AppColors.error,
-              onSurface: Color.fromARGB(255, 219, 219, 219),
+              onSurface: Color.fromARGB(255, 240, 240, 240),
+              outline: Color.fromARGB(255, 89, 89, 89),
             )
           : const ColorScheme.light(
               primary: AppColors.primary,
               secondary: AppColors.secondary,
               surface: AppColors.surface,
-              surfaceContainer: Color.fromARGB(255, 240, 240, 240),
+              surfaceContainer: Color.fromARGB(255, 255, 255, 255),
+              surfaceContainerLow: Color.fromARGB(255, 247, 247, 247),
               error: AppColors.error,
               onSurface: Color.fromARGB(255, 37, 37, 37),
+              outline: Color.fromARGB(255, 185, 185, 185),
             ),
       textTheme: const TextTheme(
         displayLarge: AppTypography.h1,

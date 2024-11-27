@@ -70,7 +70,7 @@ class ProtectionSubview extends StatelessWidget {
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.surfaceContainer,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -83,7 +83,7 @@ class ProtectionSubview extends StatelessWidget {
                     const SizedBox(height: AppSpacing.lg),
                     Center(
                       child: SizedBox(
-                        width: 300,
+                        width: 350,
                         child: BlocBuilder<GenerateKeyBloc, GenerateKeyState>(
                           builder: (context, state) {
                             final hasProtection = state is Protection &&
@@ -114,17 +114,23 @@ class ProtectionSubview extends StatelessWidget {
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(hasProtection
                                       ? Icons.check_circle
                                       : Icons.shield),
                                   const SizedBox(width: AppSpacing.md),
-                                  Text(
-                                    hasProtection
-                                        ? 'Protegida com sucesso'
-                                        : 'Proteger Chave Simétrica',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w500),
+                                  Flexible(
+                                    child: Text(
+                                      hasProtection
+                                          ? 'Protegida com sucesso'
+                                          : 'Proteger Chave Simétrica',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.5,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -380,7 +386,7 @@ class _ProcessStatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: theme.colorScheme.outline),
       ),
@@ -391,7 +397,7 @@ class _ProcessStatusCard extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: theme.colorScheme.onSurfaceVariant,
+                color: theme.colorScheme.primary,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -446,7 +452,7 @@ Widget _buildProcessStep({
       decoration: BoxDecoration(
         color: isActive
             ? AppColors.primary.withOpacity(0.1)
-            : theme.colorScheme.surfaceVariant,
+            : theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: isActive ? AppColors.primary : theme.colorScheme.outline,

@@ -101,7 +101,7 @@ class SignatureSubview extends StatelessWidget {
             SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
             Card(
               elevation: 2,
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.surfaceContainer,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
               ),
@@ -151,7 +151,7 @@ class SignatureSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.sm : AppSpacing.md),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceVariant,
+            color: theme.colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: theme.colorScheme.outline),
           ),
@@ -196,7 +196,7 @@ class SignatureSubview extends StatelessWidget {
                         .read<GenerateKeyBloc>()
                         .add(const SelectFileToSend()),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.surfaceVariant,
+                      backgroundColor: theme.colorScheme.surfaceContainerLow,
                       foregroundColor: theme.colorScheme.onSurfaceVariant,
                       padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
@@ -227,7 +227,7 @@ class SignatureSubview extends StatelessWidget {
 
         return Row(
           children: [
-            Expanded(
+            Flexible(
               child: Text(
                 fileName,
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -298,7 +298,7 @@ class SignatureSubview extends StatelessWidget {
           padding:
               EdgeInsets.all(isSmallScreen ? AppSpacing.md : AppSpacing.lg),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceVariant,
+            color: theme.colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: theme.colorScheme.outline),
           ),
@@ -391,12 +391,11 @@ class SignatureSubview extends StatelessWidget {
         }
 
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width < 600 ? 280 : 300,
-                ),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width < 600 ? 280 : 300,
                 child: ElevatedButton(
                   onPressed: hasSignature
                       ? null
@@ -435,14 +434,12 @@ class SignatureSubview extends StatelessWidget {
                           ? Icons.check_circle
                           : Icons.enhanced_encryption),
                       const SizedBox(width: AppSpacing.md),
-                      Flexible(
-                        child: Text(
-                          hasSignature
-                              ? 'Assinado com sucesso'
-                              : 'Assinar e Cifrar',
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                      Text(
+                        hasSignature
+                            ? 'Assinado com sucesso'
+                            : 'Assinar e Cifrar',
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -481,7 +478,7 @@ class SignatureSubview extends StatelessWidget {
                   title: 'Assinatura Digital',
                   content: state.fileSignature!,
                   icon: Icons.verified,
-                  backgroundColor: AppColors.grey100,
+                  backgroundColor: Theme.of(context).colorScheme.onSurface,
                   borderColor: AppColors.grey300,
                   onCopy: () => _copyToClipboard(context, state.fileSignature!),
                 ),
@@ -492,7 +489,7 @@ class SignatureSubview extends StatelessWidget {
                     title: 'Arquivo Cifrado',
                     content: state.fileEncryption!,
                     icon: Icons.lock,
-                    backgroundColor: AppColors.grey100,
+                    backgroundColor: Theme.of(context).colorScheme.onSurface,
                     borderColor: AppColors.grey300,
                     onCopy: () =>
                         _copyToClipboard(context, state.fileEncryption!),
@@ -539,7 +536,7 @@ class _ProcessStatusCard extends StatelessWidget {
 
     return Card(
       elevation: 1,
-      color: theme.colorScheme.surface,
+      color: theme.colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(isSmallScreen ? 6 : 8),
         side: BorderSide(color: theme.colorScheme.outline),
@@ -547,12 +544,14 @@ class _ProcessStatusCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Icon(icon, color: AppColors.primary),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     title,
