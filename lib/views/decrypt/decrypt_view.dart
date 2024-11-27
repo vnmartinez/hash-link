@@ -720,32 +720,51 @@ class _DecryptViewState extends State<DecryptView> {
                 children: [
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
+                      backgroundColor: theme.colorScheme.surface,
+                      foregroundColor: theme.colorScheme.primary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xl,
                         vertical: AppSpacing.lg,
                       ),
+                      side: BorderSide(
+                        color: theme.colorScheme.primary.withOpacity(0.5),
+                        width: 1,
+                      ),
+                      elevation: 1,
                     ),
                     onPressed: () {
                       FilePreviewHelper.showPreviewModal(
                         context: context,
                         content: state.decryptedFile!,
-                        fileName: 'arquivo_descriptografado',
+                        fileName: 'Arquivo Descriptografado',
                       );
                     },
-                    icon: const Icon(Icons.visibility),
-                    label: const Text('Visualizar Arquivo'),
+                    icon: Icon(
+                      Icons.visibility,
+                      color: theme.colorScheme.primary,
+                    ),
+                    label: Text(
+                      'Visualizar Arquivo',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.onPrimary,
-                      foregroundColor: theme.colorScheme.onSecondary,
+                      backgroundColor: theme.colorScheme.surface,
+                      foregroundColor: theme.colorScheme.primary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xl,
                         vertical: AppSpacing.lg,
                       ),
+                      side: BorderSide(
+                        color: theme.colorScheme.primary.withOpacity(0.5),
+                        width: 1,
+                      ),
+                      elevation: 1,
                     ),
                     onPressed: () {
                       FilePreviewHelper.saveFile(
@@ -753,8 +772,17 @@ class _DecryptViewState extends State<DecryptView> {
                         fileName: 'arquivo_descriptografado',
                       );
                     },
-                    icon: const Icon(Icons.save),
-                    label: const Text('Salvar Arquivo'),
+                    icon: Icon(
+                      Icons.save,
+                      color: theme.colorScheme.primary,
+                    ),
+                    label: Text(
+                      'Salvar Arquivo',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
                   ),
                 ],
               ),
