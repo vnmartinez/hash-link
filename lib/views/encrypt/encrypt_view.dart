@@ -126,9 +126,16 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerLow
+                              .withOpacity(0.1),
                           borderRadius: BorderRadius.circular(AppRadius.md),
                           border: Border.all(
-                            color: AppColors.grey300,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.3),
                             width: 1,
                           ),
                         ),
@@ -146,16 +153,18 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.arrow_back,
                                     size: 20,
-                                    color: AppColors.grey700,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
                                   const SizedBox(width: AppSpacing.sm),
                                   Text(
                                     'Voltar ao Menu',
                                     style: AppTypography.bodyMedium.copyWith(
-                                      color: AppColors.grey700,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),

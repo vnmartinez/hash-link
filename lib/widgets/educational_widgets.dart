@@ -6,9 +6,9 @@ class SecurityTips extends StatelessWidget {
   final List<String> tips;
 
   const SecurityTips({
-    Key? key,
+    super.key,
     required this.tips,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

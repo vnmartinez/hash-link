@@ -277,7 +277,7 @@ class ShippingSubview extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive
               ? AppColors.primary.withOpacity(0.1)
-              : theme.colorScheme.surfaceVariant,
+              : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isActive ? AppColors.primary : theme.colorScheme.outline,
