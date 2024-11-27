@@ -55,7 +55,7 @@ O HashLink é uma aplicação educacional desenvolvida em Flutter para a discipl
 - Git
 
 ### Clone o repositório
-	git clone https://github.com/seu-usuario/hash-link.git
+	git clone https://github.com/vnmartinez/hash-link.git
 
 ### Instale as dependências
     flutter pub get 
