@@ -65,7 +65,7 @@ class InitialView extends StatelessWidget {
                             end: Alignment.bottomRight,
                             colors: isDark
                                 ? [
-                                    theme.cardTheme.color ?? Colors.grey[900]!,
+                                    Colors.grey[850]!,
                                     Colors.grey[850]!,
                                   ]
                                 : [
