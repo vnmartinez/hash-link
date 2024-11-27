@@ -158,14 +158,14 @@ class KeyGenerationSubview extends StatelessWidget {
         final isSmallScreen = constraints.maxWidth < 600;
         final isMediumScreen = constraints.maxWidth < 900;
 
-        return Stack(
+        return ListView(
+          padding: EdgeInsets.only(
+            left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+            bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
+          ),
           children: [
-            ListView(
-              padding: EdgeInsets.only(
-                left: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-                right: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-                bottom: isSmallScreen ? AppSpacing.md : AppSpacing.lg,
-              ),
+            Stack(
               children: [
                 SectionTitle(
                   title: 'Geração de Chaves',
@@ -178,34 +178,12 @@ class KeyGenerationSubview extends StatelessWidget {
                     fontSize: isSmallScreen ? 14 : 16,
                   ),
                 ),
-                SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
-                if (isMediumScreen)
-                  Column(
-                    children: [
-                      _buildRSACard(context, theme, isSmallScreen),
-                      const SizedBox(height: AppSpacing.lg),
-                      _buildAESCard(context, theme, isSmallScreen),
-                    ],
-                  )
-                else
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: _buildRSACard(context, theme, isSmallScreen)),
-                      const SizedBox(width: AppSpacing.lg),
-                      Expanded(
-                          child: _buildAESCard(context, theme, isSmallScreen)),
-                    ],
-                  ),
-              ],
-            ),
-            const Positioned(
-              top: AppSpacing.md,
-              right: AppSpacing.md,
-              child: CustomInfoTooltip(
-                maxWidth: 300,
-                message: '''
+                const Positioned(
+                  top: 0,
+                  right: 0,
+                  child: CustomInfoTooltip(
+                    maxWidth: 300,
+                    message: '''
 Configurações atuais de geração:
 
 RSA (pointycastle):
@@ -236,8 +214,28 @@ Compatibilidade:
 • PEM format
 • PKCS standards
 ''',
-              ),
+                  ),
+                ),
+              ],
             ),
+            SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xl),
+            if (isMediumScreen)
+              Column(
+                children: [
+                  _buildRSACard(context, theme, isSmallScreen),
+                  const SizedBox(height: AppSpacing.lg),
+                  _buildAESCard(context, theme, isSmallScreen),
+                ],
+              )
+            else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _buildRSACard(context, theme, isSmallScreen)),
+                  const SizedBox(width: AppSpacing.lg),
+                  Expanded(child: _buildAESCard(context, theme, isSmallScreen)),
+                ],
+              ),
           ],
         );
       },
