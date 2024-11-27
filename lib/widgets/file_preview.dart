@@ -278,9 +278,9 @@ class FilePreviewHelper {
                     final currentPage = value + 1;
                     return Text(
                       '$currentPage de $totalPages',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: AppColors.grey900,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     );
                   },
