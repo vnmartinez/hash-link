@@ -183,8 +183,6 @@ class _GenerateKeyViewState extends State<GenerateKeyView> {
                     Padding(
                       padding: const EdgeInsets.only(
                         top: AppSpacing.lg,
-                        right: AppSpacing.lg,
-                        left: AppSpacing.lg,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,

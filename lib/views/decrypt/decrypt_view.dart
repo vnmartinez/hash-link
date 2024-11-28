@@ -51,7 +51,6 @@ class _DecryptViewState extends State<DecryptView> {
               type: ToastType.error,
             );
 
-            // Resetar o estado para permitir nova tentativa
             context.read<DecryptBloc>().add(const ResetDecrypt());
           }
         },

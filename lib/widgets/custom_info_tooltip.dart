@@ -57,6 +57,7 @@ class CustomInfoTooltip extends StatelessWidget {
           ],
         ),
         preferBelow: false,
+        enableTapToDismiss: true,
         verticalOffset: 0,
         waitDuration: const Duration(milliseconds: 500),
         showDuration: const Duration(seconds: 30),
