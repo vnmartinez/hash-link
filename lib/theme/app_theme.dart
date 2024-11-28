@@ -18,6 +18,7 @@ class AppTheme {
               surface: AppColors.surfaceDark,
               surfaceContainer: Color.fromARGB(255, 36, 36, 36),
               surfaceContainerLow: Color.fromARGB(255, 54, 54, 54),
+              onPrimaryContainer: Color.fromARGB(255, 36, 36, 36),
               error: AppColors.error,
               onSurface: Color.fromARGB(255, 240, 240, 240),
               outline: Color.fromARGB(255, 89, 89, 89),

@@ -9,50 +9,61 @@ class CustomInfoTooltip extends StatelessWidget {
   const CustomInfoTooltip({
     super.key,
     required this.message,
-    this.maxWidth = 200.0,
+    this.maxWidth = 500.0,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenSize = MediaQuery.of(context).size;
 
     return MouseRegion(
       cursor: SystemMouseCursors.help,
       child: Tooltip(
         richMessage: WidgetSpan(
           child: Container(
-            constraints: BoxConstraints(maxWidth: maxWidth),
-            child: Text(
-              message,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onInverseSurface,
-                height: 1.4,
+            constraints: BoxConstraints(
+              maxWidth: maxWidth,
+              maxHeight: screenSize.height * 0.8,
+            ),
+            child: SingleChildScrollView(
+              child: Text(
+                message,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                  height: 1.6,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.left,
+                softWrap: true,
               ),
-              textAlign: TextAlign.left,
-              softWrap: true,
             ),
           ),
         ),
-        padding: const EdgeInsets.all(AppSpacing.containerSm),
-        margin: const EdgeInsets.all(AppSpacing.containerSm),
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        margin: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl,
+          vertical: AppSpacing.md,
+        ),
         decoration: BoxDecoration(
-          color: theme.colorScheme.inverseSurface.withOpacity(0.95),
+          color: theme.colorScheme.onPrimaryContainer.withOpacity(0.98),
           borderRadius: BorderRadius.circular(AppRadius.md),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow.withOpacity(0.2),
-              blurRadius: 8,
+              color: theme.colorScheme.shadow.withOpacity(0.3),
+              blurRadius: 12,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        preferBelow: true,
-        verticalOffset: 8,
-        waitDuration: const Duration(milliseconds: 400),
-        showDuration: const Duration(seconds: 5),
+        preferBelow: false,
+        verticalOffset: 0,
+        waitDuration: const Duration(milliseconds: 500),
+        showDuration: const Duration(seconds: 30),
+        textAlign: TextAlign.left,
         child: Icon(
           Icons.info_outline,
-          size: 18,
+          size: 20,
           color: theme.colorScheme.primary,
         ),
       ),

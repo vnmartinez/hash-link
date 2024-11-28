@@ -266,6 +266,50 @@ Compatibilidade:
                     ),
                   ),
                 ),
+                const CustomInfoTooltip(
+                  maxWidth: 400,
+                  message: '''
+Processo de Geração RSA:
+
+1. Escolha de Primos (p, q):
+   • Gera números primos grandes (1024 bits cada)
+   • Usa teste de Miller-Rabin para primalidade
+   • p e q devem ser diferentes e seguros
+
+2. Cálculo do Módulo (n):
+   • n = p × q
+   • Tamanho final: 2048 bits
+
+3. Cálculo do Totiente (φ(n)):
+   • φ(n) = (p-1) × (q-1)
+
+4. Escolha do Expoente Público (e):
+   • e = 65537 (0x10001)
+   • Primo de Fermat para eficiência
+   • Deve ser coprimo com φ(n)
+
+5. Cálculo do Expoente Privado (d):
+   • d = e⁻¹ mod φ(n)
+   • Usa algoritmo estendido de Euclides
+
+6. Verificações de Segurança:
+   • Teste de consistência: e×d ≡ 1 (mod φ(n))
+   • Verificação de tamanho das chaves
+   • Teste de cifragem/decifragem
+
+7. Formatação PEM:
+   • Codificação ASN.1 DER
+   • Envelope PEM com cabeçalho/rodapé
+   • Base64 com quebras de linha
+
+Chave Pública: (e, n)
+Chave Privada: (d, n)
+
+Operações:
+• Cifragem: c = m^e mod n
+• Decifragem: m = c^d mod n
+''',
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.md),
@@ -393,6 +437,50 @@ Compatibilidade:
                       fontSize: isSmallScreen ? 18 : 20,
                     ),
                   ),
+                ),
+                const CustomInfoTooltip(
+                  maxWidth: 400,
+                  message: '''
+Processo de Geração e Operação AES-256:
+
+1. Geração da Chave:
+   • 256 bits (32 bytes) aleatórios
+   • Usa gerador Fortuna CSPRNG
+   • Entropia do sistema operacional
+
+2. Expansão da Chave (Key Schedule):
+   • 14 rodadas para AES-256
+   • 15 chaves de rodada de 128 bits
+   • Usa S-box e rotações
+
+3. Processo de Cifragem:
+   • Divisão em blocos de 128 bits
+   • Estado inicial: XOR com chave
+   • Por rodada:
+     - SubBytes (substituição não-linear)
+     - ShiftRows (permutação)
+     - MixColumns (mistura linear)
+     - AddRoundKey (XOR com chave da rodada)
+
+4. Modo CBC:
+   • IV aleatório de 16 bytes
+   • Encadeamento de blocos
+   • XOR com bloco anterior
+
+5. Padding PKCS7:
+   • Completa último bloco
+   • Valor = bytes faltantes
+
+6. Formato Final:
+   • IV (16 bytes)
+   • Dados cifrados
+   • Padding PKCS7
+
+Matemática da Cifragem:
+• Campo finito GF(2⁸)
+• Polinômio irredutível: x⁸ + x⁴ + x³ + x + 1
+• Multiplicação matricial em GF(2⁸)
+''',
                 ),
               ],
             ),

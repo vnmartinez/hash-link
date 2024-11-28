@@ -144,6 +144,10 @@ class DecryptBloc extends Bloc<DecryptEvent, DecryptState> {
 
     on<DecryptData>((event, emit) {
       if (!state.inputsIsValid) {
+        emit(state.copyWith(
+          decryptionError:
+              'Por favor, verifique se todos os arquivos foram importados corretamente.',
+        ));
         return;
       }
 
@@ -151,32 +155,47 @@ class DecryptBloc extends Bloc<DecryptEvent, DecryptState> {
         try {
           final privateKey = RSAKeyHelper.parsePrivateKeyFromPem(
               utf8.decode(state.privateKey!));
-          final decryptedKey =
-              RSAKeyHelper.decryptDataWithPrivateKey(state.aesKey!, privateKey);
 
-          final fileSignature =
-              RSAKeyHelper.parseSignatureFromBytes(state.signature!);
-          final fileBytes =
-              AESKeyHelper.decryptWithAES(state.dataEncrypted!, decryptedKey);
-          final fileDigest = DigestHelper.create(fileBytes);
-          final publicKey =
-              RSAKeyHelper.parsePublicKeyFromPem(utf8.decode(state.publicKey!));
+          try {
+            final decryptedKey = RSAKeyHelper.decryptDataWithPrivateKey(
+                state.aesKey!, privateKey);
 
-          final isValidSignature = RSAKeyHelper.verifySignatureWithPublicKey(
-              fileSignature, fileDigest, publicKey);
+            final fileSignature =
+                RSAKeyHelper.parseSignatureFromBytes(state.signature!);
+            final fileBytes =
+                AESKeyHelper.decryptWithAES(state.dataEncrypted!, decryptedKey);
+            final fileDigest = DigestHelper.create(fileBytes);
+            final publicKey = RSAKeyHelper.parsePublicKeyFromPem(
+                utf8.decode(state.publicKey!));
 
-          emit(state.copyWith(
-            decryptedFile: fileBytes,
-            isSignatureValid: isValidSignature,
-            decryptionError: null,
-          ));
+            final isValidSignature = RSAKeyHelper.verifySignatureWithPublicKey(
+                fileSignature, fileDigest, publicKey);
+
+            emit(state.copyWith(
+              decryptedFile: fileBytes,
+              isSignatureValid: isValidSignature,
+              decryptionError: null,
+            ));
+          } catch (e) {
+            emit(state.copyWith(
+              decryptionError:
+                  'A chave privada fornecida não corresponde ao arquivo criptografado. Por favor, selecione a chave privada correta.',
+              decryptedFile: null,
+              isSignatureValid: false,
+            ));
+          }
         } catch (e) {
           emit(state.copyWith(
-              decryptionError: 'Erro ao descriptografar o arquivo: $e'));
+            decryptionError:
+                'A chave privada fornecida é inválida ou está corrompida.',
+            decryptedFile: null,
+            isSignatureValid: false,
+          ));
         }
       } else {
         emit(state.copyWith(
-            decryptionError: 'Chave privada ou dados encriptados ausentes.'));
+          decryptionError: 'Chave privada ou dados encriptados ausentes.',
+        ));
       }
     });
   }
