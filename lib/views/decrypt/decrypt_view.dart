@@ -43,6 +43,17 @@ class _DecryptViewState extends State<DecryptView> {
               type: ToastType.success,
             );
           }
+
+          if (state.decryptionError != null) {
+            CustomToast.show(
+              context,
+              state.decryptionError!,
+              type: ToastType.error,
+            );
+
+            // Resetar o estado para permitir nova tentativa
+            context.read<DecryptBloc>().add(const ResetDecrypt());
+          }
         },
         child: Row(
           children: [
@@ -252,7 +263,8 @@ class _DecryptViewState extends State<DecryptView> {
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: state.privateKey != null
+                        backgroundColor: state.privateKey != null &&
+                                state.decryptionError == null
                             ? theme.colorScheme.primary.withOpacity(0.9)
                             : theme.colorScheme.primary,
                         foregroundColor: theme.colorScheme.onPrimary,
@@ -266,7 +278,8 @@ class _DecryptViewState extends State<DecryptView> {
                         elevation: state.privateKey != null ? 0 : 2,
                         shadowColor: theme.colorScheme.primary.withOpacity(0.3),
                       ),
-                      onPressed: state.privateKey != null
+                      onPressed: state.privateKey != null &&
+                              state.decryptionError == null
                           ? null
                           : () {
                               HapticFeedback.lightImpact();
@@ -411,7 +424,8 @@ class _DecryptViewState extends State<DecryptView> {
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _hasValidPackageImport(state)
+                        backgroundColor: _hasValidPackageImport(state) &&
+                                state.decryptionError == null
                             ? theme.colorScheme.primary.withOpacity(0.9)
                             : theme.colorScheme.primary,
                         foregroundColor: theme.colorScheme.onPrimary,
@@ -425,7 +439,8 @@ class _DecryptViewState extends State<DecryptView> {
                         elevation: _hasValidPackageImport(state) ? 0 : 2,
                         shadowColor: theme.colorScheme.primary.withOpacity(0.3),
                       ),
-                      onPressed: _hasValidPackageImport(state)
+                      onPressed: _hasValidPackageImport(state) &&
+                              state.decryptionError == null
                           ? null
                           : () {
                               HapticFeedback.lightImpact();
@@ -565,9 +580,10 @@ class _DecryptViewState extends State<DecryptView> {
             curve: Curves.easeInOut,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: state.inputsIsValid
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.surfaceContainerHighest,
+                backgroundColor:
+                    state.inputsIsValid && state.decryptionError == null
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.surfaceContainerHighest,
                 foregroundColor: state.inputsIsValid
                     ? theme.colorScheme.onPrimary
                     : theme.colorScheme.onSurfaceVariant,
@@ -577,7 +593,7 @@ class _DecryptViewState extends State<DecryptView> {
                 elevation: state.inputsIsValid ? 2 : 0,
                 shadowColor: theme.colorScheme.primary.withOpacity(0.3),
               ),
-              onPressed: state.inputsIsValid
+              onPressed: state.inputsIsValid && state.decryptionError == null
                   ? () {
                       HapticFeedback.mediumImpact();
                       context.read<DecryptBloc>().add(const DecryptData());
@@ -607,10 +623,10 @@ class _DecryptViewState extends State<DecryptView> {
               ),
             ),
           ),
-          if (!state.inputsIsValid) ...[
+          if (!state.inputsIsValid || state.decryptionError != null) ...[
             const SizedBox(height: AppSpacing.md),
             Text(
-              _getValidationMessage(state),
+              state.decryptionError ?? _getValidationMessage(state),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.error,
